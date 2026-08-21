@@ -1,8 +1,9 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
-import { repondreConsentement, useConsentement } from "@/lib/consent";
+import { Link, usePathname } from "@/i18n/navigation";
+import { ouvrirReglagesConsentement, repondreConsentement, useConsentement } from "@/lib/consent";
 import { CHAT_CONFIGURE } from "@/lib/smartsupp";
 
 /**
@@ -24,7 +25,20 @@ import { CHAT_CONFIGURE } from "@/lib/smartsupp";
  */
 export function ConsentBanner() {
   const t = useTranslations("consent");
-  const { banniereVisible } = useConsentement();
+  const { consentement, banniereVisible } = useConsentement();
+  const pathname = usePathname();
+  const dernierChemin = useRef(pathname);
+
+  // Un refus n'est jamais définitif : tant que le visiteur n'a pas accepté, on
+  // le lui redemande à chaque nouvelle page. La comparaison au chemin
+  // précédent évite de rouvrir le bandeau sur la page où il vient tout juste
+  // de cliquer « Ablehnen » — seule une vraie navigation compte comme
+  // « nouvelle page ».
+  useEffect(() => {
+    if (dernierChemin.current === pathname) return;
+    dernierChemin.current = pathname;
+    if (consentement === "refuse") ouvrirReglagesConsentement();
+  }, [pathname, consentement]);
 
   // Pas de chat configuré, pas de bandeau : demander l'autorisation d'un
   // service absent ferait perdre au visiteur le seul geste qui compte ici, et
