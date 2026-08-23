@@ -6,6 +6,7 @@ import { routing } from "@/i18n/routing";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { CodeSnippets } from "@/components/CodeSnippets";
+import { PageViewTracker } from "@/components/PageViewTracker";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { SmartsuppChat } from "@/components/SmartsuppChat";
 import { ConsentBanner } from "@/components/ConsentBanner";
@@ -49,6 +50,7 @@ export default async function LocaleLayout({
       {/* Tout en haut, avant l'en-tête : une annonce placée plus bas
           passerait sous le logo et manquerait sa cible. */}
       <AnnouncementBar />
+      <PageViewTracker />
       <CartProvider>
         {children}
         <CartDrawer paymentSlot={<PaymentMethodsBar variant="inline" />} />

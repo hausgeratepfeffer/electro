@@ -4,6 +4,12 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
+  // geoip-lite lit ses fichiers de données via un chemin relatif à son propre
+  // dossier (__dirname) : une fois regroupé dans le bundle du serveur, ce
+  // chemin ne pointe plus nulle part. L'exclure du bundling laisse Node le
+  // charger avec son require natif, comme s'il tournait hors de Next.
+  serverExternalPackages: ["geoip-lite"],
+
   experimental: {
     /**
      * Nombre de processus qui composent les pages à la construction du site.

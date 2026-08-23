@@ -895,3 +895,29 @@ model CheckoutRecovery {
   @@index([nextSendAt])
   @@index([createdAt])
 }
+
+// ---- Trafic anonyme ----
+// Compteur de pages vues, sans bandeau de consentement : aucun identifiant de
+// visiteur, aucun cookie, aucune adresse IP conservée. L'IP ne sert qu'à
+// dériver le pays et la ville au moment de la requête (résolution locale,
+// via geoip-lite — jamais transmise à un service tiers), puis elle est
+// jetée. Pays et ville seuls ne permettent pas de reconnaître un visiteur en
+// particulier : c'est ce qui distingue cette table d'un outil de suivi
+// nominatif comme Smartsupp.
+model PageView {
+  id String @id @default(cuid())
+
+  // Chemin interne, sans domaine ni requête ("/haushalt/kaffeemaschinen").
+  path String
+
+  // Absents quand la résolution échoue (IP locale, base sans correspondance).
+  country String?
+  city    String?
+
+  viewedAt DateTime @default(now())
+
+  // Requête du tableau de bord (tri par date, agrégation par page) et purge
+  // par ancienneté.
+  @@index([viewedAt])
+  @@index([path])
+}

@@ -20,6 +20,7 @@ import {
   Store,
   Tags,
   TicketPercent,
+  TrendingUp,
   Users,
   Warehouse,
   X,
@@ -72,6 +73,7 @@ export function AdminSidebar({
         // téléphone, adresses de facturation et de livraison. Deux entrées de
         // menu pour la même information obligent à chercher où regarder.
         { label: "Commandes", href: "/admin/orders", icon: Receipt },
+        { label: "Trafic", href: "/admin/trafic", icon: TrendingUp },
         { label: "Warenkorb-Erinnerungen", href: "/admin/warenkorb-erinnerungen", icon: MailWarning },
         {
           label: "Avis clients",
