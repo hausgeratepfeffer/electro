@@ -9,11 +9,19 @@
  * plutôt que retapée.
  */
 
+import { siteUrl } from "@/server/merchant";
 import type { GatewayId } from "./types";
 
 export function gatewayWebhookUrl(provider: GatewayId): string {
-  const base = (process.env.NEXT_PUBLIC_SITE_URL ?? "").replace(/\/$/, "");
-  return `${base}/api/payments/webhook/${provider}`;
+  // `siteUrl()` retombe sur "https://hausgeratepfeffer.de" si la variable
+  // d'environnement manque — repli déjà en place pour le flux Merchant et le
+  // schéma SEO. Cette fonction n'en avait pas : en son absence sur le serveur
+  // de production, elle rendait une URL relative ("/api/payments/webhook/
+  // mollie", sans domaine), que Mollie refusait purement et simplement à la
+  // création de chaque session — aucune commande carte n'a jamais pu être
+  // redirigée avant ce correctif, sans qu'aucune erreur ne remonte nulle
+  // part avant l'ajout de la trace dans l'historique de commande.
+  return `${siteUrl()}/api/payments/webhook/${provider}`;
 }
 
 /**
