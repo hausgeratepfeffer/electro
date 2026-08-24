@@ -281,6 +281,8 @@ export function CheckoutFlow({
       const data = (await response.json().catch(() => null)) as {
         code?: string;
         confirmationPath?: string;
+        /** Présent seulement quand un prestataire prend la main (Stripe, Mollie…). */
+        redirectUrl?: string;
         detail?: { name: string; available: number };
       } | null;
 
@@ -299,7 +301,18 @@ export function CheckoutFlow({
       // panier tout de suite ferait clignoter l'état « panier vide ».
       setDone(true);
       clear();
-      router.push(data.confirmationPath);
+
+      // `redirectUrl` mène chez le prestataire (domaine externe) : le routeur
+      // de Next, prévu pour les pages du site, ne convient pas ici. Sans
+      // cette branche, la commande était bien créée et le paiement bien
+      // ouvert chez le prestataire, mais le client n'y était jamais envoyé —
+      // il atterrissait directement sur la confirmation, comme si de rien
+      // n'était.
+      if (data.redirectUrl) {
+        window.location.href = data.redirectUrl;
+      } else {
+        router.push(data.confirmationPath);
+      }
     } catch {
       setPending(false);
       setError({ code: "network" });
