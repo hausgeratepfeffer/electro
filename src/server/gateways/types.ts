@@ -10,9 +10,9 @@
 
 import type { PaymentStatus } from "@/lib/orderStatus";
 
-// Stripe seul pour l'instant. Ajouter un prestataire tient en un fichier et
-// une ligne du registre : le tunnel de commande, lui, ne change pas.
-export const GATEWAY_IDS = ["stripe"] as const;
+// Ajouter un prestataire tient en un fichier et une ligne du registre : le
+// tunnel de commande, lui, ne change pas.
+export const GATEWAY_IDS = ["stripe", "mollie"] as const;
 export type GatewayId = (typeof GATEWAY_IDS)[number];
 
 export function isGatewayId(value: unknown): value is GatewayId {

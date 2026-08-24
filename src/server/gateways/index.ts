@@ -15,6 +15,7 @@
 
 import { cache } from "react";
 import { prisma } from "@/server/prisma";
+import { mollieGateway } from "./mollie";
 import { stripeGateway } from "./stripe";
 import { GATEWAY_IDS, isGatewayId, type GatewayId, type PaymentGateway } from "./types";
 
@@ -32,6 +33,7 @@ const SETTING_KEY = "payment_gateway";
 
 const GATEWAYS: Record<GatewayId, PaymentGateway> = {
   stripe: stripeGateway,
+  mollie: mollieGateway,
 };
 
 export function getGateway(id: GatewayId): PaymentGateway {
