@@ -116,18 +116,35 @@ export const mollieGateway: PaymentGateway = {
     const mollie = await client();
     if (!mollie) throw new Error("Mollie n'est pas configuré (clé API absente).");
 
-    const payment = await mollie.payments.create({
-      amount: { currency: order.currency.toUpperCase(), value: toDecimal(order.amountCents) },
-      description: order.description,
-      redirectUrl: order.successUrl,
-      cancelUrl: order.cancelUrl,
-      webhookUrl: gatewayWebhookUrl("mollie"),
-      locale: LOCALES[order.locale],
-      metadata: { orderNumber: order.orderNumber },
-      // Le moyen déjà choisi dans la boutique ouvre directement le bon écran
-      // chez Mollie ; un moyen non couplé y laisse le client choisir.
-      method: SHOP_METHOD_TO_MOLLIE[order.methodKey],
-    });
+    const webhookUrl = gatewayWebhookUrl("mollie");
+
+    let payment;
+    try {
+      payment = await mollie.payments.create({
+        amount: { currency: order.currency.toUpperCase(), value: toDecimal(order.amountCents) },
+        description: order.description,
+        redirectUrl: order.successUrl,
+        cancelUrl: order.cancelUrl,
+        webhookUrl,
+        locale: LOCALES[order.locale],
+        metadata: { orderNumber: order.orderNumber },
+        // Le moyen déjà choisi dans la boutique ouvre directement le bon écran
+        // chez Mollie ; un moyen non couplé y laisse le client choisir.
+        method: SHOP_METHOD_TO_MOLLIE[order.methodKey],
+      });
+    } catch (error) {
+      // Diagnostic temporaire : le message brut de Mollie ne dit pas quelle
+      // valeur a été refusée. `field` (propre à leur ApiError) et l'URL
+      // effectivement envoyée le disent, pour trancher sans deviner.
+      const field =
+        error && typeof error === "object" && "field" in error
+          ? String((error as { field?: unknown }).field)
+          : undefined;
+      const message = error instanceof Error ? error.message : "erreur inconnue";
+      throw new Error(
+        `${message}${field ? ` (champ: ${field})` : ""} — webhookUrl envoyée : ${webhookUrl}`,
+      );
+    }
 
     const redirectUrl = payment.getCheckoutUrl();
     if (!redirectUrl) throw new Error("Mollie n'a pas renvoyé d'URL de paiement.");
