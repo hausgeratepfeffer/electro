@@ -15,7 +15,6 @@
  * Les règles de saisie et de rendu sont dans `src/lib/bankTransfer.ts`.
  */
 
-import { cache } from "react";
 import { prisma } from "@/server/prisma";
 import {
   BANK_TRANSFER_DEFAULTS,
@@ -28,8 +27,17 @@ const SETTING_KEY = "bank_transfer";
 
 export type { BankTransferSettings, BankTransferState } from "@/lib/bankTransfer";
 
-/** Coordonnées enregistrées, mémorisées pour la durée du rendu. */
-export const getBankTransferSettings = cache(async (): Promise<BankTransferState> => {
+/**
+ * Coordonnées enregistrées, relues à chaque appel.
+ *
+ * PAS de `cache()` de React ici — voir le commentaire équivalent dans
+ * @/server/gateways/index.ts pour le bug exact que ça évite : sans appel à
+ * une API de requête (cookies, headers…) à l'intérieur, cette fonction
+ * n'obtenait pas de portée par requête et figeait l'IBAN affiché au premier
+ * appel du processus. `sendOrderEmails` la lit depuis la route de commande,
+ * hors de tout rendu — exactement le cas qui déclenchait le bug.
+ */
+export async function getBankTransferSettings(): Promise<BankTransferState> {
   try {
     const row = await prisma.setting.findUnique({ where: { key: SETTING_KEY } });
     if (!row) return { ...BANK_TRANSFER_DEFAULTS, configured: false };
@@ -39,7 +47,7 @@ export const getBankTransferSettings = cache(async (): Promise<BankTransferState
     // avertissement compris. La page de confirmation continue de s'afficher.
     return { ...BANK_TRANSFER_DEFAULTS, configured: false };
   }
-});
+}
 
 export async function saveBankTransferSettings(
   settings: BankTransferSettings,

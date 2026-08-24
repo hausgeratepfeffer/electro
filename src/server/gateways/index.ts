@@ -13,7 +13,6 @@
  * tunnel de commande ni la route de webhook n'ont à le connaître.
  */
 
-import { cache } from "react";
 import { prisma } from "@/server/prisma";
 import { mollieGateway } from "./mollie";
 import { stripeGateway } from "./stripe";
@@ -64,8 +63,19 @@ function coerce(value: unknown): GatewayConfig {
   return { provider, methodKeys };
 }
 
-/** Configuration enregistrée, mémorisée pour la durée du rendu. */
-export const getGatewayConfig = cache(async (): Promise<GatewayConfig> => {
+/**
+ * Configuration enregistrée, relue à chaque appel.
+ *
+ * PAS de `cache()` de React ici — c'était le bug : ce mémo ne se réinitialise
+ * qu'au fil d'un rendu de composant serveur. Appelé depuis une route (comme
+ * /api/checkout, en dehors de tout rendu), il fige la réponse au premier
+ * appel du processus et ne la relit plus jamais. Résultat vécu en
+ * production : le prestataire activé en administration ne prenait jamais le
+ * relais tant que le serveur n'était pas redémarré — le tunnel retombait en
+ * silence sur le règlement hors ligne, sans erreur ni indice. Un `Setting` de
+ * plus lu à chaque commande coûte moins qu'un paiement qui ne part jamais.
+ */
+export async function getGatewayConfig(): Promise<GatewayConfig> {
   try {
     const row = await prisma.setting.findUnique({ where: { key: SETTING_KEY } });
     if (!row) return EMPTY_CONFIG;
@@ -75,7 +85,7 @@ export const getGatewayConfig = cache(async (): Promise<GatewayConfig> => {
     // boutique continue de prendre les commandes en virement et en facture.
     return EMPTY_CONFIG;
   }
-});
+}
 
 export async function saveGatewayConfig(input: GatewayConfig): Promise<GatewayConfig> {
   const clean: GatewayConfig = {
