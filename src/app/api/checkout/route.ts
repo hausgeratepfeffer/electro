@@ -58,6 +58,7 @@ async function startOnlinePayment(order: OrderRecord): Promise<string | undefine
       currency: order.currency,
       email: order.email,
       locale: order.locale === "en" ? "en" : "de",
+      methodKey: order.paymentMethodKey,
       description: `Bestellung ${order.orderNumber}`,
       successUrl: confirmation,
       // Retour d'abandon distinct du retour de succès : sans ce marqueur, un

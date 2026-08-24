@@ -29,6 +29,14 @@ export interface GatewayOrderContext {
   currency: string;
   email: string;
   locale: "de" | "en";
+  /**
+   * Clé du moyen de paiement choisi dans la boutique (table PaymentMethod),
+   * ex. « kreditkarte », « paypal ». Un prestataire qui encaisse plusieurs
+   * moyens à la fois (Mollie) s'en sert pour ouvrir directement le bon écran
+   * plutôt que de reproposer un choix déjà fait côté boutique ; un
+   * prestataire à moyen unique (Stripe, aujourd'hui) peut l'ignorer.
+   */
+  methodKey: string;
   /** Libellé lisible, ex. « Commande MLC-2026-000123 ». */
   description: string;
   /** URL de retour après paiement réussi (page de confirmation). */

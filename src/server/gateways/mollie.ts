@@ -34,6 +34,19 @@ const API_KEY = "mollie_api_key";
 
 const LOCALES: Record<"de" | "en", Locale> = { de: Locale.de_DE, en: Locale.en_US };
 
+/**
+ * Clé du moyen de paiement de la boutique -> méthode Mollie correspondante.
+ *
+ * Un moyen non listé ici (ex. Überweisung, SEPA-Lastschrift, s'ils étaient un
+ * jour routés vers Mollie) laisse `method` absent plutôt que d'échouer :
+ * Mollie affiche alors son propre écran de choix, un repli plus sûr qu'une
+ * commande bloquée.
+ */
+const SHOP_METHOD_TO_MOLLIE: Partial<Record<string, PaymentMethod>> = {
+  kreditkarte: PaymentMethod.creditcard,
+  paypal: PaymentMethod.paypal,
+};
+
 async function client() {
   const key = await getIntegrationSecret(API_KEY);
   if (!key) return null;
@@ -111,9 +124,9 @@ export const mollieGateway: PaymentGateway = {
       webhookUrl: gatewayWebhookUrl("mollie"),
       locale: LOCALES[order.locale],
       metadata: { orderNumber: order.orderNumber },
-      // Limité à la carte : c'est le moyen de paiement demandé, pas les
-      // trente autres méthodes que Mollie sait encaisser.
-      method: PaymentMethod.creditcard,
+      // Le moyen déjà choisi dans la boutique ouvre directement le bon écran
+      // chez Mollie ; un moyen non couplé y laisse le client choisir.
+      method: SHOP_METHOD_TO_MOLLIE[order.methodKey],
     });
 
     const redirectUrl = payment.getCheckoutUrl();
