@@ -167,12 +167,18 @@ export const mollieGateway: PaymentGateway = {
 
     const mollie = createMollieClient({ apiKey: key });
 
+    // `organizations.getCurrent()` semblait l'appel naturel — calqué sur
+    // `stripe.accounts.retrieve()` — mais Mollie le réserve au mode live et le
+    // refuse pour toute clé test, valide ou non : une vraie clé test l'aurait
+    // toujours fait échouer. `profiles.getCurrent()` lit le même genre
+    // d'information (nom, statut du compte) et fonctionne dans les deux modes.
+    //
     // `ReturnType` sur une méthode surchargée retomberait sur la signature à
     // callback (celle qui rend `void`) : la variable reste donc non annotée,
     // inférée depuis cet appel sans argument, qui seul rend une promesse.
     const account = await (async () => {
       try {
-        return { ok: true as const, organization: await mollie.organizations.getCurrent() };
+        return { ok: true as const, profile: await mollie.profiles.getCurrent() };
       } catch (error) {
         return { ok: false as const, error };
       }
@@ -187,9 +193,15 @@ export const mollieGateway: PaymentGateway = {
       };
     }
 
-    const organization = account.organization;
-    details.push({ label: "Compte", value: `${organization.name} (${organization.id})` });
-    details.push({ label: "Pays", value: organization.address?.country ?? "?" });
+    const profile = account.profile;
+    details.push({ label: "Compte", value: `${profile.name} (${profile.id})` });
+    details.push({ label: "Statut du profil", value: profile.status });
+
+    if (profile.status !== "verified") {
+      issues.push(
+        `Le profil Mollie n'est pas encore vérifié (statut : ${profile.status}) — l'encaissement en mode live restera bloqué tant que Mollie n'a pas validé le compte.`,
+      );
+    }
 
     if (!process.env.NEXT_PUBLIC_SITE_URL) {
       issues.push(
@@ -201,8 +213,8 @@ export const mollieGateway: PaymentGateway = {
       ok: issues.length === 0,
       summary:
         issues.length === 0
-          ? `Connecté à « ${organization.name} » (${organization.address?.country ?? "?"}) en mode ${mode}.`
-          : `Clé valide pour « ${organization.name} », mais la configuration est incomplète.`,
+          ? `Connecté à « ${profile.name} » en mode ${mode}.`
+          : `Clé valide pour « ${profile.name} », mais la configuration est incomplète.`,
       issues,
       details,
     };
