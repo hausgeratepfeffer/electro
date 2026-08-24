@@ -4,6 +4,7 @@ import {
   createOrder,
   OrderError,
   parseCheckoutPayload,
+  recordOrderEvent,
   setOrderGatewayReference,
 } from "@/server/orders";
 import type { CheckoutErrorCode, OrderRecord } from "@/server/orders";
@@ -47,7 +48,19 @@ function confirmationUrl(order: OrderRecord): string {
  */
 async function startOnlinePayment(order: OrderRecord): Promise<string | undefined> {
   const gateway = await resolveGatewayForMethod(order.paymentMethodKey);
-  if (!gateway) return undefined;
+  if (!gateway) {
+    // Aucune trace jusqu'ici quand le paiement en ligne ne se déclenche pas :
+    // un commerçant qui voit une commande « offen » sans comprendre pourquoi
+    // n'a aucun indice à donner. L'historique de la commande en garde un,
+    // sans jamais faire échouer la commande elle-même.
+    await recordOrderEvent(
+      order.id,
+      "payment",
+      `Paiement en ligne non déclenché pour « ${order.paymentMethodKey} » : aucun prestataire actif ne prend en charge ce moyen.`,
+      "checkout",
+    );
+    return undefined;
+  }
 
   try {
     const confirmation = confirmationUrl(order);
@@ -72,6 +85,14 @@ async function startOnlinePayment(order: OrderRecord): Promise<string | undefine
     return session.redirectUrl;
   } catch (error) {
     console.error("[checkout] ouverture du paiement en ligne impossible :", error);
+    await recordOrderEvent(
+      order.id,
+      "payment",
+      `Ouverture du paiement en ligne (${gateway.meta.label}) impossible : ${
+        error instanceof Error ? error.message : "erreur inconnue"
+      }. Commande laissée en règlement hors ligne.`,
+      "checkout",
+    );
     return undefined;
   }
 }
