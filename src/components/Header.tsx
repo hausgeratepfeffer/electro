@@ -26,8 +26,12 @@ export async function Header() {
             <Image
               src="/images/logo-full.png"
               alt={t("logoAlt")}
-              width={1242}
-              height={406}
+              // Dimensions réduites, même ratio que le fichier source (1242×406) :
+              // affiché à 36-40px de haut, l'image d'origine se voyait quand même
+              // servie jusqu'à 3840px de large faute d'indication de taille réelle
+              // — près de 100 fois plus de pixels que nécessaire, même en 3x.
+              width={440}
+              height={144}
               priority
               className="h-8 w-auto sm:h-9"
             />

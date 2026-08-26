@@ -160,8 +160,8 @@ export default function AdminLoginPage() {
             <Image
               src="/images/logo-full.png"
               alt="Hausgeräte Pfeffer"
-              width={1242}
-              height={406}
+              width={440}
+              height={144}
               priority
               className="h-12 w-auto"
             />

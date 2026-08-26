@@ -52,8 +52,10 @@ export async function Footer() {
               <Image
                 src="/images/logo-full.png"
                 alt={t("logoAlt")}
-                width={1242}
-                height={406}
+                // Voir Header.tsx : dimensions réduites au même ratio, pour éviter
+                // de générer un srcSet jusqu'à 3840px pour un logo affiché à 40px.
+                width={440}
+                height={144}
                 className="h-10 w-auto"
               />
             </Link>
