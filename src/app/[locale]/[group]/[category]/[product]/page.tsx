@@ -9,6 +9,7 @@ import { ProductPurchaseBox } from "@/components/ProductPurchaseBox";
 import { ProductReviewSection } from "@/components/ProductReviewSection";
 import { ProductJsonLd } from "@/components/seo/ProductJsonLd";
 import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
+import { ProductSourceLinks } from "@/components/ProductSourceLinks";
 import { PaymentMethodsBar } from "@/components/PaymentMethodsBar";
 import { ProductGrid } from "@/components/ProductGrid";
 import { getProductBySlug, getRelatedProducts } from "@/server/store";
@@ -211,6 +212,12 @@ export default async function ProductPage({ params }: { params: ProductPageParam
               </ul>
             </div>
           </div>
+
+          <ProductSourceLinks
+            brand={productData.brand}
+            categorySlug={categoryData.slug}
+            locale={locale}
+          />
         </section>
 
         {productData.id && (
