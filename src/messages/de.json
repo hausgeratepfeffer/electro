@@ -175,8 +175,8 @@
   },
   "product": {
     "details": "Produktdetails & Serviceinfos",
-    "description": "Artikelbeschreibung",
-    "features": "Ausstattung & Merkmale",
+    "description": "Was zeichnet dieses Produkt aus?",
+    "features": "Welche Ausstattung bietet dieses Produkt?",
     "related": "Ähnliche Produkte",
     "sku": "Art.-Nr.",
     "ratingOf": "{rating} von 5",

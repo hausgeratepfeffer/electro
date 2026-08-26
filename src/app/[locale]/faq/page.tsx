@@ -75,9 +75,13 @@ export default async function FaqPage({ params }: { params: PageParams }) {
                 className="group rounded-sm border border-border bg-white open:border-primary/40"
               >
                 <summary className="flex cursor-pointer items-center justify-between gap-3 px-4 py-3 text-sm font-bold text-foreground marker:content-[''] hover:text-primary">
-                  <span>
+                  {/* Vraie question déjà présente dans le contenu, mais jamais
+                      portée par un titre HTML jusqu'ici — seulement le texte
+                      d'un <summary>, invisible à qui lit la hiérarchie des
+                      titres de la page. */}
+                  <h2 className="text-sm font-bold text-foreground">
                     <RichText text={section.heading} />
-                  </span>
+                  </h2>
                   <span
                     aria-hidden
                     className="text-lg leading-none text-primary transition-transform group-open:rotate-45"

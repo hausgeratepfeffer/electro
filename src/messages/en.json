@@ -175,8 +175,8 @@
   },
   "product": {
     "details": "Product details & service",
-    "description": "Product description",
-    "features": "Features & specifications",
+    "description": "What makes this product stand out?",
+    "features": "What does this product come with?",
     "related": "Similar products",
     "sku": "Item no.",
     "ratingOf": "{rating} out of 5",
