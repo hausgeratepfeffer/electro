@@ -40,6 +40,7 @@
   },
   "hero": {
     "ariaLabel": "Promotions and highlights",
+    "tagline": "Home appliances & multimedia online at Hausgeräte Pfeffer",
     "previous": "Previous slide",
     "next": "Next slide",
     "slideLabel": "Slide {index}: {title}",

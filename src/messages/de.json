@@ -40,6 +40,7 @@
   },
   "hero": {
     "ariaLabel": "Aktionen und Highlights",
+    "tagline": "Elektrogeräte & Multimedia online kaufen bei Hausgeräte Pfeffer",
     "previous": "Vorheriger Slide",
     "next": "Nächster Slide",
     "slideLabel": "Slide {index}: {title}",

@@ -56,6 +56,16 @@ export function HeroBanner() {
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
     >
+      {/* Seul titre de niveau 1 de la page, et le seul élément de tout ce bloc qui
+          ne change jamais avec le slide actif : Google en tire une description
+          stable du site plutôt qu'un rabais du moment, qui peut avoir disparu à
+          la prochaine visite d'exploration. Visible, pas seulement présent pour
+          les robots — un H1 cousu au visuel plutôt que caché reste la pratique la
+          plus sûre. */}
+      <h1 className="relative z-10 mx-auto max-w-screen-xl px-6 pt-3 text-xs font-bold tracking-wide text-secondary-foreground/60 uppercase sm:px-10 lg:px-16">
+        {t("tagline")}
+      </h1>
+
       <div className="relative mx-auto h-[280px] max-w-screen-xl sm:h-[360px]">
         {slides.map((item, index) => (
           <Image
@@ -83,9 +93,9 @@ export function HeroBanner() {
           <span className="inline-block w-fit rounded-sm bg-accent px-2 py-1 text-xs font-black text-accent-foreground">
             {t(`slides.${slide.key}.eyebrow`)}
           </span>
-          <h1 className="text-2xl leading-tight font-black text-white sm:text-4xl">
+          <h2 className="text-2xl leading-tight font-black text-white sm:text-4xl">
             {t(`slides.${slide.key}.title`)}
-          </h1>
+          </h2>
           <p className="text-sm text-white/80 sm:text-base">{t(`slides.${slide.key}.subtitle`)}</p>
           <Link
             href={slide.href}
