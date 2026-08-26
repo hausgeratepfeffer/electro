@@ -51,9 +51,10 @@ export async function Header() {
             <Link
               href="/konto"
               prefetch={false}
+              aria-label={common("account")}
               className="flex flex-col items-center gap-1 hover:text-primary"
             >
-              <User className="h-5 w-5" />
+              <User className="h-5 w-5" aria-hidden />
               <span className="hidden sm:inline">{common("account")}</span>
             </Link>
             {/* Comme le panier, la liste de souhaits vit dans le navigateur */}

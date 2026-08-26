@@ -38,10 +38,11 @@ export function CategoryMenu() {
         type="button"
         aria-haspopup="true"
         aria-expanded={open}
+        aria-label={t("categories")}
         onClick={() => setOpen((current) => !current)}
         className="flex items-center gap-2 rounded-sm bg-white/10 px-3 py-2 text-sm font-semibold hover:bg-white/20"
       >
-        {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        {open ? <X className="h-5 w-5" aria-hidden /> : <Menu className="h-5 w-5" aria-hidden />}
         <span className="hidden sm:inline">{t("categories")}</span>
       </button>
 

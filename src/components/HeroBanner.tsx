@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { preload } from "react-dom";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -39,6 +40,17 @@ export function HeroBanner() {
     return () => clearInterval(timer);
   }, [paused]);
 
+  // Précharge la photo du slide suivant pendant que l'actuel est affiché :
+  // au changement, l'image est déjà en cache et le fondu reste immédiat, sans
+  // avoir à monter les cinq photos d'un coup (voir plus bas — c'était le cas
+  // avant, et PageSpeed le signalait comme un poids d'image inutile dès
+  // l'arrivée sur le site : quatre grandes photos jamais vues chargées pour
+  // rien).
+  useEffect(() => {
+    const next = slides[(active + 1) % slides.length];
+    preload(next.image, { as: "image" });
+  }, [active]);
+
   // Garde l'index dans les bornes, y compris pour -1
   function goTo(index: number) {
     setActive((index + slides.length) % slides.length);
@@ -67,20 +79,22 @@ export function HeroBanner() {
       </h1>
 
       <div className="relative mx-auto h-[280px] max-w-screen-xl sm:h-[360px]">
-        {slides.map((item, index) => (
-          <Image
-            key={item.image}
-            src={item.image}
-            alt={index === active ? t(`slides.${item.key}.alt`) : ""}
-            fill
-            priority={index === 0}
-            sizes="100vw"
-            className={cn(
-              "object-cover opacity-0 transition-opacity duration-700",
-              index === active && "opacity-70",
-            )}
-          />
-        ))}
+        {/* Une seule image montée à la fois — pas les cinq en même temps avec un
+            fondu en opacité entre elles. Les quatre photos jamais vues au premier
+            chargement pesaient pour rien sur la page : rien ne dit qu'un
+            navigateur diffère leur téléchargement seulement parce qu'elles sont à
+            opacité nulle, tant qu'elles occupent le même espace que la première,
+            déjà dans le cadre visible. Le fondu vient maintenant du montage de
+            chaque image (`animate-in fade-in`), pas d'un calque superposé. */}
+        <Image
+          key={slide.image}
+          src={slide.image}
+          alt={t(`slides.${slide.key}.alt`)}
+          fill
+          priority={active === 0}
+          sizes="100vw"
+          className="animate-in fade-in object-cover opacity-70 duration-700"
+        />
 
         <div className="absolute inset-0 bg-gradient-to-r from-secondary/90 via-secondary/40 to-transparent" />
 
