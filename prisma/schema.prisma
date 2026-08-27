@@ -288,6 +288,15 @@ model Order {
   // mention n'accorde plus d'avantage, et elle ne couvre pas l'express.
   campaignFreeShipping Boolean @default(false)
 
+  // Origine du visiteur au premier contact (canal classé + hôte de provenance,
+  // par ex. « google_ads » / « google.com »), lue dans le cookie posé par le
+  // proxy dès la première page vue et jamais réécrite ensuite — premier
+  // contact, pas dernier clic. Vide sur les commandes passées avant l'ajout de
+  // cette mesure, et sur celles d'un visiteur qui a refusé les cookies non
+  // essentiels : rien n'est deviné à sa place.
+  trafficChannel String @default("")
+  trafficSource  String @default("")
+
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   paidAt    DateTime?
@@ -887,6 +896,13 @@ model CheckoutRecovery {
   // converted | unsubscribed | completed | failed
   stoppedReason String    @default("")
   stoppedAt     DateTime?
+
+  // Origine du visiteur au premier contact, capturée une seule fois — voir
+  // Order.trafficChannel pour le détail. Jamais réécrite par les rafraîchissements
+  // ultérieurs du panier : l'abandon reste attribué à ce qui a amené le visiteur,
+  // pas à sa dernière visite avant l'envoi du message.
+  trafficChannel String @default("")
+  trafficSource  String @default("")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

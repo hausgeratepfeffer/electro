@@ -10,6 +10,8 @@ import {
   PAYMENT_STATUS_LABELS,
 } from "@/lib/orderStatus";
 import { formatPrice } from "@/server/store";
+import { TRAFFIC_CHANNEL_LABELS } from "@/lib/traffic";
+import type { TrafficChannel } from "@/lib/traffic";
 import { OrderStatusPanel } from "@/components/admin/OrderStatusPanel";
 import { DeleteButton } from "@/components/admin/DeleteButton";
 
@@ -237,6 +239,24 @@ export default async function AdminOrderDetailPage({
               </a>
             </p>
             {order.phone && <p className="text-sm text-muted-foreground">{order.phone}</p>}
+          </section>
+
+          <section className="rounded-sm border border-border bg-white p-5">
+            <h2 className="mb-3 text-sm font-black text-foreground">Origine</h2>
+            {order.trafficChannel in TRAFFIC_CHANNEL_LABELS ? (
+              <>
+                <p className="text-sm font-semibold text-foreground">
+                  {TRAFFIC_CHANNEL_LABELS[order.trafficChannel as TrafficChannel].fr}
+                </p>
+                {order.trafficSource && (
+                  <p className="text-xs text-muted-foreground">{order.trafficSource}</p>
+                )}
+              </>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                Non mesurée — visiteur sans consentement à la mesure d'origine.
+              </p>
+            )}
           </section>
 
           <section className="rounded-sm border border-border bg-white p-5">

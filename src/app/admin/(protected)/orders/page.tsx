@@ -12,6 +12,8 @@ import {
   isPaymentStatus,
 } from "@/lib/orderStatus";
 import { formatPrice } from "@/server/store";
+import { TRAFFIC_CHANNEL_LABELS } from "@/lib/traffic";
+import type { TrafficChannel } from "@/lib/traffic";
 import { IconActionLink } from "@/components/admin/IconAction";
 import { AdminPagination } from "@/components/admin/AdminPagination";
 import { ADMIN_PAGE_SIZE, parsePageParam } from "@/lib/pagination";
@@ -26,6 +28,12 @@ const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
   hour: "2-digit",
   minute: "2-digit",
 });
+
+function originLabel(channel: string): string {
+  return channel in TRAFFIC_CHANNEL_LABELS
+    ? TRAFFIC_CHANNEL_LABELS[channel as TrafficChannel].fr
+    : "—";
+}
 
 export default async function AdminOrdersPage({
   searchParams,
@@ -155,6 +163,7 @@ export default async function AdminOrdersPage({
               <th className="px-4 py-3">Numéro</th>
               <th className="px-4 py-3">Date</th>
               <th className="px-4 py-3">Client</th>
+              <th className="px-4 py-3">Origine</th>
               <th className="px-4 py-3">Articles</th>
               <th className="px-4 py-3">Montant</th>
               <th className="px-4 py-3">Statut commande</th>
@@ -165,7 +174,7 @@ export default async function AdminOrdersPage({
           <tbody>
             {result.orders.length === 0 && (
               <tr>
-                <td colSpan={8} className="px-4 py-8 text-center text-muted-foreground">
+                <td colSpan={9} className="px-4 py-8 text-center text-muted-foreground">
                   Aucune commande trouvée.
                 </td>
               </tr>
@@ -191,6 +200,14 @@ export default async function AdminOrdersPage({
                       {order.billing.firstName} {order.billing.lastName}
                     </span>
                     <span className="block text-xs text-muted-foreground">{order.email}</span>
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap text-muted-foreground">
+                    {originLabel(order.trafficChannel)}
+                    {order.trafficSource && (
+                      <span className="block text-xs text-muted-foreground/70">
+                        {order.trafficSource}
+                      </span>
+                    )}
                   </td>
                   <td className="px-4 py-3 text-muted-foreground">{itemCount}</td>
                   <td className="px-4 py-3 font-semibold whitespace-nowrap text-foreground">

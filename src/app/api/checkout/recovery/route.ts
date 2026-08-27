@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 import { captureRecovery } from "@/server/checkoutRecovery";
 import { recoveryLimiter } from "@/server/recoveryRate";
 import { getCurrentCustomer } from "@/server/customerSession";
+import { TRAFFIC_CHANNEL_LABELS } from "@/lib/traffic";
 import type { RecoveryStep } from "@/lib/checkoutRecovery";
+import type { TrafficChannel } from "@/lib/traffic";
 
 // Capture de la session de paiement.
 //
@@ -65,8 +67,14 @@ export async function POST(request: Request) {
     return new NextResponse(null, { status: 204 });
   }
 
+  const trafficChannelRaw = typeof body.trafficChannel === "string" ? body.trafficChannel : "";
+  const trafficChannel: TrafficChannel | "" =
+    trafficChannelRaw in TRAFFIC_CHANNEL_LABELS ? (trafficChannelRaw as TrafficChannel) : "";
+  const trafficSource =
+    trafficChannel && typeof body.trafficSource === "string" ? body.trafficSource.slice(0, 80) : "";
+
   try {
-    await captureRecovery({ email, locale, step, lines });
+    await captureRecovery({ email, locale, step, lines, trafficChannel, trafficSource });
   } catch (error) {
     // Une panne de capture ne doit jamais remonter au tunnel : le client est en
     // train d'acheter, c'est la seule chose qui compte.

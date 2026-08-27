@@ -250,8 +250,10 @@
     "acceptedTitle": "Akzeptierte Zahlungsarten"
   },
   "consent": {
-    "title": "Live-Chat aktivieren?",
-    "body": "Für Warenkorb, Sitzung und Sprachwahl setzen wir technisch notwendige Cookies – dafür brauchen wir keine Einwilligung. Unser Live-Chat (Smartsupp s.r.o., Tschechische Republik) speichert zusätzlich eine Besucherkennung auf Ihrem Gerät. Nur so sehen wir, dass Sie da sind, und können Sie von uns aus ansprechen.",
+    "title": "Zusätzliche Cookies aktivieren?",
+    "bodyIntro": "Für Warenkorb, Sitzung und Sprachwahl setzen wir technisch notwendige Cookies – dafür brauchen wir keine Einwilligung.",
+    "bodyChat": "Unser Live-Chat (Smartsupp s.r.o., Tschechische Republik) speichert zusätzlich eine Besucherkennung auf Ihrem Gerät. Nur so sehen wir, dass Sie da sind, und können Sie von uns aus ansprechen.",
+    "bodyTraffic": "Mit Ihrer Zustimmung merken wir uns außerdem, über welchen Kanal Sie zu uns gefunden haben (z. B. Suchmaschine, Google Ads, Google Shopping, soziales Netzwerk oder direkter Aufruf) – ohne IP-Adresse oder sonstige Besucherkennung, nur zur eigenen Absatzstatistik.",
     "note": "Auch ohne Einwilligung erreichen Sie uns jederzeit über die Chat-Schaltfläche unten rechts. Ihre Wahl ändern Sie jederzeit im Fußbereich der Seite.",
     "privacyLink": "Datenschutzerklärung",
     "accept": "Akzeptieren",

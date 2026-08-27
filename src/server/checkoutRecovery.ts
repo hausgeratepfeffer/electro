@@ -29,6 +29,7 @@ import {
 import { isMailConfigured, sendMail } from "@/lib/mailer";
 import { recoveryMail } from "@/server/emails/checkoutRecovery";
 import { prisma } from "@/server/prisma";
+import type { TrafficChannel } from "@/lib/traffic";
 
 /** Longueur du jeton de reprise, en octets avant encodage hexadécimal. */
 const RESUME_TOKEN_BYTES = 32;
@@ -39,6 +40,13 @@ export interface CaptureInput {
   step: RecoveryStep;
   /** Seules données reprises du navigateur : quoi et combien. */
   lines: { productId: string; quantity: number }[];
+  /**
+   * Origine du visiteur au premier contact ; voir CheckoutInput.trafficChannel.
+   * Facultatif : les appelants internes (scripts, futurs points d'entrée) qui
+   * n'ont rien à dire sur l'origine n'ont pas à le simuler.
+   */
+  trafficChannel?: TrafficChannel | "";
+  trafficSource?: string;
 }
 
 /**
@@ -146,6 +154,10 @@ export async function captureRecovery(input: CaptureInput): Promise<void> {
         emailNormalized,
         resumeToken: randomBytes(RESUME_TOKEN_BYTES).toString("hex"),
         nextSendAt: nextSendAtFor(0, now),
+        // Premier contact seulement : une session mise à jour plus tard ne
+        // doit pas réécrire l'origine déjà capturée.
+        trafficChannel: input.trafficChannel ?? "",
+        trafficSource: input.trafficChannel ? (input.trafficSource ?? "") : "",
       },
     });
     return;
@@ -229,6 +241,8 @@ export interface RecoveryRow {
   itemCount: number;
   createdAt: Date;
   lastSentAt: Date | null;
+  trafficChannel: string;
+  trafficSource: string;
 }
 
 function stateOf(stoppedReason: string): RecoveryState {
@@ -274,6 +288,8 @@ export async function listRecoveries(options: {
       itemCount: decodeCart(row.cartJson).reduce((sum, line) => sum + line.quantity, 0),
       createdAt: row.createdAt,
       lastSentAt: row.lastSentAt,
+      trafficChannel: row.trafficChannel,
+      trafficSource: row.trafficSource,
     })),
     total,
   };

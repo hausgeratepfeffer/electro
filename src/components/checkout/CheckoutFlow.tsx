@@ -27,6 +27,7 @@ import { CouponField, type AppliedCoupon } from "@/components/checkout/CouponFie
 import { ShippingMethodFieldset } from "@/components/checkout/ShippingMethodFieldset";
 import { computeTotals, DEFAULT_SHIPPING_METHOD_KEY, formatCents, replaceCart } from "@/lib/cart";
 import { isCountryCode, isValidPostalCode } from "@/lib/countries";
+import { readStoredTrafficAttribution } from "@/lib/traffic";
 import type { CartLine, ShippingMethodKey } from "@/lib/cart";
 import type { RecoveryStep } from "@/lib/checkoutRecovery";
 import { brandMarksFor } from "@/components/PaymentIcons";
@@ -69,6 +70,7 @@ type Step = (typeof STEPS)[number];
  * route ne doit jamais empêcher une commande d'aboutir.
  */
 function captureRecovery(email: string, step: string, lines: readonly CartLine[], locale: string): void {
+  const attribution = readStoredTrafficAttribution();
   void fetch("/api/checkout/recovery", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -77,6 +79,8 @@ function captureRecovery(email: string, step: string, lines: readonly CartLine[]
       step,
       locale,
       lines: lines.map((line) => ({ productId: line.productId, quantity: line.quantity })),
+      trafficChannel: attribution?.channel ?? "",
+      trafficSource: attribution?.source ?? "",
     }),
     keepalive: true,
   }).catch(() => {});
@@ -256,6 +260,7 @@ export function CheckoutFlow({
     setError(null);
 
     try {
+      const attribution = readStoredTrafficAttribution();
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -275,6 +280,8 @@ export function CheckoutFlow({
           // le calcul de la remise avant d'écrire la commande.
           couponCode: coupon?.code ?? "",
           items: lines.map((line) => ({ productId: line.productId, quantity: line.quantity })),
+          trafficChannel: attribution?.channel ?? "",
+          trafficSource: attribution?.source ?? "",
         }),
       });
 

@@ -7,6 +7,7 @@ import { CartProvider } from "@/components/cart/CartProvider";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { CodeSnippets } from "@/components/CodeSnippets";
 import { PageViewTracker } from "@/components/PageViewTracker";
+import { TrafficAttributionTracker } from "@/components/TrafficAttributionTracker";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { SmartsuppChat } from "@/components/SmartsuppChat";
 import { ConsentBanner } from "@/components/ConsentBanner";
@@ -51,6 +52,7 @@ export default async function LocaleLayout({
           passerait sous le logo et manquerait sa cible. */}
       <AnnouncementBar />
       <PageViewTracker />
+      <TrafficAttributionTracker />
       <CartProvider>
         {children}
         <CartDrawer paymentSlot={<PaymentMethodsBar variant="inline" />} />

@@ -23,6 +23,7 @@ import {
 } from "@/lib/cart";
 import type { CartLine, CartTotals } from "@/lib/cart";
 import { CAMPAIGN_COOKIE } from "@/lib/campaigns";
+import { readStoredTrafficAttribution } from "@/lib/traffic";
 
 /**
  * Signale un ajout au panier au serveur, pour la relance de panier abandonné.
@@ -35,6 +36,7 @@ import { CAMPAIGN_COOKIE } from "@/lib/campaigns";
  * attendre une requête qui ne le concerne pas.
  */
 function captureCartAddition(lines: readonly CartLine[], locale: string): void {
+  const attribution = readStoredTrafficAttribution();
   void fetch("/api/checkout/recovery", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -42,6 +44,8 @@ function captureCartAddition(lines: readonly CartLine[], locale: string): void {
       step: "contact",
       locale,
       lines: lines.map((line) => ({ productId: line.productId, quantity: line.quantity })),
+      trafficChannel: attribution?.channel ?? "",
+      trafficSource: attribution?.source ?? "",
     }),
     keepalive: true,
   }).catch(() => {});

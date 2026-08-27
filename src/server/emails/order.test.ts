@@ -68,6 +68,8 @@ function order(overrides: Partial<OrderRecord> = {}): OrderRecord {
     adminNote: "",
     createdAt: "2026-07-30T09:24:00.000Z",
     updatedAt: "2026-07-30T09:24:00.000Z",
+    trafficChannel: "",
+    trafficSource: "",
     items: [
       {
         id: "item_1",

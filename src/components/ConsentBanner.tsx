@@ -9,9 +9,15 @@ import { CHAT_CONFIGURE } from "@/lib/smartsupp";
 /**
  * Bandeau de consentement, en bas de l'écran.
  *
- * Il ne demande qu'une chose — le chat en direct — et le dit en toutes lettres.
- * Un bandeau qui réclame « tous les cookies » alors que la boutique n'en pose
- * pas d'autres ne serait pas une information, seulement un réflexe.
+ * Deux finalités, chacune dite en toutes lettres, jamais fondues en un
+ * générique « cookies » : le chat en direct (quand CHAT_CONFIGURE) et la
+ * mesure d'origine du trafic (recherche organique, Google Ads, Google
+ * Shopping, réseau social… — voir TrafficAttributionTracker), qui elle est
+ * toujours proposée puisque non liée à un compte tiers configurable. Un
+ * bandeau qui réclame « tous les cookies » alors que la boutique n'en pose pas
+ * d'autres ne serait pas une information, seulement un réflexe — chaque
+ * paragraphe du corps ne s'affiche donc que si la finalité qu'il décrit est
+ * réellement active.
  *
  * DEUX BOUTONS DE MÊME POIDS. Refuser doit être aussi simple qu'accepter :
  * même hauteur, même largeur, même graisse, côte à côte. Un « Ablehnen » réduit
@@ -40,11 +46,6 @@ export function ConsentBanner() {
     if (consentement === "refuse") ouvrirReglagesConsentement();
   }, [pathname, consentement]);
 
-  // Pas de chat configuré, pas de bandeau : demander l'autorisation d'un
-  // service absent ferait perdre au visiteur le seul geste qui compte ici, et
-  // apprendrait à cliquer sans lire.
-  if (!CHAT_CONFIGURE) return null;
-
   // Rien avant la lecture du stockage : le bandeau ne doit pas paraître une
   // fraction de seconde chez ceux qui ont déjà répondu.
   if (!banniereVisible) return null;
@@ -60,7 +61,9 @@ export function ConsentBanner() {
           <p id="consent-title" className="mb-1 font-bold">
             {t("title")}
           </p>
-          <p className="text-muted-foreground">{t("body")}</p>
+          <p className="text-muted-foreground">
+            {t("bodyIntro")} {CHAT_CONFIGURE && t("bodyChat")} {t("bodyTraffic")}
+          </p>
           <p className="mt-1 text-xs text-muted-foreground">
             {t("note")}{" "}
             {/* href sans préfixe : Link ajoute lui-même la langue */}

@@ -13,7 +13,9 @@
 
 import { DEFAULT_SHIPPING_METHOD_KEY, isShippingMethodKey, MAX_CART_LINES, MAX_QUANTITY_PER_LINE } from "@/lib/cart";
 import { COUNTRY_CODES, isValidPostalCode } from "@/lib/countries";
+import { TRAFFIC_CHANNEL_LABELS } from "@/lib/traffic";
 import type { ShippingMethodKey } from "@/lib/cart";
+import type { TrafficChannel } from "@/lib/traffic";
 
 export interface OrderAddress {
   salutation: string;
@@ -68,6 +70,15 @@ export interface CheckoutInput {
   termsAccepted: boolean;
   withdrawalAcknowledged: boolean;
   items: { productId: string; quantity: number }[];
+  /**
+   * Origine du visiteur au premier contact, relue par le navigateur depuis
+   * son propre stockage (voir TrafficAttributionTracker) et transmise telle
+   * quelle. Purement informatif — aucun montant ni droit n'en dépend, donc
+   * rien à revalider en base au-delà de la forme : une valeur absente ou
+   * mal formée est simplement ignorée, jamais un motif de refus de commande.
+   */
+  trafficChannel: TrafficChannel | "";
+  trafficSource: string;
 }
 
 /**
@@ -188,6 +199,10 @@ export function parseCheckoutPayload(payload: unknown): {
 
   if (errors.length > 0) return { errors };
 
+  const trafficChannelRaw = text(raw.trafficChannel, 20);
+  const trafficChannel: TrafficChannel | "" =
+    trafficChannelRaw in TRAFFIC_CHANNEL_LABELS ? (trafficChannelRaw as TrafficChannel) : "";
+
   return {
     input: {
       locale: text(raw.locale, 5) === "en" ? "en" : "de",
@@ -205,6 +220,9 @@ export function parseCheckoutPayload(payload: unknown): {
       termsAccepted: true,
       withdrawalAcknowledged: true,
       items,
+      trafficChannel,
+      // Sans canal reconnu, la source brute n'a aucun sens à archiver seule.
+      trafficSource: trafficChannel ? text(raw.trafficSource, 80) : "",
     },
     errors: [],
   };

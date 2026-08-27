@@ -118,6 +118,9 @@ export interface OrderRecord {
   updatedAt: string;
   paidAt?: string;
   shippedAt?: string;
+  /** Origine du visiteur au premier contact ; vide si non mesurée (voir schema.prisma). */
+  trafficChannel: string;
+  trafficSource: string;
   items: OrderItemRecord[];
   events: OrderEventRecord[];
 }
@@ -200,6 +203,8 @@ function toRecord(row: NonNullable<OrderRow>): OrderRecord {
     updatedAt: row.updatedAt.toISOString(),
     paidAt: row.paidAt?.toISOString(),
     shippedAt: row.shippedAt?.toISOString(),
+    trafficChannel: row.trafficChannel,
+    trafficSource: row.trafficSource,
     items: row.items.map((item) => ({
       id: item.id,
       productId: item.productId ?? undefined,
@@ -665,6 +670,8 @@ export async function createOrder(
             // Tracé à part du port à zéro, qui peut aussi venir du franco
             // habituel : seule cette colonne dit que c'est la campagne qui a payé.
             campaignFreeShipping: freeShipping,
+            trafficChannel: input.trafficChannel,
+            trafficSource: input.trafficSource,
             items: {
               create: billed.map((line) => ({
                 productId: line.productId,

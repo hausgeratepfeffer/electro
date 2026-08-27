@@ -250,8 +250,10 @@
     "acceptedTitle": "Accepted payment methods"
   },
   "consent": {
-    "title": "Enable live chat?",
-    "body": "We use strictly necessary cookies for your basket, session and language – those need no consent. Our live chat (Smartsupp s.r.o., Czech Republic) additionally stores a visitor ID on your device. It is the only way for us to see that you are here and to reach out to you first.",
+    "title": "Enable additional cookies?",
+    "bodyIntro": "We use strictly necessary cookies for your basket, session and language – those need no consent.",
+    "bodyChat": "Our live chat (Smartsupp s.r.o., Czech Republic) additionally stores a visitor ID on your device. It is the only way for us to see that you are here and to reach out to you first.",
+    "bodyTraffic": "With your consent, we also remember which channel brought you to us (e.g. search engine, Google Ads, Google Shopping, social network, or a direct visit) – without your IP address or any other visitor ID, only for our own sales statistics.",
     "note": "Without consent you can still reach us any time via the chat button in the bottom right. You can change your choice at any time in the site footer.",
     "privacyLink": "Privacy policy",
     "accept": "Accept",

@@ -4,7 +4,15 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { formatCents } from "@/lib/cart";
+import { TRAFFIC_CHANNEL_LABELS } from "@/lib/traffic";
 import type { RecoveryRow, RecoveryState } from "@/server/checkoutRecovery";
+import type { TrafficChannel } from "@/lib/traffic";
+
+function trafficLabel(channel: string): string {
+  return channel in TRAFFIC_CHANNEL_LABELS
+    ? TRAFFIC_CHANNEL_LABELS[channel as TrafficChannel].de
+    : "—";
+}
 
 const STATE_LABELS: Record<RecoveryState, string> = {
   active: "Läuft",
@@ -133,6 +141,7 @@ export function RecoveryTable({
             <tr>
               <th className="px-4 py-3">E-Mail</th>
               <th className="px-4 py-3">Warenkorb</th>
+              <th className="px-4 py-3">Herkunft</th>
               <th className="px-4 py-3">Schritt</th>
               <th className="px-4 py-3">Nachrichten</th>
               <th className="px-4 py-3">Status</th>
@@ -144,7 +153,7 @@ export function RecoveryTable({
           <tbody>
             {rows.length === 0 && (
               <tr>
-                <td colSpan={8} className="px-4 py-8 text-center text-muted-foreground">
+                <td colSpan={9} className="px-4 py-8 text-center text-muted-foreground">
                   Keine Warenkorb-Erinnerungen gefunden.
                 </td>
               </tr>
@@ -154,6 +163,12 @@ export function RecoveryTable({
                 <td className="px-4 py-3 font-semibold text-foreground">{row.email}</td>
                 <td className="px-4 py-3 whitespace-nowrap text-muted-foreground">
                   {formatCents(row.totalCents)} · {row.itemCount} Artikel
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap text-muted-foreground">
+                  {trafficLabel(row.trafficChannel)}
+                  {row.trafficSource && (
+                    <span className="block text-xs text-muted-foreground/70">{row.trafficSource}</span>
+                  )}
                 </td>
                 <td className="px-4 py-3 text-muted-foreground">
                   {STEP_LABELS[row.lastStep] ?? row.lastStep}
