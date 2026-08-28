@@ -35,14 +35,29 @@ export function buildSocialMetadata(params: {
     availability: "instock" | "oos";
     brand?: string;
   };
+  /** Renseigné uniquement sur un article Ratgeber. `article` est, lui, un type natif de Next. */
+  article?: {
+    publishedTime: string;
+    modifiedTime?: string;
+    authorName: string;
+  };
 }): Pick<Metadata, "openGraph" | "twitter" | "other"> {
   const image = params.image ?? DEFAULT_OG_IMAGE;
   const imageAlt = params.imageAlt ?? params.title;
-  const { product } = params;
+  const { product, article } = params;
 
   return {
     openGraph: {
-      ...(product ? {} : { type: "website" as const }),
+      ...(product
+        ? {}
+        : article
+          ? {
+              type: "article" as const,
+              publishedTime: article.publishedTime,
+              modifiedTime: article.modifiedTime,
+              authors: [article.authorName],
+            }
+          : { type: "website" as const }),
       siteName: SITE_NAME,
       title: params.title,
       description: params.description,

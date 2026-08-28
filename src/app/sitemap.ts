@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { getCategoryPages } from "@/server/store";
 import { routing } from "@/i18n/routing";
 import { LEGAL_SLUGS } from "@/content/legal";
+import { listPublishedRatgeberPosts } from "@/server/ratgeber";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://hausgeratepfeffer.de";
 
@@ -18,6 +19,9 @@ function alternatesFor(path: string): Record<string, string> {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const categories = await getCategoryPages();
+  // Le slug et la date de mise à jour ne dépendent pas de la langue : une
+  // seule lecture suffit, réutilisée pour chaque version linguistique plus bas.
+  const ratgeberPosts = await listPublishedRatgeberPosts(routing.defaultLocale);
 
   const paths: { path: string; priority: number; changeFrequency: "daily" | "weekly" | "monthly" }[] =
     [{ path: "/", priority: 1, changeFrequency: "daily" }];
@@ -30,6 +34,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   for (const slug of LEGAL_SLUGS) {
     paths.push({ path: `/${slug}`, priority: 0.5, changeFrequency: "monthly" });
   }
+
+  // Index Ratgeber, présent même sans article publié : rester référencé dès
+  // le premier article, sans attendre un redéploiement du sitemap.
+  paths.push({ path: "/ratgeber", priority: 0.6, changeFrequency: "weekly" });
 
   for (const category of categories) {
     paths.push({
@@ -48,7 +56,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const now = new Date();
 
-  return paths.flatMap(({ path, priority, changeFrequency }) =>
+  const staticEntries = paths.flatMap(({ path, priority, changeFrequency }) =>
     routing.locales.map((locale) => ({
       url: urlFor(path, locale),
       lastModified: now,
@@ -57,4 +65,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       alternates: { languages: alternatesFor(path) },
     })),
   );
+
+  // Chaque article porte sa propre date de mise à jour, pas la date de
+  // génération du sitemap : Google s'en sert pour décider s'il vaut la peine
+  // de re-crawler une page qui n'a en réalité pas changé.
+  const ratgeberEntries = ratgeberPosts.flatMap((post) => {
+    const path = `/ratgeber/${post.slug}`;
+    return routing.locales.map((locale) => ({
+      url: urlFor(path, locale),
+      lastModified: new Date(post.updatedAt),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+      alternates: { languages: alternatesFor(path) },
+    }));
+  });
+
+  return [...staticEntries, ...ratgeberEntries];
 }

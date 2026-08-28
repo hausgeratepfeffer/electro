@@ -12,6 +12,7 @@ import {
   Layers,
   MailWarning,
   Menu,
+  Newspaper,
   Package,
   Plug,
   Receipt,
@@ -73,6 +74,7 @@ export function AdminSidebar({
         // téléphone, adresses de facturation et de livraison. Deux entrées de
         // menu pour la même information obligent à chercher où regarder.
         { label: "Commandes", href: "/admin/orders", icon: Receipt },
+        { label: "Ratgeber", href: "/admin/ratgeber", icon: Newspaper },
         { label: "Trafic", href: "/admin/trafic", icon: TrendingUp },
         { label: "Warenkorb-Erinnerungen", href: "/admin/warenkorb-erinnerungen", icon: MailWarning },
         {

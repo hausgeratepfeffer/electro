@@ -10,6 +10,7 @@ import { getLegalFooterGroups } from "@/server/legalPages";
 
 export async function Footer() {
   const t = await getTranslations("footer");
+  const tRatgeber = await getTranslations("ratgeber");
   const locale = await getLocale();
   // Les libellés sont les titres des pages : renommer une page depuis
   // l'administration renomme aussi son lien ici.
@@ -89,6 +90,16 @@ export async function Footer() {
                     </Link>
                   </li>
                 ))}
+                {/* Ratgeber n'est pas une page légale (pas de LegalSlug), donc
+                    absent de getLegalFooterGroups : ajouté à la main dans la
+                    même colonne « Service ». */}
+                {group.id === "service" && (
+                  <li>
+                    <Link href="/ratgeber" className="hover:underline">
+                      {tRatgeber("footerLink")}
+                    </Link>
+                  </li>
+                )}
               </ul>
             </div>
           ))}

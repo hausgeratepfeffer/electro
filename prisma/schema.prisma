@@ -946,3 +946,45 @@ model PageView {
   @@index([viewedAt])
   @@index([path])
 }
+
+// ---- Ratgeber (guides d'achat) ----
+// Articles de fond, distincts des guides catégorie (comparatifs courts,
+// intégrés à la fiche catégorie) : ici, un contenu plus long, publié
+// indépendamment, pensé pour les recherches informationnelles qu'aucune fiche
+// produit ou catégorie ne couvre ("Kaffeemaschine entkalken", "Waschmaschine
+// pflegen"...).
+model RatgeberPost {
+  id    String @id @default(cuid())
+  // Identique dans les deux langues, comme pour les pages légales : /ratgeber/
+  // <slug> et /en/ratgeber/<slug> désignent le même article.
+  slug  String @unique
+
+  title   String
+  titleEn String @default("")
+
+  // Résumé affiché dans la liste et repris comme meta description — texte nu
+  // souhaité malgré le champ RichText (voir ratgeber.ts : stripMarks() à
+  // l'écriture des métadonnées).
+  excerpt   String @default("")
+  excerptEn String @default("")
+
+  // Paragraphes séparés par des lignes vides, marques **gras**/*italique*/
+  // [lien](url) comme le reste du texte éditable — voir src/lib/richText.ts.
+  body   String
+  bodyEn String @default("")
+
+  coverImage      String @default("")
+  coverImageAlt   String @default("")
+  coverImageAltEn String @default("")
+
+  // Un brouillon n'apparaît ni dans la liste publique ni dans le sitemap.
+  // publishedAt fixe la date affichée et sert de tri ; elle se fige au premier
+  // passage en publié et ne bouge plus ensuite, même si l'article est modifié.
+  published   Boolean   @default(false)
+  publishedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([published, publishedAt])
+}
