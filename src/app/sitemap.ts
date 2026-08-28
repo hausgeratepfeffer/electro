@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getCategoryPages } from "@/server/store";
 import { routing } from "@/i18n/routing";
+import { LEGAL_SLUGS } from "@/content/legal";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://hausgeratepfeffer.de";
 
@@ -20,6 +21,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const paths: { path: string; priority: number; changeFrequency: "daily" | "weekly" | "monthly" }[] =
     [{ path: "/", priority: 1, changeFrequency: "daily" }];
+
+  // Pages légales et informatives (FAQ, retour, à propos, contact…) : sans
+  // ceci, elles ne sont découvertes que par le maillage interne, jamais
+  // signalées explicitement à Google, contrairement aux catégories et
+  // produits. Priorité modeste et fréquence mensuelle — ce sont des pages de
+  // fond, pas des pages qui changent d'une semaine à l'autre.
+  for (const slug of LEGAL_SLUGS) {
+    paths.push({ path: `/${slug}`, priority: 0.5, changeFrequency: "monthly" });
+  }
 
   for (const category of categories) {
     paths.push({

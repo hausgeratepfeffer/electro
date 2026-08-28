@@ -6,9 +6,10 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { RichText } from "@/components/RichText";
 import { findLegalPage } from "@/server/legalPages";
 import { paragraphsOf, stripMarks } from "@/lib/richText";
+import { hasLocale } from "next-intl";
+import { alternatesFor } from "@/lib/hreflang";
+import { routing } from "@/i18n/routing";
 import type { LegalPage, LegalSection, LegalSlug } from "@/content/legal/types";
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://hausgeratepfeffer.de";
 
 function formatDate(iso: string, locale: string): string {
   return new Date(iso).toLocaleDateString(locale === "en" ? "en-GB" : "de-DE", {
@@ -23,7 +24,6 @@ export async function buildLegalMetadata(slug: LegalSlug, locale: string): Promi
   const page = await findLegalPage(slug, locale);
   if (!page) return {};
 
-  const path = locale === "en" ? `/en/${slug}` : `/${slug}`;
   // La description est du texte nu : les marques de formatage n'ont rien à
   // faire dans un extrait de résultat de recherche.
   const first = stripMarks(page.intro ?? page.sections[0]?.body ?? "");
@@ -31,13 +31,10 @@ export async function buildLegalMetadata(slug: LegalSlug, locale: string): Promi
   return {
     title: `${page.title} | Hausgeräte Pfeffer`,
     description: first.slice(0, 155),
-    alternates: {
-      canonical: `${SITE_URL}${path}`,
-      languages: {
-        de: `${SITE_URL}/${slug}`,
-        en: `${SITE_URL}/en/${slug}`,
-      },
-    },
+    // Même construction que l'accueil, les catégories et les fiches produit
+    // (src/lib/hreflang.ts) : canonical + de/en + x-default. Un bloc écrit à
+    // la main ici avait oublié x-default, seul cas du site à s'en passer.
+    alternates: alternatesFor(`/${slug}`, hasLocale(routing.locales, locale) ? locale : routing.defaultLocale),
   };
 }
 
