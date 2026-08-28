@@ -18,13 +18,31 @@ export function buildSocialMetadata(params: {
   locale: string;
   image?: string;
   imageAlt?: string;
-}): Pick<Metadata, "openGraph" | "twitter"> {
+  /**
+   * Renseigné uniquement sur une fiche produit. Le type Metadata de Next
+   * n'a pas de variante "product" (voir OpenGraphType dans
+   * next/dist/lib/metadata/types/opengraph-types.d.ts — seuls website,
+   * article, book, profile et les familles musique/vidéo existent) :
+   * `openGraph.type` reste donc absent dans ce cas, pour ne pas écrire
+   * "website" alors que og:type est contredit juste en dessous. og:type et
+   * les champs product: (espace de noms Facebook/Pinterest) partent par
+   * `other`, la seule voie de Next pour des balises meta qu'il ne connaît
+   * pas nativement.
+   */
+  product?: {
+    priceAmount: string;
+    priceCurrency: string;
+    availability: "instock" | "oos";
+    brand?: string;
+  };
+}): Pick<Metadata, "openGraph" | "twitter" | "other"> {
   const image = params.image ?? DEFAULT_OG_IMAGE;
   const imageAlt = params.imageAlt ?? params.title;
+  const { product } = params;
 
   return {
     openGraph: {
-      type: "website",
+      ...(product ? {} : { type: "website" as const }),
       siteName: SITE_NAME,
       title: params.title,
       description: params.description,
@@ -38,5 +56,16 @@ export function buildSocialMetadata(params: {
       description: params.description,
       images: [image],
     },
+    ...(product
+      ? {
+          other: {
+            "og:type": "product",
+            "product:price:amount": product.priceAmount,
+            "product:price:currency": product.priceCurrency,
+            "product:availability": product.availability,
+            ...(product.brand ? { "product:brand": product.brand } : {}),
+          },
+        }
+      : {}),
   };
 }

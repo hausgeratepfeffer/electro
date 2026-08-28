@@ -103,6 +103,12 @@ export async function generateMetadata({ params }: { params: ProductPageParams }
       locale,
       image: data.product.image,
       imageAlt: `${data.product.brand} ${data.product.name}`,
+      product: {
+        priceAmount: ((data.product.priceCents ?? 0) / 100).toFixed(2),
+        priceCurrency: "EUR",
+        availability: (data.product.stock ?? 0) > 0 ? "instock" : "oos",
+        brand: data.product.brand,
+      },
     }),
   };
 }

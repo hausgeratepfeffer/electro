@@ -7,7 +7,8 @@ import { RichText } from "@/components/RichText";
 import { findLegalPage } from "@/server/legalPages";
 import { paragraphsOf, stripMarks } from "@/lib/richText";
 import { hasLocale } from "next-intl";
-import { alternatesFor } from "@/lib/hreflang";
+import { alternatesFor, localizedUrl } from "@/lib/hreflang";
+import { buildSocialMetadata } from "@/lib/opengraph";
 import { routing } from "@/i18n/routing";
 import type { LegalPage, LegalSection, LegalSlug } from "@/content/legal/types";
 
@@ -27,14 +28,27 @@ export async function buildLegalMetadata(slug: LegalSlug, locale: string): Promi
   // La description est du texte nu : les marques de formatage n'ont rien à
   // faire dans un extrait de résultat de recherche.
   const first = stripMarks(page.intro ?? page.sections[0]?.body ?? "");
+  const title = `${page.title} | Hausgeräte Pfeffer`;
+  const description = first.slice(0, 155);
+  const resolvedLocale = hasLocale(routing.locales, locale) ? locale : routing.defaultLocale;
 
   return {
-    title: `${page.title} | Hausgeräte Pfeffer`,
-    description: first.slice(0, 155),
+    title,
+    description,
     // Même construction que l'accueil, les catégories et les fiches produit
     // (src/lib/hreflang.ts) : canonical + de/en + x-default. Un bloc écrit à
     // la main ici avait oublié x-default, seul cas du site à s'en passer.
-    alternates: alternatesFor(`/${slug}`, hasLocale(routing.locales, locale) ? locale : routing.defaultLocale),
+    alternates: alternatesFor(`/${slug}`, resolvedLocale),
+    // Sans ceci, ces onze pages retombaient sur l'Open Graph générique de
+    // l'accueil (src/app/layout.tsx) : un lien vers /faq ou /kontakt partagé
+    // sur WhatsApp affichait le titre et l'image de la page d'accueil, pas
+    // ceux de la page réellement partagée.
+    ...buildSocialMetadata({
+      title,
+      description,
+      url: localizedUrl(`/${slug}`, resolvedLocale),
+      locale: resolvedLocale,
+    }),
   };
 }
 
