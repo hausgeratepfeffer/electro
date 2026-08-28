@@ -38,6 +38,51 @@ export async function CategoryGuide({
         ))}
       </div>
 
+      {/* Comparatif éventuel : une seule section sur trois en porte un, jamais
+          forcé sur celles où deux ou trois variantes ne se comparent pas
+          naturellement. Utile pour un lecteur pressé, et une forme que Google
+          peut reprendre en extrait de tableau (AEO). */}
+      {guide.sections.map((section) =>
+        section.table ? (
+          <Reveal key={`table-${section.heading}`} delay={200}>
+            <div className="mt-8 overflow-x-auto rounded-sm border border-border bg-white">
+              <table className="w-full text-left text-sm">
+                <caption className="border-b border-border bg-muted px-4 py-2.5 text-left text-xs font-bold tracking-wide text-muted-foreground uppercase caption-top">
+                  {section.table.caption}
+                </caption>
+                <thead>
+                  <tr>
+                    {section.table.columns.map((column) => (
+                      <th key={column} className="border-b border-border px-4 py-2.5 font-bold text-foreground">
+                        {column}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {section.table.rows.map((row, rowIndex) => (
+                    <tr key={row[0] ?? rowIndex} className="border-b border-border last:border-0">
+                      {row.map((cell, cellIndex) => (
+                        <td
+                          key={cellIndex}
+                          className={
+                            cellIndex === 0
+                              ? "px-4 py-2.5 font-semibold text-foreground"
+                              : "px-4 py-2.5 text-muted-foreground"
+                          }
+                        >
+                          {cell}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Reveal>
+        ) : null,
+      )}
+
       <Reveal delay={150}>
         <div className="mt-8 flex flex-col items-start gap-4 rounded-sm bg-secondary px-6 py-6 text-secondary-foreground transition-shadow duration-300 hover:shadow-xl sm:flex-row sm:items-center sm:justify-between">
           <p className="max-w-xl text-sm sm:text-base">{guide.closing}</p>

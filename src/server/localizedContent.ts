@@ -2,8 +2,9 @@ import { unstable_cache } from "next/cache";
 import { prisma } from "@/server/prisma";
 import { TAG_CATALOGUE } from "@/server/cacheCatalogue";
 import { routing, type Locale } from "@/i18n/routing";
+import { parseGuideTable } from "@/lib/guideTable";
 import type { CategoryPageView } from "@/server/store";
-import type { CategoryGuide } from "@/server/types";
+import type { CategoryGuide, GuideComparisonTable } from "@/server/types";
 import type { Product } from "@/types/home";
 
 // Traduction du catalogue, côté boutique uniquement.
@@ -22,7 +23,7 @@ interface CategoryTranslation {
   guideIntro: string;
   guideClosing: string;
   /** Sections dans l'ordre d'affichage : l'appariement se fait par position. */
-  sections: { heading: string; body: string }[];
+  sections: { heading: string; body: string; table?: GuideComparisonTable }[];
 }
 
 interface ProductTranslation {
@@ -106,6 +107,9 @@ function localizeGuide(guide: CategoryGuide, translated: CategoryTranslation): C
       return {
         heading: pickText(section.heading, source?.heading),
         body: pickText(section.body, source?.body),
+        // Vide côté anglais = pas de traduction propre au tableau : on
+        // reprend celui déjà résolu (allemand), jamais un tableau vide.
+        table: source?.table ?? section.table,
       };
     }),
   };
@@ -170,7 +174,7 @@ const chargerLignesTraduction = unstable_cache(
           guideClosingEn: true,
           group: { select: { slug: true } },
           guideSections: {
-            select: { headingEn: true, bodyEn: true },
+            select: { headingEn: true, bodyEn: true, tableJsonEn: true },
             orderBy: { position: "asc" },
           },
         },
@@ -214,6 +218,7 @@ export async function loadCatalogTranslations(locale: string): Promise<CatalogTr
           sections: category.guideSections.map((section) => ({
             heading: section.headingEn,
             body: section.bodyEn,
+            table: parseGuideTable(section.tableJsonEn),
           })),
         },
       ]),

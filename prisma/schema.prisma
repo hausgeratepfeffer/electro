@@ -63,6 +63,15 @@ model GuideSection {
   bodyEn     String @default("")
   position   Int    @default(0)
 
+  // Tableau comparatif optionnel, sur la section qui s'y prête (ex. « Frontlader
+  // oder Toplader ? »). Encodé en JSON comme Product.bullets, pour la même
+  // raison : une forme libre (nombre de colonnes variable selon la section),
+  // pas assez répétée dans le schéma pour mériter ses propres tables. Vide =
+  // pas de tableau pour cette section. « *En » suit la même règle de repli que
+  // headingEn/bodyEn : vide veut dire « reprendre le tableau allemand ».
+  tableJson   String @default("")
+  tableJsonEn String @default("")
+
   category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   @@index([categoryId])

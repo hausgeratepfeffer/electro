@@ -4,6 +4,7 @@ import { slugify } from "@/lib/slugify";
 import { TAG_CATALOGUE } from "@/server/cacheCatalogue";
 import { getActivePromotions, type ProductPromotion } from "@/server/promotions";
 import { sansAvisDemonstration } from "@/server/reviews";
+import { encodeGuideTable, parseGuideTable } from "@/lib/guideTable";
 import type { CategoryGuide, CategoryRecord, ProductGroup, ProductRecord } from "@/server/types";
 import type { Product } from "@/types/home";
 
@@ -73,7 +74,13 @@ interface CategoryRow {
   guideClosing: string;
   position: number;
   group: { slug: string; label: string };
-  guideSections: { heading: string; body: string; position: number }[];
+  guideSections: {
+    heading: string;
+    body: string;
+    position: number;
+    tableJson: string;
+    tableJsonEn: string;
+  }[];
 }
 
 interface ProductRow {
@@ -122,6 +129,7 @@ function guideFrom(row: CategoryRow): CategoryGuide {
     sections: row.guideSections.map((section) => ({
       heading: section.heading,
       body: section.body,
+      table: parseGuideTable(section.tableJson),
     })),
     closing: row.guideClosing,
   };
@@ -232,6 +240,7 @@ export async function createCategory(
           heading: section.heading,
           body: section.body,
           position,
+          tableJson: encodeGuideTable(section.table),
         })),
       },
     },
@@ -272,6 +281,14 @@ export async function updateCategory(
               heading: section.heading,
               body: section.body,
               position,
+              // Le formulaire d'administration ne connaît pas encore les
+              // tableaux comparatifs : une section sans `table` explicite
+              // reprend celui déjà en base à la même position plutôt que de
+              // le perdre au premier changement de texte depuis le
+              // back-office.
+              tableJson: section.table
+                ? encodeGuideTable(section.table)
+                : (current.guideSections[position]?.tableJson ?? ""),
             })),
           }
         : undefined,

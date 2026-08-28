@@ -1,6 +1,15 @@
+export interface GuideComparisonTable {
+  caption: string;
+  columns: string[];
+  /** Chaque ligne a autant de cellules que `columns`. */
+  rows: string[][];
+}
+
 export interface CategoryGuideSection {
   heading: string;
   body: string;
+  /** Comparatif optionnel, uniquement sur la section qui s'y prête. */
+  table?: GuideComparisonTable;
 }
 
 export interface CategoryGuide {
