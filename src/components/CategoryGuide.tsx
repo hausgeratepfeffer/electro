@@ -13,11 +13,19 @@ export async function CategoryGuide({
   guide: CategoryGuideData;
 }) {
   const t = await getTranslations("category");
+  const common = await getTranslations("common");
 
   return (
     <section className="mx-auto max-w-screen-xl px-3 py-10">
       <Reveal>
         <h2 className="text-xl font-black text-foreground sm:text-2xl">{t("guideTitle", { label })}</h2>
+        {/* Signature éditoriale : signal d'auteur pour l'E-E-A-T (GEO), sans
+            prêter à une personne précise une expertise qu'on ne peut pas
+            vérifier — l'équipe existe réellement, un « expert » nommé serait
+            inventé. */}
+        <p className="mt-1 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+          {common("editorialTeam")}
+        </p>
         <p className="mt-3 max-w-3xl text-sm text-muted-foreground sm:text-base">{guide.intro}</p>
       </Reveal>
 

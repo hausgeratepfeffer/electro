@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Breadcrumb } from "@/components/Breadcrumb";
@@ -26,13 +26,30 @@ export default async function FaqPage({ params }: { params: PageParams }) {
   const page = await findLegalPage(SLUG, locale);
   if (!page) notFound();
 
+  const common = await getTranslations("common");
+
   // Balisage FAQPage : Google peut afficher les questions directement
   // dans les résultats de recherche. Le balisage attend du texte nu — les
   // marques de formatage sont retirées, et les puces d'une réponse sont
   // recollées pour que la réponse reste complète.
+  //
+  // `author` porte l'équipe éditoriale, pas une personne inventée — mêmes
+  // principes que la signature visible affichée sous le titre.
+  //
+  // `speakable` désigne les sélecteurs CSS lisibles à voix haute — support
+  // réel aujourd'hui limité par Google à l'Assistant/actualités (bêta), donc
+  // sans effet visible immédiat sur cette boutique ; balisage correct et sans
+  // coût, qui profitera d'un élargissement du support ou d'un autre moteur qui
+  // le lirait déjà. Les classes ciblées existent réellement dans le DOM
+  // ci-dessous — jamais un sélecteur qui ne correspondrait à rien.
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    author: { "@type": "Organization", name: common("shopName") },
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: [".faq-question", ".faq-answer"],
+    },
     mainEntity: page.sections.map((section) => ({
       "@type": "Question",
       name: stripMarks(section.heading),
@@ -59,7 +76,10 @@ export default async function FaqPage({ params }: { params: PageParams }) {
         </div>
 
         <div className="mx-auto max-w-3xl px-3 py-8">
-          <h1 className="mb-2 text-2xl font-black text-foreground sm:text-3xl">{page.title}</h1>
+          <h1 className="mb-1 text-2xl font-black text-foreground sm:text-3xl">{page.title}</h1>
+          <p className="mb-4 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+            {common("editorialTeam")}
+          </p>
           {page.intro && (
             <p className="mb-6 text-sm leading-relaxed text-muted-foreground">
               <RichText text={page.intro} />
@@ -79,7 +99,7 @@ export default async function FaqPage({ params }: { params: PageParams }) {
                       portée par un titre HTML jusqu'ici — seulement le texte
                       d'un <summary>, invisible à qui lit la hiérarchie des
                       titres de la page. */}
-                  <h2 className="text-sm font-bold text-foreground">
+                  <h2 className="faq-question text-sm font-bold text-foreground">
                     <RichText text={section.heading} />
                   </h2>
                   <span
@@ -89,7 +109,7 @@ export default async function FaqPage({ params }: { params: PageParams }) {
                     +
                   </span>
                 </summary>
-                <div className="border-t border-border px-4 py-3">
+                <div className="faq-answer border-t border-border px-4 py-3">
                   <SectionBody body={section.body} />
                   {section.list && section.list.length > 0 && <SectionList items={section.list} />}
                 </div>
