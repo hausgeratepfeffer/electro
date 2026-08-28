@@ -105,7 +105,14 @@ export function RatgeberPostForm({ mode, initialData }: RatgeberPostFormProps) {
             hint="155 caractères environ apparaissent dans les résultats de recherche."
           />
 
-          <RichTextField label="Texte de l'article" value={body} onChange={setBody} rows={16} required />
+          <RichTextField
+            label="Texte de l'article"
+            value={body}
+            onChange={setBody}
+            rows={16}
+            required
+            hint='Un paragraphe qui commence par "## " devient un sous-titre (ex. "## Warum riecht meine Waschmaschine?").'
+          />
         </section>
 
         <section className="rounded-sm border border-border bg-white p-5">
@@ -130,7 +137,13 @@ export function RatgeberPostForm({ mode, initialData }: RatgeberPostFormProps) {
           </div>
 
           <RichTextField label="Résumé" value={excerptEn} onChange={setExcerptEn} rows={3} />
-          <RichTextField label="Texte de l'article" value={bodyEn} onChange={setBodyEn} rows={16} />
+          <RichTextField
+            label="Texte de l'article"
+            value={bodyEn}
+            onChange={setBodyEn}
+            rows={16}
+            hint='Même convention : "## " en début de paragraphe pour un sous-titre.'
+          />
         </section>
       </div>
 

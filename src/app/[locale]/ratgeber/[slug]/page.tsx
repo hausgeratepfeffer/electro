@@ -95,11 +95,26 @@ export default async function RatgeberPostPage({ params }: { params: PageParams 
           )}
 
           <div className="space-y-4 text-sm leading-relaxed text-foreground/90 sm:text-base">
-            {paragraphsOf(post.body).map((paragraph, index) => (
-              <p key={`${index}-${paragraph.slice(0, 24)}`}>
-                <RichText text={paragraph} />
-              </p>
-            ))}
+            {paragraphsOf(post.body).map((paragraph, index) => {
+              // Convention légère, propre aux articles Ratgeber : un paragraphe
+              // qui commence par « ## » devient un sous-titre. Pas une nouvelle
+              // syntaxe dans richText.ts (partagé avec les pages légales et la
+              // FAQ, qui n'en ont pas besoin) — un simple test avant le rendu.
+              const isHeading = paragraph.startsWith("## ");
+              const key = `${index}-${paragraph.slice(0, 24)}`;
+              if (isHeading) {
+                return (
+                  <h2 key={key} className="pt-2 text-lg font-black text-foreground sm:text-xl">
+                    <RichText text={paragraph.slice(3)} />
+                  </h2>
+                );
+              }
+              return (
+                <p key={key}>
+                  <RichText text={paragraph} />
+                </p>
+              );
+            })}
           </div>
         </article>
       </main>
