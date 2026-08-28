@@ -43,10 +43,7 @@ export interface RatgeberPostView {
   updatedAt: string;
 }
 
-export type RatgeberPostInput = Omit<
-  RatgeberPostRecord,
-  "id" | "createdAt" | "updatedAt" | "publishedAt"
->;
+export type RatgeberPostInput = Omit<RatgeberPostRecord, "id" | "createdAt" | "updatedAt">;
 
 // ---- Conversions ----
 
@@ -113,8 +110,22 @@ async function assertSlugFree(slug: string, excludeId?: string): Promise<void> {
   if (conflict && conflict.id !== excludeId) throw new RatgeberSlugConflictError(slug);
 }
 
-/** `publishedAt` se fige au premier passage en publié, jamais ensuite. */
-function publishedAtFor(published: boolean, previous: Date | null): Date | null {
+/**
+ * Une date saisie à la main dans le formulaire fait toujours foi, publié ou
+ * non — c'est justement ce que l'administration doit pouvoir corriger
+ * (republier un article sous une autre date, préparer une date à l'avance…).
+ * Sans date saisie, le premier passage en publié se fige sur l'instant
+ * présent, comme avant ; les passages suivants gardent la date déjà posée.
+ */
+function resolvePublishedAt(
+  requestedIso: string | null,
+  published: boolean,
+  previous: Date | null,
+): Date | null {
+  if (requestedIso) {
+    const parsed = new Date(requestedIso);
+    if (!Number.isNaN(parsed.getTime())) return parsed;
+  }
   if (!published) return null;
   return previous ?? new Date();
 }
@@ -128,7 +139,7 @@ export async function createRatgeberPost(input: RatgeberPostInput): Promise<Ratg
     data: {
       ...input,
       slug,
-      publishedAt: publishedAtFor(input.published, null),
+      publishedAt: resolvePublishedAt(input.publishedAt, input.published, null),
     },
   });
   return toRecord(row);
@@ -150,7 +161,7 @@ export async function updateRatgeberPost(
     data: {
       ...input,
       slug,
-      publishedAt: publishedAtFor(input.published, current.publishedAt),
+      publishedAt: resolvePublishedAt(input.publishedAt, input.published, current.publishedAt),
     },
   });
   return toRecord(row);

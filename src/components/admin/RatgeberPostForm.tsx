@@ -30,6 +30,11 @@ export function RatgeberPostForm({ mode, initialData }: RatgeberPostFormProps) {
   const [coverImageAlt, setCoverImageAlt] = useState(initialData?.coverImageAlt ?? "");
   const [coverImageAltEn, setCoverImageAltEn] = useState(initialData?.coverImageAltEn ?? "");
   const [published, setPublished] = useState(initialData?.published ?? false);
+  // Champ « date » simple (YYYY-MM-DD) : l'heure exacte de publication n'a
+  // aucune utilité pour un article de blog, seule la date affichée compte.
+  const [publishedAt, setPublishedAt] = useState(
+    initialData?.publishedAt ? initialData.publishedAt.slice(0, 10) : "",
+  );
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
@@ -55,6 +60,7 @@ export function RatgeberPostForm({ mode, initialData }: RatgeberPostFormProps) {
       coverImageAlt,
       coverImageAltEn,
       published,
+      publishedAt: publishedAt || null,
     };
 
     const url = mode === "new" ? "/api/admin/ratgeber" : `/api/admin/ratgeber/${initialData?.id}`;
@@ -180,10 +186,28 @@ export function RatgeberPostForm({ mode, initialData }: RatgeberPostFormProps) {
             />
             Veröffentlicht
           </label>
-          <p className="mt-1 text-xs text-muted-foreground">
+          <p className="mt-1 mb-4 text-xs text-muted-foreground">
             {published
               ? "Visible dans /ratgeber et dans le sitemap."
               : "Brouillon : invisible sur la boutique et absent du sitemap."}
+          </p>
+
+          <label className="mb-1 block text-sm font-semibold text-foreground" htmlFor="publishedAt">
+            Date affichée
+          </label>
+          <input
+            id="publishedAt"
+            type="date"
+            value={publishedAt}
+            onChange={(event) => setPublishedAt(event.target.value)}
+            className="w-full rounded-sm border border-border px-3 py-2 text-sm outline-none focus:border-primary"
+          />
+          <p className="mt-1 text-xs text-muted-foreground">
+            {publishedAt
+              ? "Date utilisée pour le tri et l'affichage — modifiable à tout moment."
+              : "Laissé vide : la date se fixe automatiquement au premier passage en « Veröffentlicht »."}{" "}
+            Une date future garde l&apos;article invisible sur la boutique jusqu&apos;à cette date, même
+            publié.
           </p>
         </section>
 

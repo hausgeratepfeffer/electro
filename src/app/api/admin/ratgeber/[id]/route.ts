@@ -31,6 +31,7 @@ function parseInput(body: unknown): { input?: RatgeberPostInput; error?: string 
       coverImageAlt: typeof raw.coverImageAlt === "string" ? raw.coverImageAlt : "",
       coverImageAltEn: typeof raw.coverImageAltEn === "string" ? raw.coverImageAltEn : "",
       published: raw.published === true,
+      publishedAt: typeof raw.publishedAt === "string" && raw.publishedAt.trim() ? raw.publishedAt.trim() : null,
     },
   };
 }
