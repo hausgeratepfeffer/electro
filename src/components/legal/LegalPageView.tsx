@@ -9,8 +9,33 @@ import { paragraphsOf, stripMarks } from "@/lib/richText";
 import { hasLocale } from "next-intl";
 import { alternatesFor, localizedUrl } from "@/lib/hreflang";
 import { buildSocialMetadata } from "@/lib/opengraph";
+import { truncateAtWord } from "@/lib/productText";
 import { routing } from "@/i18n/routing";
 import type { LegalPage, LegalSection, LegalSlug } from "@/content/legal/types";
+
+/**
+ * Plancher sous lequel une description est jugée trop courte pour un extrait
+ * de recherche. Repéré sur /impressum : son chapeau (« Angaben gemäß § 5
+ * DDG ») ne fait que 22 caractères une fois seul — en dessous, on complète
+ * avec le contenu des sections plutôt que de laisser une description
+ * quasi vide.
+ */
+const MIN_DESCRIPTION_LENGTH = 70;
+const MAX_DESCRIPTION_LENGTH = 155;
+
+/** Description d'une page légale, complétée par ses sections si le chapeau seul est trop court. */
+function descriptionFor(page: LegalPage): string {
+  const parts: string[] = [];
+  if (page.intro) parts.push(stripMarks(page.intro).replace(/[.\s]+$/, ""));
+
+  for (const section of page.sections) {
+    if (parts.join(". ").length >= MIN_DESCRIPTION_LENGTH) break;
+    const body = stripMarks(section.body).replace(/\s*\n+\s*/g, ", ").replace(/[.\s]+$/, "").trim();
+    if (body) parts.push(body);
+  }
+
+  return truncateAtWord(parts.join(". ").trim(), MAX_DESCRIPTION_LENGTH);
+}
 
 function formatDate(iso: string, locale: string): string {
   return new Date(iso).toLocaleDateString(locale === "en" ? "en-GB" : "de-DE", {
@@ -25,11 +50,8 @@ export async function buildLegalMetadata(slug: LegalSlug, locale: string): Promi
   const page = await findLegalPage(slug, locale);
   if (!page) return {};
 
-  // La description est du texte nu : les marques de formatage n'ont rien à
-  // faire dans un extrait de résultat de recherche.
-  const first = stripMarks(page.intro ?? page.sections[0]?.body ?? "");
   const title = `${page.title} | Hausgeräte Pfeffer`;
-  const description = first.slice(0, 155);
+  const description = descriptionFor(page);
   const resolvedLocale = hasLocale(routing.locales, locale) ? locale : routing.defaultLocale;
 
   return {
