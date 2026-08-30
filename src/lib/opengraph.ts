@@ -19,29 +19,29 @@ export function buildSocialMetadata(params: {
   image?: string;
   imageAlt?: string;
   /**
-   * Renseigné uniquement sur une fiche produit. Le type Metadata de Next
-   * n'a pas de variante "product" (voir OpenGraphType dans
+   * Renseigné uniquement sur une fiche produit. Le type Metadata de Next n'a
+   * pas de variante "product" (voir OpenGraphType dans
    * next/dist/lib/metadata/types/opengraph-types.d.ts — seuls website,
    * article, book, profile et les familles musique/vidéo existent) :
    * `openGraph.type` reste donc absent dans ce cas, pour ne pas écrire
-   * "website" alors que og:type est contredit juste en dessous. og:type et
-   * les champs product: (espace de noms Facebook/Pinterest) partent par
-   * `other`, la seule voie de Next pour des balises meta qu'il ne connaît
-   * pas nativement.
+   * "website" alors que og:type est contredit juste en dessous.
+   *
+   * og:type et les champs product: (espace de noms Facebook/Pinterest) ne
+   * partent PAS d'ici : `other` ne sait rendre que `<meta name="…">`
+   * (documenté par Next lui-même), jamais `<meta property="…">` qu'exige le
+   * protocole Open Graph — un og:type posé via `other` est donc invisible
+   * pour Facebook/Pinterest, vérifié en local. C'est le composant
+   * <ProductOpenGraphMeta> (src/components/seo/), rendu directement dans le
+   * JSX de la page produit, qui pose ces balises avec le bon attribut.
    */
-  product?: {
-    priceAmount: string;
-    priceCurrency: string;
-    availability: "instock" | "oos";
-    brand?: string;
-  };
+  product?: boolean;
   /** Renseigné uniquement sur un article Ratgeber. `article` est, lui, un type natif de Next. */
   article?: {
     publishedTime: string;
     modifiedTime?: string;
     authorName: string;
   };
-}): Pick<Metadata, "openGraph" | "twitter" | "other"> {
+}): Pick<Metadata, "openGraph" | "twitter"> {
   const image = params.image ?? DEFAULT_OG_IMAGE;
   const imageAlt = params.imageAlt ?? params.title;
   const { product, article } = params;
@@ -71,16 +71,5 @@ export function buildSocialMetadata(params: {
       description: params.description,
       images: [image],
     },
-    ...(product
-      ? {
-          other: {
-            "og:type": "product",
-            "product:price:amount": product.priceAmount,
-            "product:price:currency": product.priceCurrency,
-            "product:availability": product.availability,
-            ...(product.brand ? { "product:brand": product.brand } : {}),
-          },
-        }
-      : {}),
   };
 }

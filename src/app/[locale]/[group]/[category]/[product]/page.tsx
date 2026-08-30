@@ -9,6 +9,7 @@ import { ProductPurchaseBox } from "@/components/ProductPurchaseBox";
 import { ProductReviewSection } from "@/components/ProductReviewSection";
 import { ProductJsonLd } from "@/components/seo/ProductJsonLd";
 import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
+import { ProductOpenGraphMeta } from "@/components/seo/ProductOpenGraphMeta";
 import { ProductSourceLinks } from "@/components/ProductSourceLinks";
 import { PaymentMethodsBar } from "@/components/PaymentMethodsBar";
 import { ProductGrid } from "@/components/ProductGrid";
@@ -103,12 +104,7 @@ export async function generateMetadata({ params }: { params: ProductPageParams }
       locale,
       image: data.product.image,
       imageAlt: `${data.product.brand} ${data.product.name}`,
-      product: {
-        priceAmount: ((data.product.priceCents ?? 0) / 100).toFixed(2),
-        priceCurrency: "EUR",
-        availability: (data.product.stock ?? 0) > 0 ? "instock" : "oos",
-        brand: data.product.brand,
-      },
+      product: true,
     }),
   };
 }
@@ -251,6 +247,12 @@ export default async function ProductPage({ params }: { params: ProductPageParam
 
       {/* Données structurées : cohérentes avec le prix et la disponibilité affichés */}
       <ProductJsonLd product={productData} reviews={avis} />
+      <ProductOpenGraphMeta
+        priceAmount={((productData.priceCents ?? 0) / 100).toFixed(2)}
+        priceCurrency="EUR"
+        availability={(productData.stock ?? 0) > 0 ? "instock" : "oos"}
+        brand={productData.brand}
+      />
       <BreadcrumbJsonLd
         items={[
           { label: common("home"), href: "/" },
