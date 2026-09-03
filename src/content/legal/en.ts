@@ -7,6 +7,9 @@
  *
  * ATTENTION : toutes les données d'entreprise sont des PLACEHOLDERS.
  * Voir docs/LEGAL.md.
+ *
+ * WEEE (§ 6 ElektroG) : confirmé par le client (2026-08-30) qu'aucune
+ * registration WEEE propre n'est due — voir de.ts pour le détail.
  */
 
 import type { LegalPageMap } from "./types";
@@ -25,7 +28,6 @@ const COMPANY = {
   managingDirector: "Martin Pfeffer",
   register: "Amtsgericht Wittlich (Local Court of Wittlich), HRA 00000",
   vatId: "DE000000000",
-  weee: "WEEE reg. no. DE00000000",
   domain: "www.hausgeratepfeffer.de",
 } as const;
 
@@ -34,7 +36,7 @@ const RETURN_ADDRESS = `${COMPANY.name}, Returns Department, ${COMPANY.street}, 
 
 /** Avertissement placé en tête de chaque page juridique. */
 const DISCLAIMER =
-  "Legal notice: This text is a carefully prepared template for the Hausgeräte Pfeffer online shop. All company details (address, commercial register, VAT identification number, WEEE registration number, shipping rates, service providers) are placeholders and must be replaced with the actual data before publication. Have the text reviewed by a qualified lawyer afterwards — only then is it fit for live use.";
+  "Legal notice: This text is a carefully prepared template for the Hausgeräte Pfeffer online shop. All company details (address, commercial register, VAT identification number, shipping rates, service providers) are placeholders and must be replaced with the actual data before publication. Have the text reviewed by a qualified lawyer afterwards — only then is it fit for live use.";
 
 /** Mention indiquant que la version allemande prévaut. */
 const GERMAN_PREVAILS =
@@ -85,9 +87,8 @@ export const enLegalPages: LegalPageMap = {
       },
       {
         heading: "Registrations under the ElektroG and battery legislation",
-        body: "As a distributor of electrical and electronic equipment as well as batteries and rechargeable batteries, we are registered with the competent authorities:",
+        body: "We exclusively distribute electrical and electronic equipment of third-party brands and are therefore not required to register ourselves with the Stiftung Elektro-Altgeräte Register (ear) under section 6 ElektroG; that obligation lies with the manufacturers of the brands we sell. For batteries and packaging, we are registered with the competent authorities:",
         list: [
-          `${COMPANY.weee} (Stiftung Elektro-Altgeräte Register, "stiftung ear")`,
           "Battery register number under the BattDG: DE00000000 (placeholder)",
           "Packaging register LUCID: DE0000000000000 (placeholder)",
         ],
@@ -740,9 +741,8 @@ export const enLegalPages: LegalPageMap = {
       },
       {
         heading: "Our registrations",
-        body: "We are registered with the competent authorities:",
+        body: "As we exclusively distribute equipment of third-party brands, we are not required under section 6 ElektroG to register ourselves with the Stiftung Elektro-Altgeräte Register; that obligation lies with the manufacturers of the brands we sell. For batteries and packaging, we are registered with the competent authorities:",
         list: [
-          `${COMPANY.weee} (Stiftung Elektro-Altgeräte Register)`,
           "Battery register under the BattDG: DE00000000 (placeholder)",
           "Packaging register LUCID: DE0000000000000 (placeholder)",
         ],
@@ -936,7 +936,7 @@ export const enLegalPages: LegalPageMap = {
       },
       {
         heading: "Company details",
-        body: `${COMPANY.name}, represented by Managing Director ${COMPANY.managingDirector}. Registering court: ${COMPANY.register}. VAT identification number: ${COMPANY.vatId}. ${COMPANY.weee}. Full details can be found in our legal notice (Impressum).`,
+        body: `${COMPANY.name}, represented by Managing Director ${COMPANY.managingDirector}. Registering court: ${COMPANY.register}. VAT identification number: ${COMPANY.vatId}. Full details can be found in our legal notice (Impressum).`,
       },
     ],
   },

@@ -12,6 +12,7 @@ import { ArticleJsonLd } from "@/components/seo/ArticleJsonLd";
 import { alternatesFor, localizedUrl } from "@/lib/hreflang";
 import { buildSocialMetadata } from "@/lib/opengraph";
 import { getPublishedRatgeberPostBySlug, plainExcerpt } from "@/server/ratgeber";
+import { truncateAtWord } from "@/lib/productText";
 import type { Locale } from "@/i18n/routing";
 
 type PageParams = Promise<{ locale: Locale; slug: string }>;
@@ -22,9 +23,14 @@ export async function generateMetadata({ params }: { params: PageParams }): Prom
   if (!post) return {};
 
   const description = plainExcerpt(post).slice(0, 160);
+  // Le titre éditorial peut dépasser 60 caractères (mots-clés inclus à
+  // dessein) ; Google tronque autour de là dans les résultats de recherche.
+  // On raccourcit donc uniquement la balise <title>, pas le H1 ni l'og:title
+  // — voir la même logique sur la fiche produit (truncateAtWord).
+  const metaTitleText = `${truncateAtWord(post.title, 40)} | Hausgeräte Pfeffer`;
 
   return {
-    title: `${post.title} | Hausgeräte Pfeffer`,
+    title: metaTitleText,
     description,
     alternates: alternatesFor(`/ratgeber/${slug}`, locale),
     ...buildSocialMetadata({

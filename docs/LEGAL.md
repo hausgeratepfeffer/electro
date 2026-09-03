@@ -94,7 +94,8 @@ Les slugs de ce corpus sont `widerruf` et `retoure`. Il faut soit aligner le foo
 
 - **Impressumspflicht** (§ 5 DDG, ex-TMG) : raison sociale, forme juridique, adresse physique,
   représentant légal, moyens de contact rapides, registre du commerce, numéro de TVA
-  intracommunautaire, responsable éditorial (§ 18 al. 2 MStV), numéros WEEE / batteries / LUCID.
+  intracommunautaire, responsable éditorial (§ 18 al. 2 MStV), numéros batteries / LUCID (pas de
+  numéro WEEE propre : simple revendeur de marques tierces, non "Hersteller" au sens du § 6 ElektroG).
 - **Streitbeilegung** : formulation § 36 VSBG **sans lien vers la plateforme ODR**, qui a été
   définitivement fermée le 20 juillet 2025. Maintenir un lien vers cette plateforme est
   aujourd'hui une pratique commerciale trompeuse et un motif d'`Abmahnung`.
@@ -146,7 +147,6 @@ Les slugs de ce corpus sont `widerruf` et `retoure`. Il faut soit aligner le foo
 | Gérant | `Martin Pfeffer` | idem |
 | Registre du commerce | `Amtsgericht Berlin-Charlottenburg HRB 000000` | idem |
 | N° TVA intracommunautaire | `DE000000000` | idem |
-| N° WEEE (stiftung ear) | `DE00000000` | idem |
 | N° registre batteries (BattDG) | `DE00000000` | `impressum`, `elektroaltgeraete` |
 | N° registre emballages LUCID | `DE0000000000000` | `impressum`, `elektroaltgeraete` |
 | Adresse de retour | identique au siège | `RETURN_ADDRESS` |

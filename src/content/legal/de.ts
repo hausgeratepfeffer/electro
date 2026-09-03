@@ -2,8 +2,14 @@
  * Contenu légal et informatif en ALLEMAND — Hausgeräte Pfeffer.
  *
  * ATTENTION : toutes les données d'entreprise sont des PLACEHOLDERS
- * (adresse, HRB, USt-IdNr., WEEE, tarifs). Voir docs/LEGAL.md pour la liste
+ * (adresse, HRB, USt-IdNr., tarifs). Voir docs/LEGAL.md pour la liste
  * exhaustive des éléments à remplacer avant mise en ligne.
+ *
+ * WEEE (§ 6 ElektroG) : confirmé par le client (2026-08-30) que l'entreprise
+ * ne fabrique pas et ne vend que des marques tierces déjà enregistrées par
+ * leurs propres fabricants — aucune registration WEEE propre n'est donc due.
+ * Voir la section "Registrierung nach Batterierecht" de l'Impressum et
+ * d'Elektroaltgeräte, qui l'expliquent au lieu d'afficher un faux numéro.
  *
  * État du droit retenu : juillet 2026 (§ 5 DDG, § 356a BGB / Widerrufsbutton
  * depuis le 19.06.2026, ElektroG avec § 18a à partir du 01.07.2026, BattDG,
@@ -37,9 +43,6 @@ export const COMPANY = {
   // UStG). Tant que cette valeur reste un gabarit, chaque facture émise est
   // incomplète.
   vatId: "DE000000000",
-  // À RENSEIGNER : numéro d'enregistrement auprès de la fondation EAR, exigé
-  // de tout distributeur d'équipements électriques (§ 6 ElektroG).
-  weee: "WEEE-Reg.-Nr. DE00000000",
   domain: "www.hausgeratepfeffer.de",
 } as const;
 
@@ -48,7 +51,7 @@ const RETURN_ADDRESS = `${COMPANY.name}, Retourenannahme, ${COMPANY.street}, ${C
 
 /** Avertissement placé en tête de chaque page juridique. */
 const DISCLAIMER =
-  "Rechtlicher Hinweis: Dieser Text ist eine sorgfältig erstellte Vorlage für den Onlineshop Hausgeräte Pfeffer. Sämtliche Unternehmensangaben (Anschrift, Handelsregister, Umsatzsteuer-Identifikationsnummer, WEEE-Registrierungsnummer, Versandkosten, Dienstleister) sind Platzhalter und müssen vor der Veröffentlichung durch die tatsächlichen Daten ersetzt werden. Lassen Sie den Text anschließend anwaltlich prüfen – erst dann ist er rechtssicher verwendbar.";
+  "Rechtlicher Hinweis: Dieser Text ist eine sorgfältig erstellte Vorlage für den Onlineshop Hausgeräte Pfeffer. Sämtliche Unternehmensangaben (Anschrift, Handelsregister, Umsatzsteuer-Identifikationsnummer, Versandkosten, Dienstleister) sind Platzhalter und müssen vor der Veröffentlichung durch die tatsächlichen Daten ersetzt werden. Lassen Sie den Text anschließend anwaltlich prüfen – erst dann ist er rechtssicher verwendbar.";
 
 /** Assemble le chapeau : avertissement puis texte d'introduction. */
 function intro(lead: string): string {
@@ -100,9 +103,8 @@ export const deLegalPages: LegalPageMap = {
       },
       {
         heading: "Registrierung nach ElektroG und Batterierecht",
-        body: "Als Vertreiber von Elektro- und Elektronikgeräten sowie von Batterien und Akkus sind wir bei den zuständigen Registern gemeldet:",
+        body: "Wir vertreiben ausschließlich Elektro- und Elektronikgeräte fremder Marken und sind daher nicht selbst zur Registrierung bei der Stiftung Elektro-Altgeräte Register (ear) nach § 6 ElektroG verpflichtet; diese Pflicht trifft die Hersteller der von uns vertriebenen Marken. Für Batterien und Verpackungen sind wir bei den zuständigen Registern gemeldet:",
         list: [
-          `${COMPANY.weee} (Stiftung Elektro-Altgeräte Register, ear)`,
           "Batterieregister-Nummer nach BattDG: DE00000000 (Platzhalter)",
           "Verpackungsregister LUCID: DE0000000000000 (Platzhalter)",
         ],
@@ -757,9 +759,8 @@ export const deLegalPages: LegalPageMap = {
       },
       {
         heading: "Unsere Registrierungen",
-        body: "Wir sind bei den zuständigen Registern gemeldet:",
+        body: "Da wir ausschließlich Geräte fremder Marken vertreiben, sind wir nach § 6 ElektroG nicht zur eigenen Registrierung bei der Stiftung Elektro-Altgeräte Register verpflichtet; diese Pflicht liegt bei den Herstellern der von uns vertriebenen Marken. Für Batterien und Verpackungen sind wir bei den zuständigen Registern gemeldet:",
         list: [
-          `${COMPANY.weee} (Stiftung Elektro-Altgeräte Register)`,
           "Batterieregister nach BattDG: DE00000000 (Platzhalter)",
           "Verpackungsregister LUCID: DE0000000000000 (Platzhalter)",
         ],
@@ -953,7 +954,7 @@ export const deLegalPages: LegalPageMap = {
       },
       {
         heading: "Rechtliche Angaben",
-        body: `${COMPANY.name}, vertreten durch den Geschäftsführer ${COMPANY.managingDirector}. Registergericht: ${COMPANY.register}. Umsatzsteuer-Identifikationsnummer: ${COMPANY.vatId}. ${COMPANY.weee}. Vollständige Angaben finden Sie im Impressum.`,
+        body: `${COMPANY.name}, vertreten durch den Geschäftsführer ${COMPANY.managingDirector}. Registergericht: ${COMPANY.register}. Umsatzsteuer-Identifikationsnummer: ${COMPANY.vatId}. Vollständige Angaben finden Sie im Impressum.`,
       },
     ],
   },
