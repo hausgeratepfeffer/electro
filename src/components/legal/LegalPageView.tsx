@@ -4,6 +4,8 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { RichText } from "@/components/RichText";
+import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
+import { WebPageJsonLd } from "@/components/seo/WebPageJsonLd";
 import { findLegalPage } from "@/server/legalPages";
 import { paragraphsOf, stripMarks } from "@/lib/richText";
 import { hasLocale } from "next-intl";
@@ -165,6 +167,8 @@ export async function LegalPageView({ slug, locale }: { slug: LegalSlug; locale:
   if (!page) notFound();
 
   const home = locale === "en" ? "Home" : "Start";
+  const resolvedLocale = hasLocale(routing.locales, locale) ? locale : routing.defaultLocale;
+  const breadcrumbItems = [{ label: home, href: "/" }, { label: page.title }];
 
   return (
     <>
@@ -172,13 +176,25 @@ export async function LegalPageView({ slug, locale }: { slug: LegalSlug; locale:
       <main className="flex-1">
         <div className="border-b border-border bg-white">
           <div className="mx-auto max-w-screen-xl px-3 py-3">
-            <Breadcrumb items={[{ label: home, href: "/" }, { label: page.title }]} />
+            <Breadcrumb items={breadcrumbItems} />
           </div>
         </div>
 
         <LegalPageArticle page={page} locale={locale} />
       </main>
       <Footer />
+
+      {/* Ces pages n'ont pas de type schema.org plus spécifique (à part
+          retoure/elektroaltgeraete, qui posent leur propre HowTo à côté) :
+          sans ceci, elles ne portaient aucune donnée structurée du tout. */}
+      <WebPageJsonLd
+        path={`/${slug}`}
+        title={page.title}
+        description={descriptionFor(page)}
+        locale={resolvedLocale}
+        dateModified={page.updatedAt}
+      />
+      <BreadcrumbJsonLd items={breadcrumbItems} />
     </>
   );
 }
