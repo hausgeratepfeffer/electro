@@ -10,6 +10,7 @@ import { CategoryGuide } from "@/components/CategoryGuide";
 import { PaymentMethodsBar } from "@/components/PaymentMethodsBar";
 import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
 import { ItemListJsonLd } from "@/components/seo/ItemListJsonLd";
+import { FaqPageJsonLd } from "@/components/seo/FaqPageJsonLd";
 import { alternatesFor, localizedUrl } from "@/lib/hreflang";
 import { buildSocialMetadata } from "@/lib/opengraph";
 import { getCategoryPage, listCategories } from "@/server/store";
@@ -123,6 +124,15 @@ export default async function CategoryPage({ params }: { params: CategoryPagePar
         items={data.products.map((product) => ({
           name: `${product.brand} ${product.name}`,
           url: localizedUrl(product.href, locale),
+        }))}
+      />
+      {/* Les sous-titres du guide catégorie sont déjà formulés en questions
+          (« Worauf sollten Sie beim Kauf achten ? ») : seule la FAQ globale
+          portait jusqu'ici un balisage FAQPage, jamais ces guides. */}
+      <FaqPageJsonLd
+        items={data.guide.sections.map((section) => ({
+          question: section.heading,
+          answer: section.body,
         }))}
       />
     </>
