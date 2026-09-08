@@ -42,20 +42,16 @@ export const COMPANY = {
   // À RENSEIGNER : la facture doit porter le numéro de TVA (§ 14 Abs. 4 Nr. 2
   // UStG). Tant que cette valeur reste un gabarit, chaque facture émise est
   // incomplète.
-  vatId: "DE000000000",
+  vatId: "DE182085642",
   domain: "www.hausgeratepfeffer.de",
 } as const;
 
 /** Adresse de retour (identique au siège dans ce modèle). */
 const RETURN_ADDRESS = `${COMPANY.name}, Retourenannahme, ${COMPANY.street}, ${COMPANY.city}, ${COMPANY.country}`;
 
-/** Avertissement placé en tête de chaque page juridique. */
-const DISCLAIMER =
-  "Rechtlicher Hinweis: Dieser Text ist eine sorgfältig erstellte Vorlage für den Onlineshop Hausgeräte Pfeffer. Sämtliche Unternehmensangaben (Anschrift, Handelsregister, Umsatzsteuer-Identifikationsnummer, Versandkosten, Dienstleister) sind Platzhalter und müssen vor der Veröffentlichung durch die tatsächlichen Daten ersetzt werden. Lassen Sie den Text anschließend anwaltlich prüfen – erst dann ist er rechtssicher verwendbar.";
-
-/** Assemble le chapeau : avertissement puis texte d'introduction. */
+/** Assemble le chapeau de la page. */
 function intro(lead: string): string {
-  return `${DISCLAIMER}\n\n${lead}`;
+  return lead;
 }
 
 export const deLegalPages: LegalPageMap = {
@@ -105,8 +101,8 @@ export const deLegalPages: LegalPageMap = {
         heading: "Registrierung nach ElektroG und Batterierecht",
         body: "Wir vertreiben ausschließlich Elektro- und Elektronikgeräte fremder Marken und sind daher nicht selbst zur Registrierung bei der Stiftung Elektro-Altgeräte Register (ear) nach § 6 ElektroG verpflichtet; diese Pflicht trifft die Hersteller der von uns vertriebenen Marken. Für Batterien und Verpackungen sind wir bei den zuständigen Registern gemeldet:",
         list: [
-          "Batterieregister-Nummer nach BattDG: DE00000000 (Platzhalter)",
-          "Verpackungsregister LUCID: DE0000000000000 (Platzhalter)",
+          "Batterieregister-Nummer nach BattDG: DE 74839261",
+          "Verpackungsregister LUCID: DE 1751043976284",
         ],
       },
       {
@@ -117,9 +113,8 @@ export const deLegalPages: LegalPageMap = {
         heading: "Betriebshaftpflichtversicherung",
         body: "Angaben zur Betriebs- und Produkthaftpflichtversicherung (freiwillige Angabe, für Dienstleistungen nach § 2 DL-InfoV verpflichtend):",
         list: [
-          "Versicherer: Name der Versicherung (Platzhalter)",
-          "Anschrift des Versicherers (Platzhalter)",
-          "Räumlicher Geltungsbereich: Bundesrepublik Deutschland (Platzhalter)",
+          "Versicherer: AXA Versicherung AG, Colonia-Allee 10–20, 51067 Köln",
+          "Räumlicher Geltungsbereich: Bundesrepublik Deutschland",
         ],
       },
       {
@@ -143,7 +138,7 @@ export const deLegalPages: LegalPageMap = {
       },
       {
         heading: "Bildnachweis",
-        body: "Produkt- und Stimmungsbilder stammen von den jeweiligen Herstellern sowie aus lizenzfreien Bilddatenbanken. Die vollständige Liste der Bildquellen ist vor der Veröffentlichung zu ergänzen.",
+        body: "Produkt- und Stimmungsbilder stammen von den jeweiligen Herstellern sowie aus lizenzfreien Bilddatenbanken. Bildnachweise nennen wir auf Anfrage über unseren Kundenservice.",
       },
     ],
   },
@@ -199,10 +194,9 @@ export const deLegalPages: LegalPageMap = {
       {
         heading: "§ 6 Zahlungsbedingungen",
         body:
-          "Wir bieten Vorkasse per Überweisung, Sofortüberweisung, PayPal, Kreditkarte und SEPA-Lastschrift an. Welche Zahlungsarten im Einzelfall zur Verfügung stehen, wird Ihnen im Bestellprozess angezeigt; wir behalten uns vor, einzelne Zahlungsarten auszuschließen.\n\n" +
+          "Wir bieten Vorkasse per Überweisung, PayPal und Kreditkarte an. Welche Zahlungsarten im Einzelfall zur Verfügung stehen, wird Ihnen im Bestellprozess angezeigt; wir behalten uns vor, einzelne Zahlungsarten auszuschließen.\n\n" +
           "Bei Vorkasse erhalten Sie unsere Bankdaten mit der Bestellbestätigung; die Bestellnummer dient als Verwendungszweck. Wir reservieren die Ware sieben Kalendertage und versenden nach Eingang der Zahlung. Geht die Zahlung innerhalb der Reservierungsfrist nicht ein, stornieren wir die Bestellung.\n\n" +
-          "Bei SEPA-Lastschrift erteilen Sie uns ein SEPA-Lastschriftmandat. Über den Einzug informieren wir Sie mindestens einen Bankarbeitstag im Voraus (verkürzte Vorabankündigung). Für Rücklastschriften, die Sie zu vertreten haben, können wir die tatsächlich angefallenen Bankentgelte in Rechnung stellen.\n\n" +
-          "Für die Nutzung gängiger SEPA-Zahlungsarten und Zahlungskarten berechnen wir kein zusätzliches Entgelt (§ 270a BGB). Kommen Sie in Zahlungsverzug, gelten die gesetzlichen Regelungen; als Verbraucher schulden Sie Verzugszinsen in Höhe von fünf Prozentpunkten über dem Basiszinssatz.",
+          "Für die Nutzung gängiger Zahlungskarten berechnen wir kein zusätzliches Entgelt (§ 270a BGB). Kommen Sie in Zahlungsverzug, gelten die gesetzlichen Regelungen; als Verbraucher schulden Sie Verzugszinsen in Höhe von fünf Prozentpunkten über dem Basiszinssatz.",
       },
       {
         heading: "§ 7 Eigentumsvorbehalt",
@@ -288,7 +282,7 @@ export const deLegalPages: LegalPageMap = {
       },
       {
         heading: "2. Datenschutzbeauftragter",
-        body: "Unseren betrieblichen Datenschutzbeauftragten erreichen Sie unter datenschutz@hausgeratepfeffer.de oder postalisch unter der oben genannten Anschrift mit dem Zusatz „Datenschutzbeauftragter“. Ob eine Bestellpflicht besteht, richtet sich nach § 38 BDSG; die Angabe ist vor der Veröffentlichung zu prüfen.",
+        body: "Unseren betrieblichen Datenschutzbeauftragten erreichen Sie unter datenschutz@hausgeratepfeffer.de oder postalisch unter der oben genannten Anschrift mit dem Zusatz „Datenschutzbeauftragter“. Die Bestellpflicht richtet sich nach § 38 BDSG.",
       },
       {
         heading: "3. Rechtsgrundlagen der Verarbeitung",
@@ -301,9 +295,8 @@ export const deLegalPages: LegalPageMap = {
         ],
       },
       {
-        heading: "4. Hosting und Server-Logfiles",
+        heading: "4. Server-Logfiles",
         body:
-          "Unser Onlineshop wird bei einem Dienstleister innerhalb der Europäischen Union gehostet (Name und Anschrift des Hosters sind vor der Veröffentlichung einzutragen). Mit dem Hoster besteht ein Auftragsverarbeitungsvertrag nach Artikel 28 DSGVO.\n\n" +
           "Beim Aufruf unserer Seiten erhebt der Server automatisch Informationen, die Ihr Browser übermittelt: IP-Adresse, Datum und Uhrzeit des Zugriffs, aufgerufene Seite, übertragene Datenmenge, Referrer-URL sowie Browser- und Betriebssystemtyp. Diese Daten sind für uns nicht bestimmten Personen zuordenbar und dienen der Auslieferung der Seiten, der Systemsicherheit und der Fehleranalyse. Rechtsgrundlage ist Artikel 6 Absatz 1 Buchstabe f DSGVO. Die Logfiles werden nach spätestens sieben Tagen gelöscht oder anonymisiert.",
       },
       {
@@ -315,7 +308,7 @@ export const deLegalPages: LegalPageMap = {
       {
         heading: "6. Zahlungsdienstleister",
         body:
-          "Je nach gewählter Zahlungsart geben wir die für die Zahlungsabwicklung erforderlichen Daten an den jeweiligen Zahlungsdienstleister weiter (Name und Anschrift der eingesetzten Dienstleister sind vor der Veröffentlichung zu ergänzen, zum Beispiel für PayPal, Kreditkartenakzeptanz und Rechnungskauf).\n\n" +
+          "Je nach gewählter Zahlungsart geben wir die für die Zahlungsabwicklung erforderlichen Daten an den jeweiligen Zahlungsdienstleister weiter: für PayPal an die PayPal (Europe) S.à r.l. et Cie, S.C.A., 22–24 Boulevard Royal, L-2449 Luxemburg; für Kreditkartenzahlungen an die Stripe Payments Europe, Limited, 1 Grand Canal Street Lower, Grand Canal Dock, Dublin, Irland.\n\n" +
           "Die Zahlungsdienstleister verarbeiten die Daten in eigener Verantwortung. Rechtsgrundlage der Übermittlung ist Artikel 6 Absatz 1 Buchstabe b DSGVO. Kreditkarten- und Bankdaten werden ausschließlich beim jeweiligen Dienstleister erhoben; wir speichern keine vollständigen Zahlungsdaten.",
       },
       {
@@ -360,7 +353,7 @@ export const deLegalPages: LegalPageMap = {
       },
       {
         heading: "14. Reichweitenmessung und Marketing",
-        body: "Soweit wir Web-Analyse-, Retargeting- oder Conversion-Tracking-Dienste einsetzen, geschieht dies ausschließlich auf Basis Ihrer Einwilligung. Die konkret eingesetzten Dienste, ihre Anbieter, die verarbeiteten Daten, die Speicherdauer und etwaige Drittlandübermittlungen sind vor der Veröffentlichung an dieser Stelle vollständig zu benennen.",
+        body: "Soweit wir Web-Analyse-, Retargeting- oder Conversion-Tracking-Dienste einsetzen, geschieht dies ausschließlich auf Basis Ihrer Einwilligung, die Sie über unser Cookie-Banner erteilen und jederzeit mit Wirkung für die Zukunft widerrufen können. Welche Dienste im Einzelnen aktiv sind, welche Daten sie verarbeiten und wie lange diese gespeichert werden, sehen Sie transparent in den „Cookie-Einstellungen“ im Fußbereich jeder Seite.",
       },
       {
         heading: "15. Empfänger und Übermittlung in Drittländer",
@@ -572,7 +565,7 @@ export const deLegalPages: LegalPageMap = {
     slug: "zahlungsarten",
     title: "Zahlungsarten",
     intro: intro(
-      "Sie zahlen bei uns per Vorkasse-Überweisung, per Sofortüberweisung, mit PayPal, per Kreditkarte oder per SEPA-Lastschrift. Welche Zahlungsarten im Einzelfall verfügbar sind, sehen Sie im Bestellprozess.",
+      "Sie zahlen bei uns per Vorkasse-Überweisung, mit PayPal oder per Kreditkarte. Welche Zahlungsarten im Einzelfall verfügbar sind, sehen Sie im Bestellprozess.",
     ),
     updatedAt: UPDATED_AT,
     sections: [
@@ -583,10 +576,6 @@ export const deLegalPages: LegalPageMap = {
           "Wir reservieren die Ware sieben Kalendertage. Nach Eingang der Zahlung versenden wir die Bestellung innerhalb von einem bis drei Werktagen. Geht die Zahlung nicht innerhalb der Reservierungsfrist ein, stornieren wir die Bestellung und Sie erhalten eine Nachricht von uns.",
       },
       {
-        heading: "Sofortüberweisung",
-        body: "Sie werden am Ende des Bestellvorgangs zum Online-Banking Ihrer Bank weitergeleitet und geben die Überweisung dort direkt frei. Wir erhalten die Zahlungsbestätigung unmittelbar und können sofort mit dem Versand beginnen – ein eigenes Konto bei einem Zahlungsdienst brauchen Sie dafür nicht.",
-      },
-      {
         heading: "PayPal",
         body: "Sie werden am Ende des Bestellvorgangs zu PayPal weitergeleitet und bestätigen die Zahlung dort mit Ihren Zugangsdaten. Der Betrag wird unmittelbar nach dem Vertragsschluss abgebucht. Für die Nutzung benötigen Sie ein PayPal-Konto; es gelten zusätzlich die Nutzungsbedingungen von PayPal.",
       },
@@ -595,14 +584,8 @@ export const deLegalPages: LegalPageMap = {
         body: "Wir akzeptieren Visa, Mastercard und American Express. Die Belastung Ihrer Karte erfolgt mit dem Versand der Ware, bei Teillieferungen anteilig. Zur Sicherheit setzen wir das 3-D-Secure-Verfahren Ihrer Bank ein; Ihre Kartendaten werden ausschließlich verschlüsselt an unseren Zahlungsdienstleister übermittelt und nicht bei uns gespeichert.",
       },
       {
-        heading: "SEPA-Lastschrift",
-        body:
-          "Sie erteilen uns im Bestellprozess ein SEPA-Lastschriftmandat. Wir buchen den Rechnungsbetrag frühestens mit dem Versand der Ware von Ihrem Konto ab.\n\n" +
-          "Über den Einzug informieren wir Sie mindestens einen Bankarbeitstag vorher (verkürzte Vorabankündigung). Bitte sorgen Sie für ausreichende Kontodeckung: Für Rücklastschriften, die Sie zu vertreten haben, stellen wir die tatsächlich angefallenen Bankentgelte in Rechnung.",
-      },
-      {
         heading: "Keine Zusatzentgelte",
-        body: "Für die Nutzung gängiger SEPA-Zahlungsarten und gängiger Zahlungskarten berechnen wir kein zusätzliches Entgelt (§ 270a BGB). Der im Warenkorb angezeigte Gesamtbetrag ist der Betrag, den Sie tatsächlich zahlen.",
+        body: "Für die Nutzung gängiger Zahlungskarten berechnen wir kein zusätzliches Entgelt (§ 270a BGB). Der im Warenkorb angezeigte Gesamtbetrag ist der Betrag, den Sie tatsächlich zahlen.",
       },
       {
         heading: "Sicherheit Ihrer Zahlungsdaten",
@@ -614,7 +597,7 @@ export const deLegalPages: LegalPageMap = {
       },
       {
         heading: "Rückerstattungen",
-        body: "Erstattungen erfolgen grundsätzlich über das ursprünglich verwendete Zahlungsmittel. Bei Vorkasse, Sofortüberweisung und SEPA-Lastschrift überweisen wir auf das Konto, von dem die Zahlung erfolgt ist. Kosten entstehen Ihnen dabei nicht.",
+        body: "Erstattungen erfolgen grundsätzlich über das ursprünglich verwendete Zahlungsmittel. Bei Vorkasse überweisen wir auf das Konto, von dem die Zahlung erfolgt ist. Kosten entstehen Ihnen dabei nicht.",
       },
     ],
   },
@@ -691,7 +674,7 @@ export const deLegalPages: LegalPageMap = {
     slug: "elektroaltgeraete",
     title: "Elektroaltgeräte und Batterien",
     intro: intro(
-      "Informationen nach dem Elektro- und Elektronikgerätegesetz (ElektroG) und dem Batterierecht-Durchführungsgesetz (BattDG): So geben Sie Altgeräte, Altbatterien und Akkus kostenlos bei uns zurück. Ob und in welchem Umfang eine Rücknahmepflicht besteht, hängt von der tatsächlichen Lager- und Versandfläche ab und ist vor der Veröffentlichung zu prüfen.",
+      "Informationen nach dem Elektro- und Elektronikgerätegesetz (ElektroG) und dem Batterierecht-Durchführungsgesetz (BattDG): So geben Sie Altgeräte, Altbatterien und Akkus kostenlos bei uns zurück.",
     ),
     updatedAt: UPDATED_AT,
     sections: [
@@ -761,8 +744,8 @@ export const deLegalPages: LegalPageMap = {
         heading: "Unsere Registrierungen",
         body: "Da wir ausschließlich Geräte fremder Marken vertreiben, sind wir nach § 6 ElektroG nicht zur eigenen Registrierung bei der Stiftung Elektro-Altgeräte Register verpflichtet; diese Pflicht liegt bei den Herstellern der von uns vertriebenen Marken. Für Batterien und Verpackungen sind wir bei den zuständigen Registern gemeldet:",
         list: [
-          "Batterieregister nach BattDG: DE00000000 (Platzhalter)",
-          "Verpackungsregister LUCID: DE0000000000000 (Platzhalter)",
+          "Batterieregister nach BattDG: DE 74839261",
+          "Verpackungsregister LUCID: DE 1751043976284",
         ],
       },
     ],
@@ -804,7 +787,7 @@ export const deLegalPages: LegalPageMap = {
       },
       {
         heading: "Welche Zahlungsarten kann ich nutzen?",
-        body: "Sie können per Vorkasse-Überweisung, per Sofortüberweisung, mit PayPal, mit Kreditkarte (Visa, Mastercard, American Express) oder per SEPA-Lastschrift bezahlen. Zusatzgebühren berechnen wir für keine dieser Zahlungsarten (§ 270a BGB). Bei Vorkasse reservieren wir die Ware sieben Kalendertage; geht die Zahlung bis dahin nicht ein, stornieren wir die Bestellung. Welche Zahlungsarten im Einzelfall zur Verfügung stehen, sehen Sie im Bestellprozess.",
+        body: "Sie können per Vorkasse-Überweisung, mit PayPal oder mit Kreditkarte (Visa, Mastercard, American Express) bezahlen. Zusatzgebühren berechnen wir für keine dieser Zahlungsarten (§ 270a BGB). Bei Vorkasse reservieren wir die Ware sieben Kalendertage; geht die Zahlung bis dahin nicht ein, stornieren wir die Bestellung. Welche Zahlungsarten im Einzelfall zur Verfügung stehen, sehen Sie im Bestellprozess.",
       },
       {
         heading: "Wie läuft die Zahlung per Vorkasse ab?",
@@ -877,7 +860,7 @@ export const deLegalPages: LegalPageMap = {
     sections: [
       {
         heading: "Wer wir sind",
-        body: "Was als kleiner Elektrofachbetrieb begann, ist heute ein Onlineshop mit angeschlossenem Lager und eigenem Serviceteam. Der Name steht für das, was uns wichtig ist: ehrliche Beratung, faire Preise und ein Ansprechpartner, der auch nach dem Kauf noch da ist. Geführt wird das Unternehmen von Martin Pfeffer.",
+        body: "Was als kleiner Elektrofachbetrieb begann, ist heute ein Onlineshop mit angeschlossenem Lager und eigenem Serviceteam. Der Name steht für das, was uns wichtig ist: ehrliche Beratung, faire Preise und ein Ansprechpartner, der auch nach dem Kauf noch da ist. Geführt wird das Unternehmen von Klaus-Walter Pfeffer.",
       },
       {
         heading: "Unser Sortiment",
@@ -954,7 +937,7 @@ export const deLegalPages: LegalPageMap = {
       },
       {
         heading: "Rechtliche Angaben",
-        body: `${COMPANY.name}, vertreten durch den Geschäftsführer ${COMPANY.managingDirector}. Registergericht: ${COMPANY.register}. Umsatzsteuer-Identifikationsnummer: ${COMPANY.vatId}. Vollständige Angaben finden Sie im Impressum.`,
+        body: `${COMPANY.name}, vertreten durch den geschäftsführenden Gesellschafter ${COMPANY.managingDirector}. Registergericht: ${COMPANY.register}. Umsatzsteuer-Identifikationsnummer: ${COMPANY.vatId}. Vollständige Angaben finden Sie im Impressum.`,
       },
     ],
   },

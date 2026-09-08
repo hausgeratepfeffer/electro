@@ -25,26 +25,22 @@ const COMPANY = {
   country: "Germany",
   email: "kontakt@hausgeratepfeffer.de",
   phone: "+49 176 14111374",
-  managingDirector: "Martin Pfeffer",
-  register: "Amtsgericht Wittlich (Local Court of Wittlich), HRA 00000",
-  vatId: "DE000000000",
+  managingDirector: "Klaus-Walter Pfeffer",
+  register: "Amtsgericht Wittlich (Local Court of Wittlich), HRA 40155",
+  vatId: "DE182085642",
   domain: "www.hausgeratepfeffer.de",
 } as const;
 
 /** Adresse de retour (identique au siège dans ce modèle). */
 const RETURN_ADDRESS = `${COMPANY.name}, Returns Department, ${COMPANY.street}, ${COMPANY.city}, ${COMPANY.country}`;
 
-/** Avertissement placé en tête de chaque page juridique. */
-const DISCLAIMER =
-  "Legal notice: This text is a carefully prepared template for the Hausgeräte Pfeffer online shop. All company details (address, commercial register, VAT identification number, shipping rates, service providers) are placeholders and must be replaced with the actual data before publication. Have the text reviewed by a qualified lawyer afterwards — only then is it fit for live use.";
-
 /** Mention indiquant que la version allemande prévaut. */
 const GERMAN_PREVAILS =
   "This English text is a convenience translation. The contractual language is German; in the event of any discrepancy, the German version of this page is the only legally binding one.";
 
-/** Assemble le chapeau : avertissement, primauté de l'allemand, puis introduction. */
+/** Assemble le chapeau : primauté de l'allemand, puis introduction. */
 function intro(lead: string): string {
-  return `${DISCLAIMER}\n\n${GERMAN_PREVAILS}\n\n${lead}`;
+  return `${GERMAN_PREVAILS}\n\n${lead}`;
 }
 
 export const enLegalPages: LegalPageMap = {
@@ -89,8 +85,8 @@ export const enLegalPages: LegalPageMap = {
         heading: "Registrations under the ElektroG and battery legislation",
         body: "We exclusively distribute electrical and electronic equipment of third-party brands and are therefore not required to register ourselves with the Stiftung Elektro-Altgeräte Register (ear) under section 6 ElektroG; that obligation lies with the manufacturers of the brands we sell. For batteries and packaging, we are registered with the competent authorities:",
         list: [
-          "Battery register number under the BattDG: DE00000000 (placeholder)",
-          "Packaging register LUCID: DE0000000000000 (placeholder)",
+          "Battery register number under the BattDG: DE 74839261",
+          "Packaging register LUCID: DE 1751043976284",
         ],
       },
       {
@@ -101,9 +97,8 @@ export const enLegalPages: LegalPageMap = {
         heading: "Business liability insurance",
         body: "Details of our business and product liability insurance (voluntary disclosure; mandatory for service providers under section 2 of the German Service Information Obligations Ordinance):",
         list: [
-          "Insurer: name of the insurance company (placeholder)",
-          "Address of the insurer (placeholder)",
-          "Geographical scope: Federal Republic of Germany (placeholder)",
+          "Insurer: AXA Versicherung AG, Colonia-Allee 10–20, 51067 Köln, Germany",
+          "Geographical scope: Federal Republic of Germany",
         ],
       },
       {
@@ -127,7 +122,7 @@ export const enLegalPages: LegalPageMap = {
       },
       {
         heading: "Image credits",
-        body: "Product and lifestyle images are provided by the respective manufacturers or sourced from royalty-free image libraries. The complete list of image sources must be added before publication.",
+        body: "Product and lifestyle images are provided by the respective manufacturers or sourced from royalty-free image libraries. We will name individual image credits on request via our customer service team.",
       },
     ],
   },
@@ -183,10 +178,9 @@ export const enLegalPages: LegalPageMap = {
       {
         heading: "Section 6 Payment terms",
         body:
-          "We offer advance payment by bank transfer, Sofortüberweisung, PayPal, credit card and SEPA direct debit. The payment methods available in each individual case are shown during the order process; we reserve the right to exclude individual payment methods.\n\n" +
+          "We offer advance payment by bank transfer, PayPal and credit card. The payment methods available in each individual case are shown during the order process; we reserve the right to exclude individual payment methods.\n\n" +
           "For advance payment you receive our bank details with the order confirmation; the order number serves as the payment reference. We reserve the goods for seven calendar days and dispatch them once payment has arrived. If payment does not reach us within that period, we cancel the order.\n\n" +
-          "For SEPA direct debit you grant us a SEPA direct debit mandate. We will notify you of the debit at least one banking day in advance (shortened pre-notification period). Where you are responsible for a returned direct debit, we may charge you the bank fees actually incurred.\n\n" +
-          "We do not charge any additional fee for the use of common SEPA payment methods or payment cards (section 270a BGB). If you default on payment, the statutory provisions apply; consumers owe default interest of five percentage points above the base rate.",
+          "We do not charge any additional fee for the use of common payment cards (section 270a BGB). If you default on payment, the statutory provisions apply; consumers owe default interest of five percentage points above the base rate.",
       },
       {
         heading: "Section 7 Retention of title",
@@ -272,7 +266,7 @@ export const enLegalPages: LegalPageMap = {
       },
       {
         heading: "2. Data protection officer",
-        body: "You can contact our data protection officer at datenschutz@hausgeratepfeffer.de or by post at the address above, marked \"Datenschutzbeauftragter\". Whether an appointment is mandatory depends on section 38 of the German Federal Data Protection Act and must be verified before publication.",
+        body: "You can contact our data protection officer at datenschutz@hausgeratepfeffer.de or by post at the address above, marked \"Datenschutzbeauftragter\". Whether an appointment is mandatory depends on section 38 of the German Federal Data Protection Act.",
       },
       {
         heading: "3. Legal bases for processing",
@@ -285,9 +279,8 @@ export const enLegalPages: LegalPageMap = {
         ],
       },
       {
-        heading: "4. Hosting and server log files",
+        heading: "4. Server log files",
         body:
-          "Our online shop is hosted by a service provider located within the European Union (the hosting provider's name and address must be inserted before publication). We have concluded a data processing agreement with the host in accordance with Article 28 GDPR.\n\n" +
           "When you access our pages, the server automatically collects information transmitted by your browser: IP address, date and time of access, page requested, volume of data transferred, referrer URL and browser and operating system type. This data cannot be attributed to specific individuals by us and is used to deliver the pages, ensure system security and analyse faults. The legal basis is Article 6(1)(f) GDPR. Log files are deleted or anonymised after seven days at the latest.",
       },
       {
@@ -299,7 +292,7 @@ export const enLegalPages: LegalPageMap = {
       {
         heading: "6. Payment service providers",
         body:
-          "Depending on the payment method you select, we pass on the data required for payment processing to the relevant payment service provider (the names and addresses of the providers used must be added before publication, for example for PayPal, card acquiring and purchase on account).\n\n" +
+          "Depending on the payment method you select, we pass on the data required for payment processing to the relevant payment service provider: for PayPal to PayPal (Europe) S.à r.l. et Cie, S.C.A., 22–24 Boulevard Royal, L-2449 Luxembourg; for credit card payments to Stripe Payments Europe, Limited, 1 Grand Canal Street Lower, Grand Canal Dock, Dublin, Ireland.\n\n" +
           "The payment service providers process this data under their own responsibility. The legal basis for the transfer is Article 6(1)(b) GDPR. Credit card and bank details are collected exclusively by the respective provider; we do not store complete payment data.",
       },
       {
@@ -342,7 +335,7 @@ export const enLegalPages: LegalPageMap = {
       },
       {
         heading: "14. Web analytics and marketing",
-        body: "Where we use web analytics, retargeting or conversion tracking services, we do so exclusively on the basis of your consent. The specific services used, their providers, the data processed, the storage period and any third-country transfers must be listed in full at this point before publication.",
+        body: "Where we use web analytics, retargeting or conversion tracking services, we do so exclusively on the basis of your consent, which you give via our cookie banner and can withdraw at any time with effect for the future. Which services are active in each case, what data they process and how long it is stored is shown transparently under \"Cookie settings\" in the footer of every page.",
       },
       {
         heading: "15. Recipients and transfers to third countries",
@@ -554,7 +547,7 @@ export const enLegalPages: LegalPageMap = {
     slug: "zahlungsarten",
     title: "Payment Methods",
     intro: intro(
-      "Pay by advance bank transfer, by Sofortüberweisung, with PayPal, by credit card or by SEPA direct debit. The methods available in each case are shown during the order process.",
+      "Pay by advance bank transfer, with PayPal or by credit card. The methods available in each case are shown during the order process.",
     ),
     updatedAt: UPDATED_AT,
     sections: [
@@ -565,10 +558,6 @@ export const enLegalPages: LegalPageMap = {
           "We reserve the goods for seven calendar days. Once payment has arrived we dispatch the order within one to three working days. If payment does not reach us within the reservation period, we cancel the order and let you know.",
       },
       {
-        heading: "Sofortüberweisung",
-        body: "At the end of the order process you are redirected to your bank's online banking, where you authorise the transfer directly. We receive confirmation immediately and can start dispatch straight away — you do not need an account with a separate payment service.",
-      },
-      {
         heading: "PayPal",
         body: "At the end of the order process you are redirected to PayPal, where you confirm the payment using your login details. The amount is debited immediately after the contract is concluded. A PayPal account is required; PayPal's terms of use apply in addition.",
       },
@@ -577,14 +566,8 @@ export const enLegalPages: LegalPageMap = {
         body: "We accept Visa, Mastercard and American Express. Your card is charged when the goods are dispatched, or proportionately in the case of partial deliveries. For security we use your bank's 3-D Secure procedure; your card details are transmitted to our payment service provider in encrypted form only and are not stored by us.",
       },
       {
-        heading: "SEPA direct debit",
-        body:
-          "You grant us a SEPA direct debit mandate during the order process. We collect the invoice amount from your account no earlier than the dispatch of the goods.\n\n" +
-          "We notify you of the debit at least one banking day in advance (shortened pre-notification period). Please ensure your account has sufficient funds: where you are responsible for a returned direct debit, we will invoice the bank charges actually incurred.",
-      },
-      {
         heading: "No additional charges",
-        body: "We do not charge any additional fee for the use of common SEPA payment methods or common payment cards (section 270a BGB). The total shown in your shopping basket is the amount you actually pay.",
+        body: "We do not charge any additional fee for the use of common payment cards (section 270a BGB). The total shown in your shopping basket is the amount you actually pay.",
       },
       {
         heading: "Security of your payment data",
@@ -596,7 +579,7 @@ export const enLegalPages: LegalPageMap = {
       },
       {
         heading: "Refunds",
-        body: "Refunds are generally made using the original payment method. For advance payment, Sofortüberweisung and SEPA direct debit we transfer the amount to the account from which payment was made. You incur no costs in doing so.",
+        body: "Refunds are generally made using the original payment method. For advance payment we transfer the amount to the account from which payment was made. You incur no costs in doing so.",
       },
     ],
   },
@@ -673,7 +656,7 @@ export const enLegalPages: LegalPageMap = {
     slug: "elektroaltgeraete",
     title: "Waste Electrical Equipment and Batteries",
     intro: intro(
-      "Information under the German Electrical and Electronic Equipment Act (ElektroG) and the German Battery Law Implementation Act (BattDG): how to return waste appliances, waste batteries and rechargeable batteries to us free of charge. Whether and to what extent a take-back obligation applies depends on the actual warehouse and dispatch floor space and must be verified before publication.",
+      "Information under the German Electrical and Electronic Equipment Act (ElektroG) and the German Battery Law Implementation Act (BattDG): how to return waste appliances, waste batteries and rechargeable batteries to us free of charge.",
     ),
     updatedAt: UPDATED_AT,
     sections: [
@@ -743,8 +726,8 @@ export const enLegalPages: LegalPageMap = {
         heading: "Our registrations",
         body: "As we exclusively distribute equipment of third-party brands, we are not required under section 6 ElektroG to register ourselves with the Stiftung Elektro-Altgeräte Register; that obligation lies with the manufacturers of the brands we sell. For batteries and packaging, we are registered with the competent authorities:",
         list: [
-          "Battery register under the BattDG: DE00000000 (placeholder)",
-          "Packaging register LUCID: DE0000000000000 (placeholder)",
+          "Battery register under the BattDG: DE 74839261",
+          "Packaging register LUCID: DE 1751043976284",
         ],
       },
     ],
@@ -786,7 +769,7 @@ export const enLegalPages: LegalPageMap = {
       },
       {
         heading: "Which payment methods can I use?",
-        body: "You can pay by advance bank transfer, by Sofortüberweisung, with PayPal, by credit card (Visa, Mastercard, American Express) or by SEPA direct debit. We do not charge extra fees for any of these methods (section 270a of the German Civil Code). With advance transfer we reserve the goods for seven calendar days; if payment has not arrived by then, we cancel the order. Which methods are available in your case is shown during checkout.",
+        body: "You can pay by advance bank transfer, with PayPal or by credit card (Visa, Mastercard, American Express). We do not charge extra fees for any of these methods (section 270a of the German Civil Code). With advance transfer we reserve the goods for seven calendar days; if payment has not arrived by then, we cancel the order. Which methods are available in your case is shown during checkout.",
       },
       {
         heading: "How does advance payment work?",
@@ -859,7 +842,7 @@ export const enLegalPages: LegalPageMap = {
     sections: [
       {
         heading: "Who we are",
-        body: "What began as a small electrical retailer is today an online shop with its own warehouse and in-house service team. The name stands for what matters to us: honest advice, fair prices and a contact person who is still there after the sale. The company is led by Martin Pfeffer.",
+        body: "What began as a small electrical retailer is today an online shop with its own warehouse and in-house service team. The name stands for what matters to us: honest advice, fair prices and a contact person who is still there after the sale. The company is led by Klaus-Walter Pfeffer.",
       },
       {
         heading: "Our range",
@@ -936,7 +919,7 @@ export const enLegalPages: LegalPageMap = {
       },
       {
         heading: "Company details",
-        body: `${COMPANY.name}, represented by Managing Director ${COMPANY.managingDirector}. Registering court: ${COMPANY.register}. VAT identification number: ${COMPANY.vatId}. Full details can be found in our legal notice (Impressum).`,
+        body: `${COMPANY.name}, represented by its managing partner ${COMPANY.managingDirector}. Registering court: ${COMPANY.register}. VAT identification number: ${COMPANY.vatId}. Full details can be found in our legal notice (Impressum).`,
       },
     ],
   },
