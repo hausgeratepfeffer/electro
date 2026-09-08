@@ -97,6 +97,8 @@ interface ProductRow {
   descriptionEn: string;
   bulletsEn: string;
   image: string | null;
+  alt: string;
+  altEn: string;
   images: string;
   priceCents: number;
   oldPriceCents: number | null;
@@ -161,6 +163,8 @@ function toProductRecord(row: ProductRow): ProductRecord {
     descriptionEn: row.descriptionEn,
     bulletsEn: parseBullets(row.bulletsEn),
     image: row.image ?? undefined,
+    alt: row.alt || undefined,
+    altEn: row.altEn || undefined,
     images: parseImages(row.images),
     oldPrice: row.oldPriceCents === null ? undefined : formatPrice(row.oldPriceCents),
     price: formatPrice(row.priceCents),
@@ -356,6 +360,8 @@ export async function createProduct(input: Omit<ProductRecord, "id">): Promise<P
       descriptionEn: input.descriptionEn ?? "",
       bulletsEn: JSON.stringify(input.bulletsEn ?? []),
       image: input.image ?? null,
+      alt: input.alt ?? "",
+      altEn: input.altEn ?? "",
       images: JSON.stringify(input.images ?? []),
       priceCents: toCents(input.price),
       oldPriceCents: input.oldPrice ? toCents(input.oldPrice) : null,
@@ -428,6 +434,8 @@ export async function updateProduct(
       descriptionEn: patch.descriptionEn ?? undefined,
       bulletsEn: patch.bulletsEn ? JSON.stringify(patch.bulletsEn) : undefined,
       image: patch.image === undefined ? undefined : (patch.image || null),
+      alt: patch.alt ?? undefined,
+      altEn: patch.altEn ?? undefined,
       // Un tableau vide vide bien la galerie : seul `undefined` laisse la valeur en place
       images: patch.images === undefined ? undefined : JSON.stringify(patch.images),
       priceCents: patch.price ? toCents(patch.price) : undefined,
@@ -518,7 +526,7 @@ function toViewProduct(
     // Sans visuel propre, le produit reprend l'image de sa catégorie
     image: row.image || row.category.image,
     images: parseImages(row.images),
-    alt: `${row.brand} ${row.name}`,
+    alt: row.alt || `${row.brand} ${row.name}`,
     oldPrice: row.oldPriceCents === null ? undefined : formatPrice(row.oldPriceCents),
     price: formatPrice(row.priceCents),
     priceCents: row.priceCents,

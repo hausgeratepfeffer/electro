@@ -49,6 +49,8 @@ export function ProductForm({
   const [descriptionEn, setDescriptionEn] = useState(initialData?.descriptionEn ?? "");
   const [bulletsTextEn, setBulletsTextEn] = useState((initialData?.bulletsEn ?? []).join("\n"));
   const [image, setImage] = useState(initialData?.image ?? "");
+  const [alt, setAlt] = useState(initialData?.alt ?? "");
+  const [altEn, setAltEn] = useState(initialData?.altEn ?? "");
   const [images, setImages] = useState<string[]>(initialData?.images ?? []);
   const [oldPrice, setOldPrice] = useState(initialData?.oldPrice ?? "");
   const [price, setPrice] = useState(initialData?.price ?? "");
@@ -105,6 +107,8 @@ export function ProductForm({
       descriptionEn,
       bulletsEn: bulletsTextEn.split("\n").map((line) => line.trim()).filter(Boolean),
       image,
+      alt,
+      altEn,
       images,
       oldPrice,
       price,
@@ -312,7 +316,7 @@ export function ProductForm({
             />
           </label>
 
-          <label className="block text-sm">
+          <label className="mb-4 block text-sm">
             <span className="mb-1 block font-semibold text-foreground">
               Caractéristiques (anglais, une ligne par point)
             </span>
@@ -324,6 +328,18 @@ export function ProductForm({
               className="w-full rounded-sm border border-border bg-white px-3 py-2 outline-none focus:border-primary"
             />
           </label>
+
+          <label className="block text-sm">
+            <span className="mb-1 block font-semibold text-foreground">
+              Texte alternatif (image, anglais)
+            </span>
+            <input
+              value={altEn}
+              onChange={(event) => setAltEn(event.target.value)}
+              placeholder={alt || "Repli sur le texte alternatif allemand"}
+              className="w-full rounded-sm border border-border bg-white px-3 py-2 outline-none focus:border-primary"
+            />
+          </label>
         </div>
 
         <ImageUploadField
@@ -332,6 +348,21 @@ export function ProductForm({
           label="Image principale"
           hint="Sert de vignette dans les listes, le panier et le flux Google. Laisser vide pour utiliser l'image de la catégorie."
         />
+
+        <label className="mb-4 block text-sm">
+          <span className="mb-1 block font-semibold text-foreground">Texte alternatif (image)</span>
+          <input
+            value={alt}
+            onChange={(event) => setAlt(event.target.value)}
+            placeholder={`Repli automatique : « ${brand || "Marque"} ${name || "Nom du produit"} »`}
+            className="w-full rounded-sm border border-border px-3 py-2 outline-none focus:border-primary"
+          />
+          <span className="mt-1 block text-xs text-muted-foreground">
+            Laissé vide, l&apos;image reprend automatiquement « marque + nom du produit ». Ne décrivez
+            que ce que montre réellement la photo — type d&apos;appareil, couleur, caractéristique
+            visible ; pas de mots-clés qui n&apos;y figurent pas.
+          </span>
+        </label>
 
         <GalleryUploadField value={images} onChange={setImages} />
 

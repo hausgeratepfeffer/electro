@@ -105,6 +105,11 @@ model Product {
   shippingWeightGrams   Int?
   energyEfficiencyClass String?
   image                 String?
+  // Texte alternatif de l'image principale. Vide = repli sur « marque + nom »
+  // (voir localizeProduct dans localizedContent.ts) ; renseigné, il prend le
+  // pas — utile pour ajuster à la main les fiches qui comptent le plus en SEO.
+  alt                   String   @default("")
+  altEn                 String   @default("")
   // Vues complémentaires, en JSON comme `bullets`. `image` demeure la vignette
   // de référence (listes, panier, flux Google) ; ces images-ci n'apparaissent
   // que dans la galerie de la fiche produit.

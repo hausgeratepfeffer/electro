@@ -6,6 +6,9 @@ import type { ProductRecord } from "@/server/types";
 
 export const SHORT_DESCRIPTION_MAX = 200;
 
+/** Un texte alternatif reste une phrase courte, pas un paragraphe de mots-clés. */
+export const ALT_TEXT_MAX = 160;
+
 /** Garde-fou : au-delà, la galerie devient une charge de chargement inutile. */
 export const GALLERY_IMAGES_MAX = 8;
 
@@ -97,6 +100,24 @@ export function parseProductInput(raw: unknown, mode: "create" | "update"): Prod
       errors.push('Le chemin de l\'image doit commencer par « / » ou « http ».');
     } else {
       values.image = image;
+    }
+  }
+
+  if (has("alt")) {
+    const alt = asTrimmedString(body.alt) ?? "";
+    if (alt.length > ALT_TEXT_MAX) {
+      errors.push(`Le texte alternatif ne doit pas dépasser ${ALT_TEXT_MAX} caractères.`);
+    } else {
+      values.alt = alt;
+    }
+  }
+
+  if (has("altEn")) {
+    const altEn = asTrimmedString(body.altEn) ?? "";
+    if (altEn.length > ALT_TEXT_MAX) {
+      errors.push(`Le texte alternatif anglais ne doit pas dépasser ${ALT_TEXT_MAX} caractères.`);
+    } else {
+      values.altEn = altEn;
     }
   }
 

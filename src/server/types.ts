@@ -52,6 +52,9 @@ export interface ProductRecord {
   descriptionEn?: string;
   bulletsEn?: string[];
   image?: string;
+  /** Texte alternatif de l'image principale. Vide = repli sur « marque + nom ». */
+  alt?: string;
+  altEn?: string;
   /** Vues complémentaires de la galerie, dans l'ordre d'affichage */
   images?: string[];
   oldPrice?: string;

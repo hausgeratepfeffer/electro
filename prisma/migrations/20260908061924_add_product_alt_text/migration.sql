@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Product" ADD COLUMN     "alt" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "altEn" TEXT NOT NULL DEFAULT '';

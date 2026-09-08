@@ -31,6 +31,7 @@ interface ProductTranslation {
   shortDescription: string;
   description: string;
   bullets: string[];
+  altEn: string;
 }
 
 export interface CatalogTranslations {
@@ -87,12 +88,15 @@ export function localizeProduct(product: Product, translations: CatalogTranslati
   const shortDescription = pickText(product.shortDescription ?? "", translated.shortDescription);
   const description = pickText(product.description ?? "", translated.description);
 
+  // Un alt personnalisé (back-office) prime ; sinon reprend le nom traduit,
+  // la marque ne se traduisant pas.
+  const alt = pickText(product.alt || `${product.brand} ${name}`, translated.altEn);
+
   return {
     ...product,
     name,
     bullets,
-    // L'alternative textuelle reprend le nom traduit, la marque ne se traduit pas
-    alt: `${product.brand} ${name}`,
+    alt,
     shortDescription: shortDescription || undefined,
     description: description || undefined,
   };
@@ -186,6 +190,7 @@ const chargerLignesTraduction = unstable_cache(
           shortDescriptionEn: true,
           descriptionEn: true,
           bulletsEn: true,
+          altEn: true,
         },
       }),
     ]);
@@ -231,6 +236,7 @@ export async function loadCatalogTranslations(locale: string): Promise<CatalogTr
           shortDescription: product.shortDescriptionEn,
           description: product.descriptionEn,
           bullets: parseBullets(product.bulletsEn),
+          altEn: product.altEn,
         },
       ]),
     ),
