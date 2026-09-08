@@ -1,14 +1,22 @@
 import { NextResponse } from "next/server";
 import { requireAdminApi } from "@/lib/adminApi";
+import { localizedUrl } from "@/lib/hreflang";
+import { pingIndexNow } from "@/lib/indexnow";
 import {
   deleteRatgeberPost,
   getRatgeberPostAdmin,
   RatgeberSlugConflictError,
   updateRatgeberPost,
 } from "@/server/ratgeber";
-import type { RatgeberPostInput } from "@/server/ratgeber";
+import type { RatgeberPostInput, RatgeberPostRecord } from "@/server/ratgeber";
 
 type Params = Promise<{ id: string }>;
+
+/** URL publiques DE + EN d'un article Ratgeber, pour la notification IndexNow. */
+function ratgeberUrls(post: RatgeberPostRecord): string[] {
+  const path = `/ratgeber/${post.slug}`;
+  return [localizedUrl(path, "de"), localizedUrl(path, "en")];
+}
 
 function parseInput(body: unknown): { input?: RatgeberPostInput; error?: string } {
   const raw = (body ?? {}) as Record<string, unknown>;
@@ -58,6 +66,7 @@ export async function PUT(request: Request, { params }: { params: Params }) {
   try {
     const post = await updateRatgeberPost(id, input);
     if (!post) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
+    if (post.published) void pingIndexNow(ratgeberUrls(post));
     return NextResponse.json(post);
   } catch (error) {
     const message =

@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { invaliderCatalogue } from "@/server/cacheCatalogue";
 import { requireAdminApi } from "@/lib/adminApi";
-import { isLegalLocale, isLegalSlug, LEGAL_SLUG_LABELS } from "@/content/legal";
+import { getLegalHref, isLegalLocale, isLegalSlug, LEGAL_SLUG_LABELS } from "@/content/legal";
+import { absoluteUrl } from "@/server/merchant";
+import { pingIndexNow } from "@/lib/indexnow";
 import type { LegalLocale, LegalSlug } from "@/content/legal/types";
 import { normalizeLegalPage, toLegalPageInput } from "@/server/legalPageInput";
 import {
@@ -105,6 +107,7 @@ export async function PUT(request: Request, { params }: { params: Params }) {
 
   await saveLegalPage(target.slug, target.locale, result.page, session.email);
   refreshShop();
+  void pingIndexNow([absoluteUrl(getLegalHref(target.slug, target.locale))]);
 
   return NextResponse.json({ success: true, content: toLegalPageInput(result.page) });
 }

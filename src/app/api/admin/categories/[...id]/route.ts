@@ -3,8 +3,16 @@ import { invaliderCatalogue } from "@/server/cacheCatalogue";
 import { requireAdminApi } from "@/lib/adminApi";
 import { prisma } from "@/server/prisma";
 import { slugify } from "@/lib/slugify";
+import { localizedUrl } from "@/lib/hreflang";
+import { pingIndexNow } from "@/lib/indexnow";
 import { deleteCategory, getCategoryRecord, updateCategory } from "@/server/store";
-import type { CategoryGuide } from "@/server/types";
+import type { CategoryGuide, CategoryRecord } from "@/server/types";
+
+/** URL publiques DE + EN d'une page catégorie, pour la notification IndexNow. */
+function categoryUrls(category: CategoryRecord): string[] {
+  const path = `/${category.group}/${category.slug}`;
+  return [localizedUrl(path, "de"), localizedUrl(path, "en")];
+}
 
 type Params = Promise<{ id: string[] }>;
 
@@ -119,6 +127,7 @@ export async function PUT(request: Request, { params }: { params: Params }) {
   }
 
   invaliderCatalogue();
+  void pingIndexNow(categoryUrls(updated));
   return NextResponse.json(updated);
 }
 

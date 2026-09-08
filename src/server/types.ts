@@ -35,6 +35,8 @@ export interface CategoryRecord {
 export interface ProductRecord {
   id: string;
   categoryId: string;
+  /** Calculé par createProduct() à partir de marque + nom ; jamais un champ saisi. */
+  slug?: string;
   brand: string;
   name: string;
   bullets: string[];

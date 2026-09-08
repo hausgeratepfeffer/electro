@@ -1,8 +1,18 @@
 import { invaliderCatalogue } from "@/server/cacheCatalogue";
 import { NextResponse } from "next/server";
 import { requireAdminApi } from "@/lib/adminApi";
+import { localizedUrl } from "@/lib/hreflang";
+import { pingIndexNow } from "@/lib/indexnow";
 import { parseProductInput } from "@/server/productInput";
 import { deleteProduct, getProductRecord, updateProduct } from "@/server/store";
+import type { ProductRecord } from "@/server/types";
+
+/** URL publiques DE + EN d'une fiche produit, pour la notification IndexNow. */
+function productUrls(product: ProductRecord): string[] {
+  if (!product.slug) return [];
+  const path = `/${product.categoryId}/${product.slug}`;
+  return [localizedUrl(path, "de"), localizedUrl(path, "en")];
+}
 
 type Params = Promise<{ id: string }>;
 
@@ -33,6 +43,7 @@ export async function PUT(request: Request, { params }: { params: Params }) {
     const updated = await updateProduct(id, values);
     if (!updated) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
     invaliderCatalogue();
+    void pingIndexNow(productUrls(updated));
     return NextResponse.json(updated);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Échec de l'enregistrement.";

@@ -153,6 +153,7 @@ function toProductRecord(row: ProductRow): ProductRecord {
   return {
     id: row.id,
     categoryId: `${row.category.group.slug}/${row.category.slug}`,
+    slug: row.slug,
     brand: row.brand,
     name: row.name,
     bullets: parseBullets(row.bullets),

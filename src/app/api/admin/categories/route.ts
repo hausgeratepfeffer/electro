@@ -3,8 +3,16 @@ import { invaliderCatalogue } from "@/server/cacheCatalogue";
 import { requireAdminApi } from "@/lib/adminApi";
 import { prisma } from "@/server/prisma";
 import { slugify } from "@/lib/slugify";
+import { localizedUrl } from "@/lib/hreflang";
+import { pingIndexNow } from "@/lib/indexnow";
 import { createCategory, listCategories } from "@/server/store";
-import type { CategoryGuide } from "@/server/types";
+import type { CategoryGuide, CategoryRecord } from "@/server/types";
+
+/** URL publiques DE + EN d'une page catégorie, pour la notification IndexNow. */
+function categoryUrls(category: CategoryRecord): string[] {
+  const path = `/${category.group}/${category.slug}`;
+  return [localizedUrl(path, "de"), localizedUrl(path, "en")];
+}
 
 /** Nimmt nur Abschnitte mit Inhalt an und wirft alles Unbrauchbare weg. */
 function parseGuide(raw: unknown): CategoryGuide {
@@ -94,6 +102,7 @@ export async function POST(request: Request) {
       guide: parseGuide(body?.guide),
     });
     invaliderCatalogue();
+    void pingIndexNow(categoryUrls(category));
     return NextResponse.json(category, { status: 201 });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Échec de l'enregistrement.";

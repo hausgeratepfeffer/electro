@@ -1,8 +1,18 @@
 import { invaliderCatalogue } from "@/server/cacheCatalogue";
 import { NextResponse } from "next/server";
 import { requireAdminApi } from "@/lib/adminApi";
+import { localizedUrl } from "@/lib/hreflang";
+import { pingIndexNow } from "@/lib/indexnow";
 import { parseProductInput, toCreateInput } from "@/server/productInput";
 import { createProduct, listProducts } from "@/server/store";
+import type { ProductRecord } from "@/server/types";
+
+/** URL publiques DE + EN d'une fiche produit, pour la notification IndexNow. */
+function productUrls(product: ProductRecord): string[] {
+  if (!product.slug) return [];
+  const path = `/${product.categoryId}/${product.slug}`;
+  return [localizedUrl(path, "de"), localizedUrl(path, "en")];
+}
 
 export async function GET(request: Request) {
   const { unauthorized } = await requireAdminApi();
@@ -36,6 +46,7 @@ export async function POST(request: Request) {
     const product = await createProduct(input);
     // Shop-Seiten neu aufbauen, damit das neue Produkt sofort sichtbar ist
     invaliderCatalogue();
+    void pingIndexNow(productUrls(product));
     return NextResponse.json(product, { status: 201 });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Échec de la création.";
