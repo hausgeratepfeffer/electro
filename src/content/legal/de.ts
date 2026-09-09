@@ -855,36 +855,39 @@ export const deLegalPages: LegalPageMap = {
     slug: "ueber-uns",
     title: "Über uns",
     intro:
-      "Hausgeräte Pfeffer ist ein Fachhändler für Haushaltsgeräte und Multimedia mit Sitz in Trier. Wir verkaufen keine Geräte von der Stange, sondern beraten dazu – vom passenden Nischenmaß bis zur richtigen Bildwiederholrate.",
+      "Hausgeräte Pfeffer OHG ist ein inhabergeführtes Fachgeschäft für Haushaltsgeräte und Multimedia mit Sitz in Trier. Wir sind seit 2007 am Markt und beraten Sie kompetent und persönlich – online wie in unserem Ausstellungsraum vor Ort.",
     updatedAt: UPDATED_AT,
     sections: [
       {
-        heading: "Wer wir sind",
-        body: "Was als kleiner Elektrofachbetrieb begann, ist heute ein Onlineshop mit angeschlossenem Lager und eigenem Serviceteam. Der Name steht für das, was uns wichtig ist: ehrliche Beratung, faire Preise und ein Ansprechpartner, der auch nach dem Kauf noch da ist. Geführt wird das Unternehmen von Klaus-Walter Pfeffer.",
-      },
-      {
-        heading: "Unser Sortiment",
+        heading: "1. Was bieten wir an?",
         body: "Wir konzentrieren uns auf zwei Welten: Haushalt und Multimedia. Im Haushaltsbereich finden Sie Waschmaschinen, Geschirrspüler, Kühl- und Gefriergeräte, Backöfen und Herde, Staubsauger, Küchenmaschinen, Kaffeevollautomaten und Klimageräte. Im Multimediabereich Fernseher, Smartphones, Computer, Smartwatches, Videospiele und Drohnen. Statt eines endlosen Katalogs führen wir eine kuratierte Auswahl von Marken, die wir selbst kennen und deren Serviceabwicklung funktioniert.",
       },
       {
-        heading: "Beratung statt Bestellformular",
-        body: "Ein Kühlschrank, der nicht in die Nische passt, oder ein Fernseher, der im hellen Wohnzimmer zu dunkel ist, ärgert lange. Deshalb ist unsere Beratung montags bis samstags von 8 bis 20 Uhr unter +49 176 14111374 erreichbar. Wir fragen nach Nischenmaßen, Anschlüssen, Wasserhärte oder Raumgröße – und sagen auch, wenn das günstigere Modell für Ihren Fall das bessere ist.",
+        heading: "2. Wer sind wir?",
+        body:
+          "Die Hausgeräte Pfeffer OHG wurde 2007 gegründet. Was als kleiner Betrieb für den Verkauf von Haushaltsgeräten und die Reparatur elektronischer Geräte begann, ist heute ein Online-Fachhandel mit eigenem Lager, eigener Ausstellung und eigenem Kundenservice.\n\n" +
+          "Heute arbeiten mehr als 15 Mitarbeiterinnen und Mitarbeiter bei uns – in der Beratung, im Kundenservice, in der Technik sowie im Lager und Versand. Geführt wird das Unternehmen von Klaus-Walter Pfeffer als geschäftsführendem Gesellschafter.\n\n" +
+          "Unser Name steht für unsere Werte: kompetente Beratung, faire Preise und einen persönlichen Ansprechpartner, der Ihnen auch nach dem Kauf zur Seite steht.",
       },
       {
-        heading: "Service und Montage",
+        heading: "3. Wie beraten wir Sie – online und vor Ort?",
+        body:
+          "In unserem Ausstellungsraum in der Matthiasstraße 15, 54290 Trier, können Sie Geräte vor dem Kauf ansehen, vergleichen und sich persönlich beraten lassen. Unsere Beratung erreichen Sie außerdem telefonisch unter +49 176 14111374 und per E-Mail an kontakt@hausgeratepfeffer.de. Ausstellung und Beratung sind montags bis freitags von 8:00 bis 19:00 Uhr sowie samstags von 9:00 bis 16:00 Uhr für Sie da.\n\n" +
+          "Wir fragen Sie nach den Einbaumaßen, den vorhandenen Anschlüssen, der Wasserhärte sowie der Größe des Raumes und empfehlen Ihnen anschließend das Modell, das am besten zu Ihren Anforderungen passt.",
+      },
+      {
+        heading: "4. Welchen Service und welche Montage bieten wir?",
         body: "Unsere Servicepartner schließen Waschmaschinen an, bauen Geräte in vorbereitete Nischen ein und montieren Fernseher an der Wand. Bei einem Defekt schicken wir bevorzugt einen Techniker zu Ihnen, statt ein Großgerät quer durch Deutschland zu transportieren. Das ist schneller für Sie und schont das Gerät.",
       },
       {
-        heading: "Nachhaltigkeit und Altgeräte",
+        heading: "5. Wie gehen wir mit Nachhaltigkeit und Altgeräten um?",
         body: "Wir nehmen Ihr Altgerät bei der Lieferung kostenlos mit und führen es der fachgerechten Verwertung zu. Kleine Altgeräte und Altbatterien nehmen wir auch ohne Neukauf zurück. Bei der Sortimentsauswahl achten wir auf Reparierbarkeit, Ersatzteilverfügbarkeit und lange Update-Zusagen bei vernetzten Geräten – Kriterien, die im Datenblatt selten stehen, im Alltag aber den Unterschied machen.",
       },
       {
-        heading: "Standort und Logistik",
-        body: "Unser Sitz ist Trier, von dort steuern wir Einkauf, Kundenservice und Retourenabwicklung. Der Versand erfolgt über Paketdienste und spezialisierte Zwei-Mann-Speditionen für Großgeräte, damit auch ein 90 Kilogramm schwerer Kühlschrank sicher an seinem Platz ankommt.",
-      },
-      {
-        heading: "Arbeiten bei Hausgeräte Pfeffer",
-        body: "Wir suchen regelmäßig Verstärkung in Beratung, Technik und Logistik. Wenn Sie Freude daran haben, Menschen wirklich weiterzuhelfen, statt nur Bestellungen abzuarbeiten, schreiben Sie uns an kontakt@hausgeratepfeffer.de – auch Initiativbewerbungen sind willkommen.",
+        heading: "6. Wo sind wir zu finden?",
+        body:
+          "Firmensitz, Ausstellung und Lager befinden sich unter einer Adresse: Matthiasstraße 15, 54290 Trier, Deutschland. Von hier organisieren wir Einkauf, Beratung, Kundenservice, die Bearbeitung von Rücksendungen sowie Lagerhaltung und Versand.\n\n" +
+          "Den Versand Ihrer Bestellungen wickeln wir selbst ab – in Zusammenarbeit mit Paketdienstleistern und, bei großen Haushaltsgeräten, mit spezialisierten Zwei-Mann-Speditionen. So sind eine sorgfältige Handhabung und eine sichere Lieferung auch bei besonders schweren Geräten wie einem 90 kg schweren Kühlschrank gewährleistet. Einzelheiten zu Versandkosten und Lieferzeiten finden Sie auf der Seite „Versand und Lieferung“.",
       },
     ],
   },

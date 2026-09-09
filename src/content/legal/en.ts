@@ -835,38 +835,41 @@ export const enLegalPages: LegalPageMap = {
   /* ------------------------------------------------------------------ */
   "ueber-uns": {
     slug: "ueber-uns",
-    title: "About Us",
+    title: "About us",
     intro:
-      "Hausgeräte Pfeffer is a specialist retailer for household appliances and consumer electronics based in Trier. We don't just sell appliances off the shelf — we advise on them, from the right recess dimensions to the right refresh rate.",
+      "Hausgeräte Pfeffer OHG is an owner-managed specialist retailer for household appliances and multimedia, based in Trier. We have been in business since 2007 and advise you competently and personally — online and in our showroom on site.",
     updatedAt: UPDATED_AT,
     sections: [
       {
-        heading: "Who we are",
-        body: "What began as a small electrical retailer is today an online shop with its own warehouse and in-house service team. The name stands for what matters to us: honest advice, fair prices and a contact person who is still there after the sale. The company is led by Klaus-Walter Pfeffer.",
+        heading: "1. What do we offer?",
+        body: "We concentrate on two worlds: household and multimedia. In the household section you will find washing machines, dishwashers, fridges and freezers, ovens and cookers, vacuum cleaners, food processors, bean-to-cup coffee machines and air conditioners. In the multimedia section, televisions, smartphones, computers, smartwatches, video games and drones. Rather than an endless catalogue, we carry a curated selection of brands that we know ourselves and whose after-sales service actually works.",
       },
       {
-        heading: "Our range",
-        body: "We focus on two worlds: household and multimedia. In the household segment you will find washing machines, dishwashers, refrigerators and freezers, ovens and cookers, vacuum cleaners, food processors, bean-to-cup coffee machines and air conditioners. In multimedia: televisions, smartphones, computers, smartwatches, video games and drones. Instead of an endless catalogue we carry a curated selection of brands we know ourselves and whose after-sales service actually works.",
+        heading: "2. Who are we?",
+        body:
+          "Hausgeräte Pfeffer OHG was founded in 2007. What began as a small business selling household appliances and repairing electronic devices is today a specialist online retailer with its own warehouse, its own showroom and its own customer service.\n\n" +
+          "Today more than 15 employees work with us — in advice, customer service, technical service, and the warehouse and dispatch. The company is run by Klaus-Walter Pfeffer as managing partner.\n\n" +
+          "Our name stands for our values: competent advice, fair prices and a personal contact who is still there for you after the purchase.",
       },
       {
-        heading: "Advice rather than an order form",
-        body: "A fridge that doesn't fit the recess, or a television that looks too dark in a bright living room, is an annoyance that lasts. That is why our advisers are available Monday to Saturday, 8 a.m. to 8 p.m., on +49 176 14111374. We ask about recess dimensions, connections, water hardness and room size — and we will say so when the cheaper model is the better choice for your situation.",
+        heading: "3. How do we advise you — online and on site?",
+        body:
+          "In our showroom at Matthiasstraße 15, 54290 Trier, you can view and compare appliances before buying and get personal advice. You can also reach our advisory team by phone on +49 176 14111374 and by email at kontakt@hausgeratepfeffer.de. The showroom and advisory service are open Monday to Friday from 8:00 to 19:00 and on Saturdays from 9:00 to 16:00.\n\n" +
+          "We ask you about the installation dimensions, the connections available, the water hardness and the size of the room, and then recommend the model that best suits your requirements.",
       },
       {
-        heading: "Service and installation",
-        body: "Our service partners connect washing machines, install appliances in prepared recesses and mount televisions on the wall. If something breaks, we prefer to send a technician to you rather than transporting a large appliance across the country. That is faster for you and gentler on the appliance.",
+        heading: "4. What service and installation do we offer?",
+        body: "Our service partners connect washing machines, fit appliances into prepared recesses and mount televisions on the wall. In the event of a fault, we prefer to send a technician to you rather than transport a large appliance across Germany. That is faster for you and gentler on the appliance.",
       },
       {
-        heading: "Sustainability and old appliances",
-        body: "We collect your old appliance free of charge on delivery and pass it on for proper recycling. Small waste appliances and waste batteries are taken back even without a new purchase. When selecting our range we look at repairability, spare part availability and long update commitments for connected devices — criteria that rarely appear on a spec sheet but make all the difference in everyday use.",
+        heading: "5. How do we handle sustainability and old appliances?",
+        body: "We collect your old appliance free of charge on delivery and pass it on for proper recycling. We also take back small waste appliances and waste batteries without a new purchase. When selecting our range we pay attention to repairability, spare-part availability and long update commitments for connected devices — criteria that rarely appear on a data sheet, but that make the difference in everyday use.",
       },
       {
-        heading: "Location and logistics",
-        body: "We are based in Trier, from where we manage purchasing, customer service and returns. Shipping is handled by parcel services and specialist two-person freight carriers for large appliances, so that even a 90-kilogram refrigerator arrives safely in its place.",
-      },
-      {
-        heading: "Working at Hausgeräte Pfeffer",
-        body: "We regularly look for reinforcements in advice, technical service and logistics. If you enjoy genuinely helping people rather than just processing orders, write to us at kontakt@hausgeratepfeffer.de — speculative applications are welcome too.",
+        heading: "6. Where can you find us?",
+        body:
+          "Our registered office, showroom and warehouse are all at one address: Matthiasstraße 15, 54290 Trier, Germany. From here we organise purchasing, advice, customer service, the processing of returns, and warehousing and dispatch.\n\n" +
+          "We handle the dispatch of your orders ourselves — working with parcel carriers and, for large household appliances, with specialised two-person freight forwarders. This ensures careful handling and safe delivery even for particularly heavy appliances such as a 90 kg fridge. You will find details of shipping costs and delivery times on the “Shipping and delivery” page.",
       },
     ],
   },
