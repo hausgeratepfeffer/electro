@@ -48,9 +48,9 @@ const IMPRESSUM = {
   street: "Matthiasstraße 15",
   city: "54290 Trier",
   country: "Deutschland",
-  managingDirector: "Martin Pfeffer",
-  register: "Amtsgericht Wittlich, HRA 00000",
-  vatId: "DE000000000",
+  managingDirector: "Klaus-Walter Pfeffer",
+  register: "Amtsgericht Wittlich, HRA 40155",
+  vatId: "DE182085642",
 } as const;
 
 // ---- Entrées ----
@@ -373,8 +373,8 @@ function renderHtml(input: RenderInput & { paragraphs: string[]; token: string }
   ].join(" &middot; ");
   const identityDetail = [
     isEnglish
-      ? `Managing director: ${IMPRESSUM.managingDirector}`
-      : `Geschäftsführer: ${IMPRESSUM.managingDirector}`,
+      ? `Managing partner: ${IMPRESSUM.managingDirector}`
+      : `Geschäftsführender Gesellschafter: ${IMPRESSUM.managingDirector}`,
     IMPRESSUM.register,
     isEnglish ? `VAT ID: ${IMPRESSUM.vatId}` : `USt-IdNr.: ${IMPRESSUM.vatId}`,
   ].join(" &middot; ");
@@ -470,8 +470,8 @@ function renderText(input: RenderInput & { bodyText: string }): string {
     "---",
     `${IMPRESSUM.name}, ${IMPRESSUM.street}, ${IMPRESSUM.city}, ${IMPRESSUM.country}`,
     isEnglish
-      ? `Managing director: ${IMPRESSUM.managingDirector} — ${IMPRESSUM.register} — VAT ID: ${IMPRESSUM.vatId}`
-      : `Geschäftsführer: ${IMPRESSUM.managingDirector} — ${IMPRESSUM.register} — USt-IdNr.: ${IMPRESSUM.vatId}`,
+      ? `Managing partner: ${IMPRESSUM.managingDirector} — ${IMPRESSUM.register} — VAT ID: ${IMPRESSUM.vatId}`
+      : `Geschäftsführender Gesellschafter: ${IMPRESSUM.managingDirector} — ${IMPRESSUM.register} — USt-IdNr.: ${IMPRESSUM.vatId}`,
     `Impressum: ${input.legalUrl}`,
     `${isEnglish ? "Privacy policy" : "Datenschutz"}: ${input.privacyUrl}`,
     "",
