@@ -39,14 +39,6 @@ function descriptionFor(page: LegalPage): string {
   return truncateAtWord(parts.join(". ").trim(), MAX_DESCRIPTION_LENGTH);
 }
 
-function formatDate(iso: string, locale: string): string {
-  return new Date(iso).toLocaleDateString(locale === "en" ? "en-GB" : "de-DE", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
-}
-
 /** Métadonnées communes à toutes les pages légales, hreflang compris. */
 export async function buildLegalMetadata(slug: LegalSlug, locale: string): Promise<Metadata> {
   const page = await findLegalPage(slug, locale);
@@ -154,10 +146,6 @@ export function LegalPageArticle({ page, locale }: { page: LegalPage; locale: st
           <SectionBlock key={`${index}-${section.heading}`} section={section} />
         ))}
       </div>
-
-      <p className="mt-10 border-t border-border pt-4 text-xs text-muted-foreground">
-        {locale === "en" ? "Last updated" : "Stand"}: {formatDate(page.updatedAt, locale)}
-      </p>
     </article>
   );
 }
@@ -192,7 +180,6 @@ export async function LegalPageView({ slug, locale }: { slug: LegalSlug; locale:
         title={page.title}
         description={descriptionFor(page)}
         locale={resolvedLocale}
-        dateModified={page.updatedAt}
       />
       <BreadcrumbJsonLd items={breadcrumbItems} />
     </>
