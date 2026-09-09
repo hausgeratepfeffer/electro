@@ -106,15 +106,29 @@ export const FOOTER_GROUP_IDS = ["service", "legal", "company"] as const;
 /**
  * Répartition des slugs par colonne du pied de page.
  *
- * « widerruf » et « elektroaltgeraete » n'y figurent pas : les pages existent
- * toujours et restent servies à leur adresse, elles ne sont simplement plus
- * listées ici. Les liens qui y mènent depuis le tunnel de commande et depuis le
- * suivi de commande restent la voie d'accès.
+ * « widerruf » figure dans la colonne « Rechtliches » : la politique de
+ * rétractation doit être directement identifiable et accessible sans connexion
+ * (exigence Google Merchant Center), pas seulement atteignable via /retoure ou
+ * le tunnel de commande.
+ *
+ * « elektroaltgeraete » n'y figure pas : la page existe toujours et reste
+ * servie à son adresse, les liens du tunnel de commande et du suivi de
+ * commande restent la voie d'accès.
  */
 export const FOOTER_GROUP_SLUGS: Readonly<Record<LegalFooterGroup["id"], readonly LegalSlug[]>> = {
   service: ["versand", "zahlungsarten", "retoure", "faq"],
-  legal: ["impressum", "agb", "datenschutz"],
+  legal: ["impressum", "agb", "datenschutz", "widerruf"],
   company: ["ueber-uns", "kontakt"],
+};
+
+/**
+ * Libellés courts pour le pied de page, quand le titre de la page est trop
+ * long pour une colonne. À défaut, le pied de page reprend le titre de la page.
+ */
+export const FOOTER_LINK_LABELS: Partial<
+  Record<LegalSlug, Readonly<Record<LegalLocale, string>>>
+> = {
+  widerruf: { de: "Widerrufsrecht", en: "Right of withdrawal" },
 };
 
 export { deLegalPages, enLegalPages };

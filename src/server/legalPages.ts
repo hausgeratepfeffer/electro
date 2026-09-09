@@ -24,6 +24,7 @@ import {
   FOOTER_GROUP_IDS,
   FOOTER_GROUP_SLUGS,
   FOOTER_GROUP_TITLES,
+  FOOTER_LINK_LABELS,
   LEGAL_LOCALES,
   LEGAL_SLUGS,
   ORIGIN_PAGES,
@@ -115,13 +116,15 @@ export async function listLegalPages(locale: LegalLocale): Promise<readonly Lega
 }
 
 function toFooterLink(slug: LegalSlug, locale: LegalLocale, pages: LegalPageMap): LegalFooterLink {
-  return { slug, label: pages[slug].title, href: getLegalHref(slug, locale) };
+  const label = FOOTER_LINK_LABELS[slug]?.[locale] ?? pages[slug].title;
+  return { slug, label, href: getLegalHref(slug, locale) };
 }
 
 /**
  * Colonnes du pied de page.
- * Les libellés sont les titres des pages : renommer une page depuis
- * l'administration renomme aussi son lien.
+ * Le libellé est le titre de la page — renommer une page depuis
+ * l'administration renomme aussi son lien —, sauf pour les slugs de
+ * `FOOTER_LINK_LABELS`, dont le titre est trop long pour une colonne.
  */
 export async function getLegalFooterGroups(
   locale: LegalLocale = DEFAULT_LEGAL_LOCALE,
