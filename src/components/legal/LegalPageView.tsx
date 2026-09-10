@@ -47,6 +47,15 @@ function formatDate(date: Date, locale: string): string {
   });
 }
 
+/**
+ * Cartes Open Graph dédiées (route /og/[slug]) pour les pages légales qui
+ * méritent mieux que le logo dans un aperçu de lien. Les autres retombent sur
+ * le défaut du layout — un Impressum n'a pas vocation à être partagé.
+ */
+const LEGAL_OG_IMAGE: Partial<Record<LegalSlug, string>> = {
+  "ueber-uns": "/og/ueber-uns.png",
+};
+
 /** Métadonnées communes à toutes les pages légales, hreflang compris. */
 export async function buildLegalMetadata(slug: LegalSlug, locale: string): Promise<Metadata> {
   const page = await findLegalPage(slug, locale);
@@ -72,6 +81,7 @@ export async function buildLegalMetadata(slug: LegalSlug, locale: string): Promi
       description,
       url: localizedUrl(`/${slug}`, resolvedLocale),
       locale: resolvedLocale,
+      image: LEGAL_OG_IMAGE[slug],
     }),
   };
 }

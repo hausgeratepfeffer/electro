@@ -29,6 +29,7 @@ export async function generateMetadata({ params }: { params: PageParams }): Prom
       description: t("metaDescription"),
       url: localizedUrl("/ratgeber", locale),
       locale,
+      image: "/og/ratgeber.png",
     }),
   };
 }

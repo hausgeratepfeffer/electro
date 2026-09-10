@@ -97,7 +97,13 @@ export async function generateMetadata({ params }: { params: HomeParams }): Prom
     title,
     description,
     alternates: alternatesFor("/", locale),
-    ...buildSocialMetadata({ title, description, url: localizedUrl("/", locale), locale }),
+    ...buildSocialMetadata({
+      title,
+      description,
+      url: localizedUrl("/", locale),
+      locale,
+      image: "/og/home.png",
+    }),
   };
 }
 
