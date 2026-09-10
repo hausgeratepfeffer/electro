@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
@@ -190,7 +191,16 @@ export function LegalPageArticle({
   );
 }
 
-export async function LegalPageView({ slug, locale }: { slug: LegalSlug; locale: string }) {
+export async function LegalPageView({
+  slug,
+  locale,
+  afterArticle,
+}: {
+  slug: LegalSlug;
+  locale: string;
+  /** Contenu rendu dans le <main>, sous l'article (ex. le bloc bio « Über uns »). */
+  afterArticle?: ReactNode;
+}) {
   const result = await findLegalPageWithMeta(slug, locale);
   if (!result) notFound();
   const { page, updatedAt } = result;
@@ -210,6 +220,7 @@ export async function LegalPageView({ slug, locale }: { slug: LegalSlug; locale:
         </div>
 
         <LegalPageArticle page={page} locale={locale} updatedAt={updatedAt} />
+        {afterArticle && <div className="mx-auto max-w-3xl px-3 pb-8">{afterArticle}</div>}
       </main>
       <Footer />
 

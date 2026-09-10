@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Breadcrumb } from "@/components/Breadcrumb";
@@ -9,6 +9,8 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { RichText } from "@/components/RichText";
 import { findLegalPage } from "@/server/legalPages";
 import { stripMarks } from "@/lib/richText";
+import { editorialAuthorJsonLd } from "@/content/editorialAuthor";
+import { EditorialAuthor } from "@/components/EditorialAuthor";
 
 const SLUG = "faq" as const;
 
@@ -26,7 +28,6 @@ export default async function FaqPage({ params }: { params: PageParams }) {
   const page = await findLegalPage(SLUG, locale);
   if (!page) notFound();
 
-  const common = await getTranslations("common");
 
   // Balisage FAQPage : Google peut afficher les questions directement
   // dans les résultats de recherche. Le balisage attend du texte nu — les
@@ -45,7 +46,7 @@ export default async function FaqPage({ params }: { params: PageParams }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    author: { "@type": "Organization", name: common("shopName") },
+    author: editorialAuthorJsonLd(locale),
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: [".faq-question", ".faq-answer"],
@@ -78,7 +79,7 @@ export default async function FaqPage({ params }: { params: PageParams }) {
         <div className="mx-auto max-w-3xl px-3 py-8">
           <h1 className="mb-1 text-2xl font-black text-foreground sm:text-3xl">{page.title}</h1>
           <p className="mb-4 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
-            {common("editorialTeam")}
+            <EditorialAuthor locale={locale} variant="byline" />
           </p>
           {page.intro && (
             <p className="mb-6 text-sm leading-relaxed text-muted-foreground">

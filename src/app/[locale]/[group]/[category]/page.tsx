@@ -8,9 +8,12 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { CategoryProductBrowser } from "@/components/CategoryProductBrowser";
 import { CategoryGuide } from "@/components/CategoryGuide";
 import { PaymentMethodsBar } from "@/components/PaymentMethodsBar";
+import { TrustBar } from "@/components/TrustBar";
+import { CompanyFactsBar } from "@/components/CompanyFactsBar";
 import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
 import { ItemListJsonLd } from "@/components/seo/ItemListJsonLd";
 import { FaqPageJsonLd } from "@/components/seo/FaqPageJsonLd";
+import { editorialAuthorJsonLd } from "@/content/editorialAuthor";
 import { alternatesFor, localizedUrl } from "@/lib/hreflang";
 import { buildSocialMetadata } from "@/lib/opengraph";
 import { getCategoryPage, listCategories } from "@/server/store";
@@ -88,6 +91,11 @@ export default async function CategoryPage({ params }: { params: CategoryPagePar
           </div>
         </div>
 
+        {/* Mêmes bandeaux de réassurance que l'accueil : la page catégorie est
+            une porte d'entrée fréquente depuis la recherche et n'en portait
+            aucun. */}
+        <TrustBar />
+
         <div id="produkte" className="mx-auto max-w-screen-xl scroll-mt-20 px-3 py-6">
           <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
             <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-sm border border-border sm:h-24 sm:w-24">
@@ -107,7 +115,9 @@ export default async function CategoryPage({ params }: { params: CategoryPagePar
           />
         </div>
 
-        <CategoryGuide label={data.label} guide={data.guide} />
+        <CategoryGuide label={data.label} guide={data.guide} locale={locale} />
+
+        <CompanyFactsBar />
       </main>
       <Footer />
 
@@ -128,12 +138,16 @@ export default async function CategoryPage({ params }: { params: CategoryPagePar
       />
       {/* Les sous-titres du guide catégorie sont déjà formulés en questions
           (« Worauf sollten Sie beim Kauf achten ? ») : seule la FAQ globale
-          portait jusqu'ici un balisage FAQPage, jamais ces guides. */}
+          portait jusqu'ici un balisage FAQPage, jamais ces guides.
+          `speakable` reprend le pendant de /faq — les classes ciblées sont
+          posées sur les mêmes Q/R par <CategoryGuide>. */}
       <FaqPageJsonLd
         items={data.guide.sections.map((section) => ({
           question: section.heading,
           answer: section.body,
         }))}
+        speakableSelector={[".category-faq-question", ".category-faq-answer"]}
+        author={editorialAuthorJsonLd(locale)}
       />
     </>
   );

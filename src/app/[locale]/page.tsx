@@ -4,6 +4,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { HeroBanner } from "@/components/HeroBanner";
 import { TrustBar } from "@/components/TrustBar";
+import { CompanyFactsBar } from "@/components/CompanyFactsBar";
 import { CategoryRow } from "@/components/CategoryRow";
 import { DealOfTheDay } from "@/components/DealOfTheDay";
 import { BrandRow } from "@/components/BrandRow";
@@ -165,7 +166,10 @@ export default async function Home({ params }: { params: HomeParams }) {
         {/* La section « Das sagen unsere Kunden » a été retirée : ses trois
             témoignages étaient inventés, et la moyenne affichée sous ce titre
             portait sur les notes rédactionnelles, non sur des avis de clients.
-            À rétablir le jour où de vrais avis existent. */}
+            À rétablir le jour où de vrais avis existent. En attendant, une
+            réassurance vérifiable prend sa place : faits d'entreprise repris de
+            « Über uns » et de l'Impressum, sans rien inventer. */}
+        <CompanyFactsBar />
       </main>
       <Footer />
 

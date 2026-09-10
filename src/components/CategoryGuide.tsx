@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Reveal } from "@/components/Reveal";
+import { EditorialAuthor } from "@/components/EditorialAuthor";
 import type { CategoryGuide as CategoryGuideData } from "@/server/types";
 
 // Le contenu du guide (intro, sections, conclusion) est déjà localisé en amont
@@ -8,34 +9,51 @@ import type { CategoryGuide as CategoryGuideData } from "@/server/types";
 export async function CategoryGuide({
   label,
   guide,
+  locale,
 }: {
   label: string;
   guide: CategoryGuideData;
+  locale: string;
 }) {
   const t = await getTranslations("category");
-  const common = await getTranslations("common");
 
   return (
     <section className="mx-auto max-w-screen-xl px-3 py-10">
       <Reveal>
         <h2 className="text-xl font-black text-foreground sm:text-2xl">{t("guideTitle", { label })}</h2>
-        {/* Signature éditoriale : signal d'auteur pour l'E-E-A-T (GEO), sans
-            prêter à une personne précise une expertise qu'on ne peut pas
-            vérifier — l'équipe existe réellement, un « expert » nommé serait
-            inventé. */}
+        {/* Signature d'auteur pour l'E-E-A-T (GEO) : une personne réelle de
+            l'entreprise (responsable éditoriale), avec bio visible sur « Über
+            uns » et balisage Person sur ces contenus. */}
         <p className="mt-1 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
-          {common("editorialTeam")}
+          <EditorialAuthor locale={locale} variant="byline" />
         </p>
         <p className="mt-3 max-w-3xl text-sm text-muted-foreground sm:text-base">{guide.intro}</p>
       </Reveal>
 
       <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-3">
-        {guide.sections.map((section, index) => (
-          <Reveal key={section.heading} delay={Math.min((index + 1) * 100, 300)}>
-            <h3 className="mb-2 text-sm font-bold text-foreground">{section.heading}</h3>
-            <p className="text-sm text-muted-foreground">{section.body}</p>
-          </Reveal>
-        ))}
+        {guide.sections.map((section, index) => {
+          // Sous-titre déjà formulé en question : on le marque pour le balisage
+          // FAQPage + speakable posé par la page catégorie (même filtre « ? »
+          // que <FaqPageJsonLd>). Les autres sections restent hors périmètre,
+          // comme sur /faq — on ne balise que ce qui est vraiment une Q/R.
+          const isQuestion = section.heading.trim().endsWith("?");
+          return (
+            <Reveal key={section.heading} delay={Math.min((index + 1) * 100, 300)}>
+              <h3
+                className={`mb-2 text-sm font-bold text-foreground${
+                  isQuestion ? " category-faq-question" : ""
+                }`}
+              >
+                {section.heading}
+              </h3>
+              <p
+                className={`text-sm text-muted-foreground${isQuestion ? " category-faq-answer" : ""}`}
+              >
+                {section.body}
+              </p>
+            </Reveal>
+          );
+        })}
       </div>
 
       {/* Comparatif éventuel : une seule section sur trois en porte un, jamais

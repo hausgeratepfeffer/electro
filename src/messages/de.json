@@ -12,6 +12,8 @@
     "breadcrumb": "Navigationspfad",
     "shopName": "Hausgeräte Pfeffer",
     "editorialTeam": "Redaktion Hausgeräte Pfeffer",
+    "editorialByline": "Von {name}, {role}",
+    "editorialCardTitle": "Über die Redaktion",
     "groupNames": {
       "haushalt": "Haushalt",
       "multimedia": "Multimedia"
@@ -134,6 +136,17 @@
     "returnDetail": "Ohne Angabe von Gründen",
     "serviceTitle": "Anschluss- & Montageservice",
     "serviceDetail": "Altgeräte-Mitnahme auf Wunsch"
+  },
+  "company": {
+    "sinceTitle": "Fachhandel seit 2007",
+    "sinceDetail": "Haushalt & Multimedia",
+    "ownedTitle": "Inhabergeführte OHG aus Trier",
+    "ownedDetail": "Geführt von Klaus-Walter Pfeffer",
+    "showroomTitle": "Ausstellungsraum in Trier",
+    "showroomDetail": "Matthiasstraße 15 – Geräte vor dem Kauf ansehen",
+    "teamTitle": "Über 15 Mitarbeitende",
+    "teamDetail": "Eigener Kundenservice, eigenes Lager, eigener Versand",
+    "moreLink": "Mehr über Hausgeräte Pfeffer"
   },
   "group": {
     "metaTitle": "{label} – Geräte und Zubehör | Hausgeräte Pfeffer",

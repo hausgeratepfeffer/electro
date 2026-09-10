@@ -11,6 +11,8 @@ import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
 import { ArticleJsonLd } from "@/components/seo/ArticleJsonLd";
 import { FaqPageJsonLd } from "@/components/seo/FaqPageJsonLd";
 import { ratgeberFaqItems } from "@/lib/ratgeberFaq";
+import { EditorialAuthor } from "@/components/EditorialAuthor";
+import { EDITORIAL_AUTHOR, editorialAuthorJsonLd } from "@/content/editorialAuthor";
 import { alternatesFor, localizedUrl } from "@/lib/hreflang";
 import { buildSocialMetadata } from "@/lib/opengraph";
 import { getPublishedRatgeberPostBySlug, plainExcerpt } from "@/server/ratgeber";
@@ -51,7 +53,7 @@ export async function generateMetadata({ params }: { params: PageParams }): Prom
       article: {
         publishedTime: post.publishedAt,
         modifiedTime: post.updatedAt,
-        authorName: "Hausgeräte Pfeffer",
+        authorName: EDITORIAL_AUTHOR.name,
       },
     }),
   };
@@ -84,6 +86,14 @@ export default async function RatgeberPostPage({ params }: { params: PageParams 
   // seulement quand l'article est réellement structuré en questions.
   const faqItems = ratgeberFaqItems(post.body);
 
+  const bodyParagraphs = paragraphsOf(post.body);
+  // `speakable` de l'Article : Google lit à voix haute le titre et le chapô
+  // (premier paragraphe qui n'est pas un sous-titre « ## »). On ne cible le
+  // chapô que s'il existe vraiment — jamais un sélecteur qui ne pointe sur rien.
+  const leadIndex = bodyParagraphs.findIndex((paragraph) => !paragraph.startsWith("## "));
+  const speakableSelector =
+    leadIndex >= 0 ? [".ratgeber-headline", ".ratgeber-lead"] : [".ratgeber-headline"];
+
   const breadcrumbItems = [
     { label: common("home"), href: "/" },
     { label: t("title"), href: "/ratgeber" },
@@ -101,10 +111,14 @@ export default async function RatgeberPostPage({ params }: { params: PageParams 
         </div>
 
         <article className="mx-auto max-w-3xl px-3 py-8">
-          <h1 className="mb-2 text-2xl font-black text-foreground sm:text-3xl">{post.title}</h1>
+          <h1 className="ratgeber-headline mb-2 text-2xl font-black text-foreground sm:text-3xl">
+            {post.title}
+          </h1>
           <p className="mb-6 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
             {t("publishedOn", { date: publishedDate })}
-            {updatedDate ? ` · ${t("updatedOn", { date: updatedDate })}` : ""} · Redaktion Hausgeräte Pfeffer
+            {updatedDate ? ` · ${t("updatedOn", { date: updatedDate })}` : ""}
+            {" · "}
+            <EditorialAuthor locale={locale} variant="byline" />
           </p>
 
           {post.coverImage && (
@@ -121,7 +135,7 @@ export default async function RatgeberPostPage({ params }: { params: PageParams 
           )}
 
           <div className="space-y-4 text-sm leading-relaxed text-foreground/90 sm:text-base">
-            {paragraphsOf(post.body).map((paragraph, index) => {
+            {bodyParagraphs.map((paragraph, index) => {
               // Convention légère, propre aux articles Ratgeber : un paragraphe
               // qui commence par « ## » devient un sous-titre. Pas une nouvelle
               // syntaxe dans richText.ts (partagé avec les pages légales et la
@@ -135,13 +149,16 @@ export default async function RatgeberPostPage({ params }: { params: PageParams 
                   </h2>
                 );
               }
+              // Chapô = premier paragraphe non-titre ; cible du balisage speakable.
               return (
-                <p key={key}>
+                <p key={key} className={index === leadIndex ? "ratgeber-lead" : undefined}>
                   <RichText text={paragraph} />
                 </p>
               );
             })}
           </div>
+
+          <EditorialAuthor locale={locale} variant="card" />
         </article>
       </main>
       <Footer />
@@ -154,8 +171,12 @@ export default async function RatgeberPostPage({ params }: { params: PageParams 
         image={post.coverImage || undefined}
         publishedAt={post.publishedAt}
         updatedAt={post.updatedAt}
+        locale={locale}
+        speakableSelector={speakableSelector}
       />
-      {faqItems.length >= 2 && <FaqPageJsonLd items={faqItems} />}
+      {faqItems.length >= 2 && (
+        <FaqPageJsonLd items={faqItems} author={editorialAuthorJsonLd(locale)} />
+      )}
     </>
   );
 }

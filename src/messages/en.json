@@ -12,6 +12,8 @@
     "breadcrumb": "Breadcrumb",
     "shopName": "Hausgeräte Pfeffer",
     "editorialTeam": "Hausgeräte Pfeffer editorial team",
+    "editorialByline": "By {name}, {role}",
+    "editorialCardTitle": "About our editorial team",
     "groupNames": {
       "haushalt": "Home Appliances",
       "multimedia": "Multimedia"
@@ -134,6 +136,17 @@
     "returnDetail": "No reason required",
     "serviceTitle": "Installation & assembly service",
     "serviceDetail": "Old appliance taken away on request"
+  },
+  "company": {
+    "sinceTitle": "Specialist retailer since 2007",
+    "sinceDetail": "Home appliances & multimedia",
+    "ownedTitle": "Owner-managed OHG in Trier",
+    "ownedDetail": "Run by Klaus-Walter Pfeffer",
+    "showroomTitle": "Showroom in Trier",
+    "showroomDetail": "Matthiasstraße 15 – see appliances before you buy",
+    "teamTitle": "A team of 15+",
+    "teamDetail": "In-house customer service, warehouse and shipping",
+    "moreLink": "More about Hausgeräte Pfeffer"
   },
   "group": {
     "metaTitle": "{label} – appliances and accessories | Hausgeräte Pfeffer",
