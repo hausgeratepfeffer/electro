@@ -9,6 +9,8 @@ import { RichText } from "@/components/RichText";
 import { paragraphsOf } from "@/lib/richText";
 import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
 import { ArticleJsonLd } from "@/components/seo/ArticleJsonLd";
+import { FaqPageJsonLd } from "@/components/seo/FaqPageJsonLd";
+import { ratgeberFaqItems } from "@/lib/ratgeberFaq";
 import { alternatesFor, localizedUrl } from "@/lib/hreflang";
 import { buildSocialMetadata } from "@/lib/opengraph";
 import { getPublishedRatgeberPostBySlug, plainExcerpt } from "@/server/ratgeber";
@@ -76,6 +78,11 @@ export default async function RatgeberPostPage({ params }: { params: PageParams 
   // tombe un autre jour que la publication — sinon la mention ferait doublon.
   const updatedDate =
     dateFmt(post.updatedAt) !== publishedDate ? dateFmt(post.updatedAt) : null;
+
+  // FAQPage dérivé des sous-titres en question de l'article : élargit la
+  // capture d'extraits (« People also ask ») sans rien ajouter au contenu. Posé
+  // seulement quand l'article est réellement structuré en questions.
+  const faqItems = ratgeberFaqItems(post.body);
 
   const breadcrumbItems = [
     { label: common("home"), href: "/" },
@@ -148,6 +155,7 @@ export default async function RatgeberPostPage({ params }: { params: PageParams 
         publishedAt={post.publishedAt}
         updatedAt={post.updatedAt}
       />
+      {faqItems.length >= 2 && <FaqPageJsonLd items={faqItems} />}
     </>
   );
 }
