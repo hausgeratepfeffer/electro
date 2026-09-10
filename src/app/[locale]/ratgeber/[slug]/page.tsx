@@ -25,9 +25,15 @@ export async function generateMetadata({ params }: { params: PageParams }): Prom
   const description = plainExcerpt(post).slice(0, 160);
   // Le titre éditorial peut dépasser 60 caractères (mots-clés inclus à
   // dessein) ; Google tronque autour de là dans les résultats de recherche.
-  // On raccourcit donc uniquement la balise <title>, pas le H1 ni l'og:title
-  // — voir la même logique sur la fiche produit (truncateAtWord).
-  const metaTitleText = `${truncateAtWord(post.title, 40)} | Hausgeräte Pfeffer`;
+  // On garde le suffixe de marque quand le tout tient dans ~60 caractères,
+  // sinon on sert le titre éditorial seul, coupé sur un mot entier et sans
+  // « … » (Google ajoute le sien s'il tronque à l'affichage). Le H1 et
+  // l'og:title, eux, gardent le titre complet.
+  const BRAND_SUFFIX = " | Hausgeräte Pfeffer";
+  const metaTitleText =
+    post.title.length + BRAND_SUFFIX.length <= 60
+      ? `${post.title}${BRAND_SUFFIX}`
+      : truncateAtWord(post.title, 60, "");
 
   return {
     title: metaTitleText,

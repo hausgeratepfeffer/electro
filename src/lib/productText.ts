@@ -48,11 +48,17 @@ export function productShortText(
 // Coupe sur un espace plutôt qu'en plein mot ; utilisé pour les balises
 // <title> et meta description, que Google tronque brutalement au-delà d'une
 // certaine longueur (perte du suffixe de marque, phrase coupée en plein mot).
-export function truncateAtWord(text: string, maxLength: number): string {
+//
+// `suffix` vaut « … » par défaut, adapté aux meta descriptions : le point de
+// suspension signale la coupe. Pour une balise <title>, passer "" — un titre
+// coupé net sur un mot se lit comme un titre, alors qu'un « … » collé au
+// milieu d'un nom de produit ou d'un titre d'article se lit comme un bug (et
+// Google ajoute lui-même son propre « … » s'il tronque à l'affichage).
+export function truncateAtWord(text: string, maxLength: number, suffix = "…"): string {
   if (text.length <= maxLength) return text;
   const cut = text.slice(0, maxLength);
   const lastSpace = cut.lastIndexOf(" ");
-  return (lastSpace > maxLength * 0.6 ? cut.slice(0, lastSpace) : cut).trimEnd() + "…";
+  return (lastSpace > maxLength * 0.6 ? cut.slice(0, lastSpace) : cut).trimEnd() + suffix;
 }
 
 export function productLongText(
