@@ -109,6 +109,24 @@ export async function findLegalPage(slug: string, locale: string): Promise<Legal
   return pages[slug];
 }
 
+/**
+ * Comme `findLegalPage`, mais avec la date de dernière modification RÉELLE :
+ * celle de la ligne `LegalContent` (colonne `@updatedAt`, tenue à jour à chaque
+ * enregistrement), et non le champ `updatedAt` figé du gabarit versionné. Rend
+ * `updatedAt: null` quand la page est servie depuis le fichier de repli — dans
+ * ce cas aucune date fiable n'existe, donc rien ne doit être affiché.
+ */
+export async function findLegalPageWithMeta(
+  slug: string,
+  locale: string,
+): Promise<{ page: LegalPage; updatedAt: Date | null } | undefined> {
+  if (!isLegalSlug(slug) || !isLegalLocale(locale)) return undefined;
+  const [pages, overrides] = await Promise.all([getLegalPageMap(locale), loadOverrides(locale)]);
+  const page = pages[slug];
+  if (!page) return undefined;
+  return { page, updatedAt: overrides.get(slug)?.updatedAt ?? null };
+}
+
 /** Toutes les pages d'une langue, dans l'ordre d'affichage. */
 export async function listLegalPages(locale: LegalLocale): Promise<readonly LegalPage[]> {
   const pages = await getLegalPageMap(locale);

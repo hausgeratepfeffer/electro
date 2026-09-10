@@ -65,11 +65,17 @@ export default async function RatgeberPostPage({ params }: { params: PageParams 
   const t = await getTranslations("ratgeber");
   const common = await getTranslations("common");
 
-  const publishedDate = new Date(post.publishedAt).toLocaleDateString(locale === "en" ? "en-GB" : "de-DE", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
+  const dateFmt = (iso: string) =>
+    new Date(iso).toLocaleDateString(locale === "en" ? "en-GB" : "de-DE", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    });
+  const publishedDate = dateFmt(post.publishedAt);
+  // Signal de fraîcheur : on n'affiche « Aktualisiert am … » que si la révision
+  // tombe un autre jour que la publication — sinon la mention ferait doublon.
+  const updatedDate =
+    dateFmt(post.updatedAt) !== publishedDate ? dateFmt(post.updatedAt) : null;
 
   const breadcrumbItems = [
     { label: common("home"), href: "/" },
@@ -90,7 +96,8 @@ export default async function RatgeberPostPage({ params }: { params: PageParams 
         <article className="mx-auto max-w-3xl px-3 py-8">
           <h1 className="mb-2 text-2xl font-black text-foreground sm:text-3xl">{post.title}</h1>
           <p className="mb-6 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
-            {t("publishedOn", { date: publishedDate })} · Redaktion Hausgeräte Pfeffer
+            {t("publishedOn", { date: publishedDate })}
+            {updatedDate ? ` · ${t("updatedOn", { date: updatedDate })}` : ""} · Redaktion Hausgeräte Pfeffer
           </p>
 
           {post.coverImage && (

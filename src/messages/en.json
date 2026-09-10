@@ -182,6 +182,7 @@
     "empty": "Our first guides are coming soon.",
     "readMore": "Read more",
     "publishedOn": "Published on {date}",
+    "updatedOn": "Updated on {date}",
     "backToOverview": "Back to all guides",
     "footerLink": "Guides"
   },

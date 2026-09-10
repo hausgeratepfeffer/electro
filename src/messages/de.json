@@ -182,6 +182,7 @@
     "empty": "Hier entstehen bald unsere ersten Ratgeber-Artikel.",
     "readMore": "Weiterlesen",
     "publishedOn": "Veröffentlicht am {date}",
+    "updatedOn": "Aktualisiert am {date}",
     "backToOverview": "Zur Ratgeber-Übersicht",
     "footerLink": "Ratgeber"
   },

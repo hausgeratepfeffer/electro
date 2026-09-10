@@ -6,7 +6,7 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { RichText } from "@/components/RichText";
 import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
 import { WebPageJsonLd } from "@/components/seo/WebPageJsonLd";
-import { findLegalPage } from "@/server/legalPages";
+import { findLegalPage, findLegalPageWithMeta } from "@/server/legalPages";
 import { paragraphsOf, stripMarks } from "@/lib/richText";
 import { hasLocale } from "next-intl";
 import { alternatesFor, localizedUrl } from "@/lib/hreflang";
@@ -37,6 +37,14 @@ function descriptionFor(page: LegalPage): string {
   }
 
   return truncateAtWord(parts.join(". ").trim(), MAX_DESCRIPTION_LENGTH);
+}
+
+function formatDate(date: Date, locale: string): string {
+  return date.toLocaleDateString(locale === "en" ? "en-GB" : "de-DE", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
 }
 
 /** Métadonnées communes à toutes les pages légales, hreflang compris. */
@@ -122,8 +130,24 @@ function SectionBlock({ section }: { section: LegalSection }) {
   );
 }
 
-/** Corps de page réutilisé par la boutique et par l'aperçu du back-office. */
-export function LegalPageArticle({ page, locale }: { page: LegalPage; locale: string }) {
+/**
+ * Corps de page réutilisé par la boutique et par l'aperçu du back-office.
+ *
+ * `updatedAt` est la date de dernière modification RÉELLE (colonne `updatedAt`
+ * de `LegalContent`), pas le champ figé du gabarit. Fournie ⇒ on affiche un
+ * « Stand : … » en pied de page ; absente (page servie depuis le fichier de
+ * repli) ⇒ on n'affiche rien plutôt qu'une date à laquelle on ne peut pas se
+ * fier.
+ */
+export function LegalPageArticle({
+  page,
+  locale,
+  updatedAt,
+}: {
+  page: LegalPage;
+  locale: string;
+  updatedAt?: Date | null;
+}) {
   return (
     <article className="mx-auto max-w-3xl px-3 py-8">
       <h1 className="mb-4 text-2xl font-black text-foreground sm:text-3xl">{page.title}</h1>
@@ -146,13 +170,20 @@ export function LegalPageArticle({ page, locale }: { page: LegalPage; locale: st
           <SectionBlock key={`${index}-${section.heading}`} section={section} />
         ))}
       </div>
+
+      {updatedAt && (
+        <p className="mt-10 border-t border-border pt-4 text-xs text-muted-foreground">
+          {locale === "en" ? "Last updated" : "Stand"}: {formatDate(updatedAt, locale)}
+        </p>
+      )}
     </article>
   );
 }
 
 export async function LegalPageView({ slug, locale }: { slug: LegalSlug; locale: string }) {
-  const page = await findLegalPage(slug, locale);
-  if (!page) notFound();
+  const result = await findLegalPageWithMeta(slug, locale);
+  if (!result) notFound();
+  const { page, updatedAt } = result;
 
   const home = locale === "en" ? "Home" : "Start";
   const resolvedLocale = hasLocale(routing.locales, locale) ? locale : routing.defaultLocale;
@@ -168,7 +199,7 @@ export async function LegalPageView({ slug, locale }: { slug: LegalSlug; locale:
           </div>
         </div>
 
-        <LegalPageArticle page={page} locale={locale} />
+        <LegalPageArticle page={page} locale={locale} updatedAt={updatedAt} />
       </main>
       <Footer />
 
@@ -180,6 +211,7 @@ export async function LegalPageView({ slug, locale }: { slug: LegalSlug; locale:
         title={page.title}
         description={descriptionFor(page)}
         locale={resolvedLocale}
+        dateModified={updatedAt?.toISOString()}
       />
       <BreadcrumbJsonLd items={breadcrumbItems} />
     </>
