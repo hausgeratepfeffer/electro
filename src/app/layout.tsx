@@ -1,6 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Lato } from "next/font/google";
+import { hasLocale } from "next-intl";
 import { getLocale } from "next-intl/server";
+import { HTML_LANG, routing } from "@/i18n/routing";
 import "./globals.css";
 
 const lato = Lato({
@@ -43,6 +45,12 @@ export const metadata: Metadata = {
   },
 };
 
+// themeColor doit vivre dans l'export `viewport` (Next l'ignore dans `metadata`) :
+// il colore la barre d'adresse mobile et la fenêtre du gestionnaire de tâches.
+export const viewport: Viewport = {
+  themeColor: "#ffffff",
+};
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -51,6 +59,9 @@ export default async function RootLayout({
   // La langue vient du routage pour la boutique ; le back-office, hors
   // middleware, retombe sur la langue par défaut (allemand).
   const locale = await getLocale();
+  // <html lang> porte une étiquette BCP-47 régionalisée ("de-DE" / "en-GB")
+  // plutôt que le code nu : le référencement cible l'Allemagne.
+  const htmlLang = hasLocale(routing.locales, locale) ? HTML_LANG[locale] : HTML_LANG.de;
 
   // suppressHydrationWarning ne porte que sur <html> : les extensions de
   // navigateur y posent leurs propres attributs (data-qb-installed, thèmes
@@ -59,7 +70,7 @@ export default async function RootLayout({
   // entière pour tout le contenu de la page.
   return (
     <html
-      lang={locale}
+      lang={htmlLang}
       className={`${lato.variable} h-full antialiased`}
       suppressHydrationWarning
     >

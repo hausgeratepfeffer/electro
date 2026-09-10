@@ -19,3 +19,23 @@ export const LOCALE_LABELS: Record<Locale, string> = {
   de: "Deutsch",
   en: "English",
 };
+
+// Le référencement vise l'Allemagne : le contenu principal est l'allemand, servi
+// à la racine. On régionalise donc les étiquettes de langue plutôt que de rester
+// sur un « de » / « en » nus.
+//
+// HTML_LANG alimente l'attribut <html lang>. "de-DE" pour le contenu allemand
+// (celui qui porte le référencement). "en-GB" pour les pages anglaises,
+// minoritaires : "anglais européen", standard et — contrairement à un "en-DE" —
+// reconnu par les balises og:locale, ce qui évite un écart entre les deux.
+export const HTML_LANG: Record<Locale, string> = {
+  de: "de-DE",
+  en: "en-GB",
+};
+
+// OG_LOCALE alimente og:locale (format langue_TERRITOIRE de la liste Facebook).
+// Aligné sur HTML_LANG.
+export const OG_LOCALE: Record<Locale, string> = {
+  de: "de_DE",
+  en: "en_GB",
+};

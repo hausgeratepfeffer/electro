@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { OG_LOCALE, type Locale } from "@/i18n/routing";
 
 // Bloc Open Graph / Twitter Card partagé par les pages publiques. Sans lui,
 // un lien partagé sur WhatsApp, Facebook ou X n'affiche ni image ni titre —
@@ -8,7 +9,7 @@ const SITE_NAME = "Hausgeräte Pfeffer";
 const DEFAULT_OG_IMAGE = "/images/logo-full.png";
 
 function ogLocale(locale: string): string {
-  return locale === "en" ? "en_US" : "de_DE";
+  return OG_LOCALE[locale as Locale] ?? OG_LOCALE.de;
 }
 
 export function buildSocialMetadata(params: {
