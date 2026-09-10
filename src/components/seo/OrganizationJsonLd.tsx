@@ -74,6 +74,17 @@ export function OrganizationJsonLd({ sameAs, address = ADRESSE_SIEGE }: Organiza
     url: base,
     inLanguage: MERCHANT_LANGUAGE,
     publisher: { "@id": `${base}#organization` },
+    // Recherche interne du site (/suche?q=…) : rend la boutique éligible à la
+    // « sitelinks search box » de Google, un champ de recherche affiché sous le
+    // résultat de marque.
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${base}/suche?q={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
+    },
   };
 
   return (
