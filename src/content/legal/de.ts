@@ -194,7 +194,7 @@ export const deLegalPages: LegalPageMap = {
       {
         heading: "§ 6 Zahlungsbedingungen",
         body:
-          "Wir bieten Vorkasse per Überweisung, PayPal und Kreditkarte an. Welche Zahlungsarten im Einzelfall zur Verfügung stehen, wird Ihnen im Bestellprozess angezeigt; wir behalten uns vor, einzelne Zahlungsarten auszuschließen.\n\n" +
+          "Wir bieten Vorkasse per Überweisung und Kreditkarte an. Welche Zahlungsarten im Einzelfall zur Verfügung stehen, wird Ihnen im Bestellprozess angezeigt; wir behalten uns vor, einzelne Zahlungsarten auszuschließen.\n\n" +
           "Bei Vorkasse erhalten Sie unsere Bankdaten mit der Bestellbestätigung; die Bestellnummer dient als Verwendungszweck. Wir reservieren die Ware sieben Kalendertage und versenden nach Eingang der Zahlung. Geht die Zahlung innerhalb der Reservierungsfrist nicht ein, stornieren wir die Bestellung.\n\n" +
           "Für die Nutzung gängiger Zahlungskarten berechnen wir kein zusätzliches Entgelt (§ 270a BGB). Kommen Sie in Zahlungsverzug, gelten die gesetzlichen Regelungen; als Verbraucher schulden Sie Verzugszinsen in Höhe von fünf Prozentpunkten über dem Basiszinssatz.",
       },
@@ -308,7 +308,7 @@ export const deLegalPages: LegalPageMap = {
       {
         heading: "6. Zahlungsdienstleister",
         body:
-          "Je nach gewählter Zahlungsart geben wir die für die Zahlungsabwicklung erforderlichen Daten an den jeweiligen Zahlungsdienstleister weiter: für PayPal an die PayPal (Europe) S.à r.l. et Cie, S.C.A., 22–24 Boulevard Royal, L-2449 Luxemburg; für Kreditkartenzahlungen an die Stripe Payments Europe, Limited, 1 Grand Canal Street Lower, Grand Canal Dock, Dublin, Irland.\n\n" +
+          "Je nach gewählter Zahlungsart geben wir die für die Zahlungsabwicklung erforderlichen Daten an den jeweiligen Zahlungsdienstleister weiter: für Kreditkartenzahlungen an die Stripe Payments Europe, Limited, 1 Grand Canal Street Lower, Grand Canal Dock, Dublin, Irland.\n\n" +
           "Die Zahlungsdienstleister verarbeiten die Daten in eigener Verantwortung. Rechtsgrundlage der Übermittlung ist Artikel 6 Absatz 1 Buchstabe b DSGVO. Kreditkarten- und Bankdaten werden ausschließlich beim jeweiligen Dienstleister erhoben; wir speichern keine vollständigen Zahlungsdaten.",
       },
       {
@@ -565,7 +565,7 @@ export const deLegalPages: LegalPageMap = {
     slug: "zahlungsarten",
     title: "Zahlungsarten",
     intro: intro(
-      "Sie zahlen bei uns per Vorkasse-Überweisung, mit PayPal oder per Kreditkarte. Welche Zahlungsarten im Einzelfall verfügbar sind, sehen Sie im Bestellprozess.",
+      "Sie zahlen bei uns per Vorkasse-Überweisung oder per Kreditkarte. Welche Zahlungsarten im Einzelfall verfügbar sind, sehen Sie im Bestellprozess.",
     ),
     updatedAt: UPDATED_AT,
     sections: [
@@ -574,10 +574,6 @@ export const deLegalPages: LegalPageMap = {
         body:
           "Mit der Bestellbestätigung erhalten Sie unsere Bankverbindung und die Bestellnummer, die Sie bitte als Verwendungszweck angeben. Dieselben Angaben stehen auf der Rechnung, die der Bestätigung als PDF beiliegt.\n\n" +
           "Wir reservieren die Ware sieben Kalendertage. Nach Eingang der Zahlung versenden wir die Bestellung innerhalb von einem bis drei Werktagen. Geht die Zahlung nicht innerhalb der Reservierungsfrist ein, stornieren wir die Bestellung und Sie erhalten eine Nachricht von uns.",
-      },
-      {
-        heading: "PayPal",
-        body: "Sie werden am Ende des Bestellvorgangs zu PayPal weitergeleitet und bestätigen die Zahlung dort mit Ihren Zugangsdaten. Der Betrag wird unmittelbar nach dem Vertragsschluss abgebucht. Für die Nutzung benötigen Sie ein PayPal-Konto; es gelten zusätzlich die Nutzungsbedingungen von PayPal.",
       },
       {
         heading: "Kreditkarte",
@@ -787,7 +783,7 @@ export const deLegalPages: LegalPageMap = {
       },
       {
         heading: "Welche Zahlungsarten kann ich nutzen?",
-        body: "Sie können per Vorkasse-Überweisung, mit PayPal oder mit Kreditkarte (Visa, Mastercard, American Express) bezahlen. Zusatzgebühren berechnen wir für keine dieser Zahlungsarten (§ 270a BGB). Bei Vorkasse reservieren wir die Ware sieben Kalendertage; geht die Zahlung bis dahin nicht ein, stornieren wir die Bestellung. Welche Zahlungsarten im Einzelfall zur Verfügung stehen, sehen Sie im Bestellprozess.",
+        body: "Sie können per Vorkasse-Überweisung oder mit Kreditkarte (Visa, Mastercard, American Express) bezahlen. Zusatzgebühren berechnen wir für keine dieser Zahlungsarten (§ 270a BGB). Bei Vorkasse reservieren wir die Ware sieben Kalendertage; geht die Zahlung bis dahin nicht ein, stornieren wir die Bestellung. Welche Zahlungsarten im Einzelfall zur Verfügung stehen, sehen Sie im Bestellprozess.",
       },
       {
         heading: "Wie läuft die Zahlung per Vorkasse ab?",

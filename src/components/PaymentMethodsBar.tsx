@@ -44,14 +44,6 @@ const DISPLAY_METHODS: DisplayMethod[] = [
     feeLabel: "kostenlos",
   },
   {
-    id: "paypal",
-    key: "paypal",
-    label: "PayPal",
-    description: "Bezahlen mit PayPal-Konto oder als Gast.",
-    icon: "wallet",
-    feeLabel: "kostenlos",
-  },
-  {
     id: "kreditkarte",
     key: "kreditkarte",
     label: "Kreditkarte",

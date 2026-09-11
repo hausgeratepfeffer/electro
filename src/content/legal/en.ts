@@ -178,7 +178,7 @@ export const enLegalPages: LegalPageMap = {
       {
         heading: "Section 6 Payment terms",
         body:
-          "We offer advance payment by bank transfer, PayPal and credit card. The payment methods available in each individual case are shown during the order process; we reserve the right to exclude individual payment methods.\n\n" +
+          "We offer advance payment by bank transfer and credit card. The payment methods available in each individual case are shown during the order process; we reserve the right to exclude individual payment methods.\n\n" +
           "For advance payment you receive our bank details with the order confirmation; the order number serves as the payment reference. We reserve the goods for seven calendar days and dispatch them once payment has arrived. If payment does not reach us within that period, we cancel the order.\n\n" +
           "We do not charge any additional fee for the use of common payment cards (section 270a BGB). If you default on payment, the statutory provisions apply; consumers owe default interest of five percentage points above the base rate.",
       },
@@ -292,7 +292,7 @@ export const enLegalPages: LegalPageMap = {
       {
         heading: "6. Payment service providers",
         body:
-          "Depending on the payment method you select, we pass on the data required for payment processing to the relevant payment service provider: for PayPal to PayPal (Europe) S.à r.l. et Cie, S.C.A., 22–24 Boulevard Royal, L-2449 Luxembourg; for credit card payments to Stripe Payments Europe, Limited, 1 Grand Canal Street Lower, Grand Canal Dock, Dublin, Ireland.\n\n" +
+          "Depending on the payment method you select, we pass on the data required for payment processing to the relevant payment service provider: for credit card payments to Stripe Payments Europe, Limited, 1 Grand Canal Street Lower, Grand Canal Dock, Dublin, Ireland.\n\n" +
           "The payment service providers process this data under their own responsibility. The legal basis for the transfer is Article 6(1)(b) GDPR. Credit card and bank details are collected exclusively by the respective provider; we do not store complete payment data.",
       },
       {
@@ -547,7 +547,7 @@ export const enLegalPages: LegalPageMap = {
     slug: "zahlungsarten",
     title: "Payment Methods",
     intro: intro(
-      "Pay by advance bank transfer, with PayPal or by credit card. The methods available in each case are shown during the order process.",
+      "Pay by advance bank transfer or by credit card. The methods available in each case are shown during the order process.",
     ),
     updatedAt: UPDATED_AT,
     sections: [
@@ -556,10 +556,6 @@ export const enLegalPages: LegalPageMap = {
         body:
           "With the order confirmation you receive our bank details and the order number, which serves as the payment reference. The same details appear on the invoice attached to the confirmation as a PDF.\n\n" +
           "We reserve the goods for seven calendar days. Once payment has arrived we dispatch the order within one to three working days. If payment does not reach us within the reservation period, we cancel the order and let you know.",
-      },
-      {
-        heading: "PayPal",
-        body: "At the end of the order process you are redirected to PayPal, where you confirm the payment using your login details. The amount is debited immediately after the contract is concluded. A PayPal account is required; PayPal's terms of use apply in addition.",
       },
       {
         heading: "Credit card",
@@ -769,7 +765,7 @@ export const enLegalPages: LegalPageMap = {
       },
       {
         heading: "Which payment methods can I use?",
-        body: "You can pay by advance bank transfer, with PayPal or by credit card (Visa, Mastercard, American Express). We do not charge extra fees for any of these methods (section 270a of the German Civil Code). With advance transfer we reserve the goods for seven calendar days; if payment has not arrived by then, we cancel the order. Which methods are available in your case is shown during checkout.",
+        body: "You can pay by advance bank transfer or by credit card (Visa, Mastercard, American Express). We do not charge extra fees for any of these methods (section 270a of the German Civil Code). With advance transfer we reserve the goods for seven calendar days; if payment has not arrived by then, we cancel the order. Which methods are available in your case is shown during checkout.",
       },
       {
         heading: "How does advance payment work?",
