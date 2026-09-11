@@ -122,7 +122,7 @@
     "deal": {
       "badge": "DEAL DES TAGES",
       "saving": "Sie sparen {amount}",
-      "stockLeft": "Noch {left} von {total} Stück zu diesem Preis",
+      "stockLeft": "Nur noch {stock} Stück auf Lager",
       "hours": "Std",
       "minutes": "Min",
       "seconds": "Sek",

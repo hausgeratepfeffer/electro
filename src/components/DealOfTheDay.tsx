@@ -13,10 +13,6 @@ interface Remaining {
   seconds: string;
 }
 
-// Stock de démonstration : valeur fixe, pour que serveur et client rendent la même chose
-const STOCK_LEFT = 7;
-const STOCK_TOTAL = 40;
-
 // Horloge à la seconde : le serveur ignore l'heure du visiteur et renvoie donc
 // null — le vrai compte à rebours ne démarre qu'après l'hydratation.
 let cachedSecond: number | null = null;
@@ -102,14 +98,12 @@ export function DealOfTheDay({ product, saving }: { product: Product; saving: st
             </span>
           </div>
 
-          <div>
-            <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/20">
-              <div className="h-full w-[18%] rounded-full bg-primary" />
-            </div>
-            <p className="mt-1.5 text-xs text-white/60">
-              {t("stockLeft", { left: STOCK_LEFT, total: STOCK_TOTAL })}
-            </p>
-          </div>
+          {/* Stock réel du produit choisi par pickDeal (page.tsx), jamais un
+              chiffre inventé : ni fausse rareté, ni barre de progression
+              calculée sur un total qui n'existe pas. */}
+          {typeof product.stock === "number" && product.stock > 0 && (
+            <p className="text-xs text-white/60">{t("stockLeft", { stock: product.stock })}</p>
+          )}
 
           <div className="flex flex-wrap items-center gap-4">
             <div className="flex gap-2">

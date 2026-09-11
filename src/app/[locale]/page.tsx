@@ -41,7 +41,10 @@ function formatEuro(value: number): string {
   })} €`;
 }
 
-// Offre du jour = l'article dont la remise en euros est la plus forte du catalogue
+// Offre du jour = l'article dont la remise en euros est la plus forte du
+// catalogue, parmi ceux réellement en stock — le bloc affiche le stock réel
+// du produit choisi (voir DealOfTheDay), donc un article épuisé n'a rien à y
+// faire : ni achetable, ni honnête à afficher avec un « en stock » inventé.
 function pickDeal(
   categories: CategoryPageView[],
 ): { product: Product; saving: string } | undefined {
@@ -51,6 +54,7 @@ function pickDeal(
   for (const category of categories) {
     for (const product of category.products) {
       if (!product.oldPrice) continue;
+      if (!product.stock || product.stock <= 0) continue;
       const saving = parsePrice(product.oldPrice) - parsePrice(product.price);
       if (saving > bestSaving) {
         bestSaving = saving;
